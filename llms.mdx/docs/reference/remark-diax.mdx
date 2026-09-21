@@ -1,0 +1,254 @@
+# remark-diax (/docs/reference/remark-diax)
+
+
+
+
+
+**Audience:** documentation-platform maintainers and live-preview implementers.
+
+`remark-diax` is an ESM-only Remark plugin for trusted Markdown/MDX builds. It transforms supported
+Mermaid fences into an imported React component and reports importer diagnostics through the
+current VFile. It is not a Markdown renderer, a runtime sandbox, or a second DiaX language.
+
+For ordinary JSX in MDX, start with the [MDX Guide](/docs/guide/mdx-guide). You need this reference
+only when the build should transform fenced source automatically.
+
+Installation and runtime boundary [#installation-and-runtime-boundary]
+
+<InstallTabs packages="['remark-diax', '@diax/ui-react', '@diax/react', '@diax/mermaid']" description="Plugin, DOM renderer, React binding, and supported-subset importer" />
+
+Also import `@diax/ui-react/styles.css` once from the application's global stylesheet. The plugin
+automatically emits this static component import when at least one fence is valid:
+
+```js
+import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+```
+
+The host therefore needs to install and resolve the renderer packages, but does not register a
+global component. `remark-diax` and its Mermaid importer are ESM-only; configure them from an ESM
+file such as `next.config.mjs` or `docusaurus.config.mjs`, not through `require()`.
+
+Minimal configuration [#minimal-configuration]
+
+The plugin export and options below are compiled as part of the documentation contract:
+
+```ts title="remark-diax-options.ts" contract
+import { remarkDiax, type RemarkDiaxOptions } from 'remark-diax';
+
+const options: RemarkDiaxOptions = {
+  languages: ['mermaid', 'diax-mermaid'],
+  theme: 'github',
+};
+
+export const diaxRemarkPlugin = [remarkDiax, options] as const;
+```
+
+Pass `remarkDiax` or the option tuple to the normal `remarkPlugins` array exposed by the host.
+The snippets below are configuration fragments because each platform owns the surrounding config.
+
+Evidence boundary [#evidence-boundary]
+
+The documentation contract resolves `remark-diax` through its package manifest and built declaration
+entry, so the export and option names above cannot drift silently. The package test suite also runs
+a real `@mdx-js/mdx` compile with valid and invalid fences and verifies the resulting JSX import and
+VFile messages:
+
+```bash
+pnpm --filter remark-diax test
+```
+
+This documentation site is the Fumadocs production fixture: its real `source.config.ts` registers
+`remarkDiax`, the content build transforms the dedicated fence below, and the browser contract
+verifies the injected renderer, nodes, and measured edges. Next MDX and Docusaurus do not yet have
+equivalent production fixtures; their snippets remain host configuration fragments rather than an
+independently verified support matrix.
+
+`pnpm smoke:docs` also locks the fixture's workspace dependency, dedicated fence, generated import
+source, application-owned Client Component bridge, and browser selector as one configuration
+contract. A partial edit cannot leave the page looking documented while silently bypassing the
+plugin.
+
+Fumadocs [#fumadocs]
+
+Fumadocs on Next.js compiles MDX as a Server Component. Keep the document server-renderable and
+bridge only the hook-based diagram renderer into a Client Component:
+
+```tsx title="components/mdx/smart-mermaid-diagram-client.tsx" contract
+'use client';
+
+export { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+```
+
+Then point the existing `importSource` option at that application-owned bridge:
+
+```ts title="source.config.ts"
+import { defineConfig } from 'fumadocs-mdx/config';
+import { remarkDiax } from 'remark-diax';
+
+export default defineConfig({
+  mdxOptions: {
+    remarkPlugins: [
+      [remarkDiax, {
+        importSource: '@/components/mdx/smart-mermaid-diagram-client',
+      }],
+    ],
+  },
+});
+```
+
+Live Fumadocs host fixture [#live-fumadocs-host-fixture]
+
+The following source is not a pre-authored React component. Fumadocs passes its custom fence through
+the installed plugin during the real Docs build, which injects the client bridge and renders
+`SmartMermaidDiagram` without turning the whole document into a Client Component:
+
+<SmartMermaidDiagram
+  chart="`flowchart LR
+  source[MDX source] --> transform[remark-diax]
+  transform --> dom[DiaX DOM]`"
+  theme="github"
+  className="remark-diax-fumadocs-fixture"
+/>
+
+Next.js with `@next/mdx` [#nextjs-with-nextmdx]
+
+```js title="next.config.mjs"
+import createMDX from '@next/mdx';
+import { remarkDiax } from 'remark-diax';
+
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [[remarkDiax, { theme: 'github' }]],
+  },
+});
+
+export default withMDX({ pageExtensions: ['mdx', 'tsx'] });
+```
+
+Docusaurus [#docusaurus]
+
+```js title="docusaurus.config.mjs"
+import { remarkDiax } from 'remark-diax';
+
+export default {
+  presets: [
+    ['classic', {
+      docs: {
+        remarkPlugins: [[remarkDiax, { theme: 'light' }]],
+      },
+    }],
+  ],
+};
+```
+
+Options [#options]
+
+| Option         | Type       | Default                               | Meaning                                |
+| -------------- | ---------- | ------------------------------------- | -------------------------------------- |
+| `languages`    | `string[]` | `['diax', 'diax-mermaid', 'mermaid']` | Fence languages to inspect             |
+| `component`    | `string`   | `'SmartMermaidDiagram'`               | Named JSX component to emit            |
+| `importSource` | `string`   | `'@diax/ui-react/mermaid'`            | Static import source for the component |
+| `theme`        | `string`   | —                                     | Theme prop passed to the component     |
+| `className`    | `string`   | —                                     | Class on the diagram wrapper           |
+
+Changing `component` or `importSource` is an advanced renderer seam. The target module must export
+that exact named component and accept the generated `chart`, `centered`, optional `theme`, and
+optional `className` props.
+
+Fence and diagram support [#fence-and-diagram-support]
+
+The `mermaid`, `diax-mermaid`, and legacy `diax` fence aliases all contain Mermaid source. The
+plugin uses the same supported subset as `@diax/mermaid`:
+
+* `flowchart` / `graph`;
+* `classDiagram`;
+* `stateDiagram` / `stateDiagram-v2`;
+* `erDiagram`;
+* `requirementDiagram`;
+* `mindmap`.
+
+Sequence, Gantt, Pie, Timeline, Sankey and other families are not implied by the fence name. See the
+[Mermaid Guide](/docs/guide/mermaid) for syntax and fidelity limits.
+
+VFile diagnostics [#vfile-diagnostics]
+
+Every matching fence is parsed through the public `parseMermaid()` importer. A valid fence becomes
+JSX. An invalid or unsupported fence remains the original code node so the page never degrades into
+a silent blank.
+
+For each importer diagnostic, the plugin appends a standard VFile message:
+
+| Field    | Value                                      |
+| -------- | ------------------------------------------ |
+| `source` | `'remark-diax'`                            |
+| `ruleId` | Original `MermaidDiagnosticCode`           |
+| `reason` | Human-readable problem                     |
+| `note`   | Suggested repair when available            |
+| `place`  | Markdown-document-relative source location |
+| `url`    | Mermaid import guide                       |
+
+Messages are non-fatal by default because the original fence remains readable. The package does not
+add a custom payload, reporter callback, global diagnostic provider, or `strict` option.
+
+Strict build policy [#strict-build-policy]
+
+Run the complete processor, then select messages by the standard `source` field. Apply failure only
+after processing so a document with multiple bad fences produces one complete report:
+
+```ts title="strict-build-policy.ts"
+const file = await processor.process({ path: 'guide.mdx', value: source });
+const errors = file.messages.filter((message) => message.source === 'remark-diax');
+
+if (errors.length > 0) {
+  throw new AggregateError(errors, 'DiaX fences failed validation');
+}
+```
+
+This is a policy fragment: `processor` and `source` belong to the host's existing Unified pipeline.
+When using `remark-cli`, its standard `--frail` option can fail the process on VFile messages.
+
+Live-preview policy [#live-preview-policy]
+
+Use the same configured processor and create a fresh VFile for every editor revision. If the host
+imports `VFile` itself, declare `vfile` as a direct host dependency instead of relying on the
+plugin's transitive graph.
+
+```ts title="live-preview-policy.ts"
+import { VFile } from 'vfile';
+
+const file = new VFile({ path: activePath, value: source });
+const tree = processor.parse(file);
+const transformedTree = await processor.run(tree, file);
+const markers = file.messages
+  .filter((message) => message.source === 'remark-diax')
+  .map((message) => ({
+    code: message.ruleId,
+    severity: 'error',
+    message: message.reason,
+    hint: message.note,
+    line: message.line,
+    column: message.column,
+  }));
+```
+
+This is also a host fragment: `activePath`, `source`, and `processor` come from the editor. The
+important lifecycle contract is one VFile per revision, which prevents stale messages from leaking
+into the next preview. `transformedTree` contains JSX for valid diagrams and the original code node
+for invalid ones.
+
+Host checklist [#host-checklist]
+
+1. Use an ESM build configuration.
+2. Install the renderer companions and import `@diax/ui-react/styles.css` once.
+3. Treat MDX as trusted executable source.
+4. Preserve invalid fences and surface every VFile message.
+5. Fail strict builds only after collecting the complete report.
+6. Create a fresh VFile for each live-preview revision.
+7. Keep `remark-diax` out of routes that do not compile Mermaid fences.
+
+Related [#related]
+
+* [MDX Integration](/docs/guide/mdx-guide)
+* [Mermaid Import](/docs/guide/mermaid)
+* [Package Entry Points](/docs/reference/package-entry-points)
+* [Troubleshooting](/docs/guide/troubleshooting)

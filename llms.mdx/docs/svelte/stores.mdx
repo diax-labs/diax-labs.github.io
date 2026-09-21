@@ -1,0 +1,129 @@
+# Headless Stores (/docs/svelte/stores)
+
+
+
+Use the public rendering primitives together [#use-the-public-rendering-primitives-together]
+
+`createDiagramStore()` owns pure topology state. `DiagramEdges` owns DOM measurement and SVG
+rendering. Use both when the built-in `FlowDiagram` wrapper is too opinionated; omitting
+`DiagramEdges` intentionally produces nodes without connections.
+
+```svelte
+<script lang="ts">
+import { createDiagramStore, DiagramEdges } from '@diax/svelte';
+
+const diagram = createDiagramStore({
+  nodes: [
+    { id: 'a', content: 'Start' },
+    { id: 'b', content: 'Review' },
+    { id: 'c', content: 'Ship' },
+  ],
+  relations: ['a->b', 'b->c'],
+  layout: 'flow',
+  highlightOnHover: true,
+});
+
+const {
+  nodes,
+  edges,
+  layoutMap,
+  containerStyle,
+  highlightedNodes,
+  highlightedEdgeIds,
+  setHovered,
+} = diagram;
+
+function toCSS(style: Record<string, string | number | undefined>) {
+  return Object.entries(style)
+    .filter(([, value]) => value != null)
+    .map(([key, value]) => `${key.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`)}:${value}`)
+    .join(';');
+}
+</script>
+
+<div class="relative" style={toCSS($containerStyle)}>
+  {#each $nodes as node (node.id)}
+    <article
+      data-diax-node={node.resolvedId}
+      style={toCSS(node.style)}
+      on:mouseenter={() => setHovered(node.id)}
+      on:mouseleave={() => setHovered(null)}
+    >
+      {node.data.content}
+    </article>
+  {/each}
+
+  <DiagramEdges
+    edges={$edges}
+    layoutMap={$layoutMap}
+    highlightedNodes={$highlightedNodes}
+    highlightedEdgeIds={$highlightedEdgeIds}
+  />
+</div>
+```
+
+The measured edge layer depends on the `data-diax-node` attributes and the same `layoutMap` returned
+by the store. Keep them inside one containing block.
+
+Store interface [#store-interface]
+
+| Value                    | Purpose                                                      |
+| ------------------------ | ------------------------------------------------------------ |
+| `nodes`                  | Bound nodes with resolved IDs and CSS Grid styles            |
+| `edges`                  | Parsed relations consumed by `DiagramEdges`                  |
+| `layout`                 | Raw rows, columns and layout nodes                           |
+| `layoutMap`              | Node lookup used for anchor direction                        |
+| `containerStyle`         | CSS Grid container styles                                    |
+| `highlightedNodes`       | Current highlighted path or `null`                           |
+| `highlightedEdgeIds`     | Exact highlighted relation occurrences or `null`             |
+| `updateOptions(options)` | Merges new semantic or layout input into the existing stores |
+| `setHovered(id)`         | Updates highlight state                                      |
+
+`updateOptions()` preserves the returned store objects while recomputing their values. Pass complete
+replacement arrays for `nodes`, `relations` or `groups`; DiaX does not mutate caller-owned arrays.
+
+```ts contract svelte
+import { createDiagramStore } from '@diax/svelte';
+
+const diagram = createDiagramStore({
+  nodes: [{ id: 'draft', content: 'Draft' }],
+  relations: [],
+});
+
+diagram.updateOptions({
+  namespace: 'promotion',
+  nodes: [
+    { id: 'draft', content: 'Draft' },
+    { id: 'review', content: 'Review' },
+  ],
+  relations: ['draft->review'],
+});
+```
+
+`useDiagram` remains a deprecated compatibility alias during Alpha. New code should use the
+framework-native factory name.
+
+Independent payload types [#independent-payload-types]
+
+The store independently preserves structured node content, edge labels, and group labels even
+though the built-in Svelte component currently renders strings:
+
+```ts
+import { createDiagramStore } from '@diax/svelte';
+
+interface NodePayload { title: string }
+interface EdgePayload { protocol: string }
+interface GroupPayload { badge: string }
+
+const diagram = createDiagramStore<NodePayload, EdgePayload, GroupPayload>({
+  nodes: [
+    { id: 'web', content: { title: 'Web' } },
+    { id: 'api', content: { title: 'API' } },
+  ],
+  relations: [{ from: 'web', to: 'api', label: { protocol: 'HTTPS' } }],
+  groups: [{ id: 'backend', label: { badge: 'Internal' }, nodeIds: ['api'] }],
+});
+```
+
+Ordinary non-empty definitions infer these types. Render the bound stores in one wrapper and keep
+`DiagramEdges` beside the authored node DOM.

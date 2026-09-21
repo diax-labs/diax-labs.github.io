@@ -1,0 +1,44 @@
+# Advanced (/docs/svelte/advanced)
+
+
+
+DOM ID Namespaces [#dom-id-namespaces]
+
+Use the high-level `namespace` prop to prevent resolved DOM IDs from colliding across diagram
+instances:
+
+```svelte contract
+<script>
+import { FlowDiagram } from '@diax/svelte';
+
+const frontendNodes = [
+  { id: 'gw', content: 'API Gateway' },
+  { id: 'bff', content: 'BFF' },
+];
+const frontendRelations = ['gw->bff'];
+
+const backendNodes = [
+  { id: 'svc', content: 'User Service' },
+  { id: 'db', content: 'Database' },
+];
+const backendRelations = ['svc->db'];
+</script>
+
+<div class="flex gap-8">
+  <FlowDiagram namespace="fe" nodes={frontendNodes} relations={frontendRelations} />
+  <FlowDiagram namespace="be" nodes={backendNodes} relations={backendRelations} />
+</div>
+```
+
+Node IDs become `namespace::nodeId` in the DOM (for example, `fe::gw`). Each built-in renderer
+measures only its own diagram container, so it does not draw edges between these two canvases. Keep
+connected topology inside one diagram. DOM-first Connect is public from `@diax/react/connect`, but a
+Svelte Connect adapter is not available yet.
+
+***
+
+Reactive Updates [#reactive-updates]
+
+High-level component props follow ordinary Svelte reactivity. For a headless renderer,
+`createDiagramStore()` exposes `updateOptions()` so callers can update topology without replacing
+the returned stores. See [Headless Stores](/docs/svelte/stores).

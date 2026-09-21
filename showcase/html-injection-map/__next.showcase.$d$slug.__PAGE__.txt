@@ -1,0 +1,711 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T2dbf,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import type { DiaxRelation } from "diax";
+import { BarChart3, Cloud, FileCode2, Globe2, Package, Smartphone, Syringe } from "lucide-react";
+
+const distribution = { archive: "archive", engine: "engine", html: "html", cdn: "cdn" } as const;
+const patch = {
+  base: "step-base",
+  track: "step-track",
+  app: "step-app",
+  baseLine: "line-base",
+  metaLine: "line-meta",
+  sdkLine: "line-sdk",
+  appLine: "line-app",
+} as const;
+
+const distributionRelations = [
+  edge("archive-engine", distribution.archive, distribution.engine, "#d58a3c"),
+  edge("engine-html", distribution.engine, distribution.html, "#3ca2b8"),
+  edge("engine-cdn", distribution.engine, distribution.cdn, "#3ca2b8"),
+] as const satisfies readonly DiaxRelation<never>[];
+
+const patchRelations = [
+  edge("base-line", patch.base, patch.baseLine, "#d58a3c"),
+  edge("track-meta", patch.track, patch.metaLine, "#3c9b71"),
+  edge("track-sdk", patch.track, patch.sdkLine, "#3c9b71"),
+  edge("app-line", patch.app, patch.appLine, "#ca5d88"),
+] as const satisfies readonly DiaxRelation<never>[];
+
+function edge(id: string, from: string, to: string, color: string): DiaxRelation<never> {
+  return { id, from, to, color, targetMarker: "arrow", gap: 5 };
+}
+
+const node =
+  "relative min-w-0 rounded-md border border-slate-700 bg-[#15212a] shadow-[0_10px_24px_rgb(0_0_0_/_0.2)]";
+
+export default function HtmlInjectionMap() {
+  return (
+    <figure
+      data-showcase-corpus="html-injection-map"
+      className="w-full max-w-[1120px] overflow-hidden rounded-xl border border-slate-800 bg-[#080d12] p-3 text-slate-100 shadow-[0_24px_70px_rgb(0_0_0_/_0.28)] sm:p-6"
+    >
+      <figcaption className="mb-5 flex flex-col justify-between gap-3 border-b border-slate-800 pb-4 sm:flex-row sm:items-end">
+        <div>
+          <p className="m-0 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-[#d58a3c]">
+            Two local connection surfaces
+          </p>
+          <h2 className="m-0 mt-1 text-xl font-semibold tracking-[-0.035em] sm:text-3xl">
+            HTML injection map
+          </h2>
+          <p className="m-0 mt-1 text-[10px] leading-relaxed text-slate-400 sm:text-xs">
+            Relations terminate on actual code lines without a port registry or imperative refresh.
+          </p>
+        </div>
+        <dl className="m-0 flex gap-4 font-mono text-[8px] text-slate-400">
+          <Stat label="Surfaces" value="2" />
+          <Stat label="Targets" value="11" />
+          <Stat label="Anchors" value="0" />
+        </dl>
+      </figcaption>
+
+      <section
+        className="mb-4 overflow-hidden rounded-lg border border-slate-800"
+        aria-labelledby="distribution-title"
+      >
+        <ScopeHeading
+          number="01"
+          id="distribution-title"
+          title="Artifact distribution"
+          detail="Archive → injection engine → HTML and versioned assets"
+        />
+        <ConnectionSurface
+          relations={distributionRelations}
+          className="grid min-h-64 grid-cols-2 gap-x-10 gap-y-16 bg-[#0d141b] p-3 pb-14 [background-image:linear-gradient(rgb(60_162_184_/_0.04)_1px,transparent_1px),linear-gradient(90deg,rgb(60_162_184_/_0.04)_1px,transparent_1px)] [background-size:22px_22px] sm:grid-cols-[minmax(120px,.7fr)_minmax(120px,.7fr)_minmax(220px,1.6fr)] sm:grid-rows-2 sm:gap-x-16 sm:gap-y-3 sm:p-6 sm:pb-14"
+        >
+          <DistributionNode
+            id={distribution.archive}
+            icon={Package}
+            eyebrow="Input"
+            title="dist archive"
+            detail="Unpack and classify"
+            className="sm:row-span-2"
+          />
+          <DistributionNode
+            id={distribution.engine}
+            icon={Syringe}
+            eyebrow="Transform"
+            title="Inject & deploy"
+            detail="base · tracking · app handoff"
+            className="sm:row-span-2"
+          />
+          <DistributionNode
+            id={distribution.html}
+            icon={Globe2}
+            eyebrow="HTML entry"
+            title="Public route"
+            detail="www.example.com/content/…"
+          />
+          <DistributionNode
+            id={distribution.cdn}
+            icon={Cloud}
+            eyebrow="Static CDN"
+            title="Versioned assets"
+            detail="CSS · JS · images · fonts"
+          />
+        </ConnectionSurface>
+      </section>
+
+      <section
+        className="overflow-hidden rounded-lg border border-slate-800"
+        aria-labelledby="patch-title"
+      >
+        <ScopeHeading
+          number="02"
+          id="patch-title"
+          title="Structured document patch"
+          detail="Each transformation points to the real line it owns"
+        />
+        <ConnectionSurface
+          relations={patchRelations}
+          className="grid min-h-[500px] grid-cols-[minmax(86px,.7fr)_minmax(0,1.3fr)] gap-8 bg-[#0d141b] p-2.5 pb-14 sm:grid-cols-[minmax(210px,.72fr)_minmax(0,1.28fr)] sm:gap-16 sm:p-6 sm:pb-14"
+        >
+          <div className="grid grid-rows-3 gap-2 sm:gap-3">
+            <Task
+              id={patch.base}
+              icon={Globe2}
+              tone="orange"
+              eyebrow="Path resolution"
+              title="Inject <base href>"
+              detail="Bundler stays publicPath-free."
+            />
+            <Task
+              id={patch.track}
+              icon={BarChart3}
+              tone="green"
+              eyebrow="Observability"
+              title="Inject telemetry"
+              detail="PV, UV and runtime errors."
+            />
+            <Task
+              id={patch.app}
+              icon={Smartphone}
+              tone="pink"
+              eyebrow="Mobile handoff"
+              title="Inject app bridge"
+              detail="Keep the content readable first."
+            />
+          </div>
+          <section
+            className="relative min-w-0 overflow-hidden rounded-lg border border-slate-700 bg-[#0a1016]"
+            aria-labelledby="code-title"
+          >
+            <header className="flex items-center gap-2 border-b border-slate-800 bg-[#101820] px-2 py-2 text-slate-400 sm:px-3">
+              <span className="flex gap-1" aria-hidden="true">
+                <i className="size-1.5 rounded-full bg-red-400" />
+                <i className="size-1.5 rounded-full bg-amber-400" />
+                <i className="size-1.5 rounded-full bg-emerald-500" />
+              </span>
+              <h3
+                id="code-title"
+                className="m-0 min-w-0 flex-1 truncate font-mono text-[7px] font-semibold sm:text-[9px]"
+              >
+                index.html
+              </h3>
+              <FileCode2 aria-hidden="true" className="size-3" />
+            </header>
+            <div className="grid h-[calc(100%-30px)] grid-rows-3 gap-1 p-1.5 sm:gap-2 sm:p-3">
+              <CodeGroup>
+                <MutedCode>{"<html><head>"}</MutedCode>
+                <InjectedCode id={patch.baseLine} tone="orange">
+                  {'<base href="//cdn.example.com/{v}/">'}
+                </InjectedCode>
+              </CodeGroup>
+              <CodeGroup>
+                <InjectedCode id={patch.metaLine} tone="green">
+                  {'<meta name="trace" content="content.read">'}
+                </InjectedCode>
+                <InjectedCode id={patch.sdkLine} tone="green">
+                  {'<script src="//cdn.example.com/telemetry.js"></script>'}
+                </InjectedCode>
+              </CodeGroup>
+              <CodeGroup>
+                <MutedCode>{'<body><main id="app">…</main>'}</MutedCode>
+                <InjectedCode id={patch.appLine} tone="pink">
+                  {'<script src="//cdn.example.com/open-app.js"></script>'}
+                </InjectedCode>
+                <MutedCode>{"</body></html>"}</MutedCode>
+              </CodeGroup>
+            </div>
+          </section>
+        </ConnectionSurface>
+      </section>
+    </figure>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt>{label}</dt>
+      <dd className="m-0 mt-0.5 text-base font-semibold text-slate-100">{value}</dd>
+    </div>
+  );
+}
+function ScopeHeading({
+  number,
+  id,
+  title,
+  detail,
+}: {
+  number: string;
+  id: string;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <header className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 border-b border-slate-800 bg-[#0c1319] p-2.5 sm:gap-3 sm:px-4">
+      <span className="rounded border border-slate-600 px-1.5 py-1 font-mono text-[7px] font-bold tracking-wider text-[#d58a3c]">
+        {number}
+      </span>
+      <div>
+        <h2 id={id} className="m-0 text-[11px] font-semibold sm:text-sm">
+          {title}
+        </h2>
+        <p className="m-0 mt-0.5 text-[7px] text-slate-400 sm:text-[9px]">{detail}</p>
+      </div>
+    </header>
+  );
+}
+function DistributionNode({
+  id,
+  icon: Icon,
+  eyebrow,
+  title,
+  detail,
+  className = "",
+}: {
+  id: string;
+  icon: typeof Package;
+  eyebrow: string;
+  title: string;
+  detail: string;
+  className?: string;
+}) {
+  return (
+    <article
+      {...connectionTarget(id)}
+      className={`${node} flex items-center gap-2 p-2 sm:p-3 ${className}`}
+    >
+      <Icon aria-hidden="true" className="size-4 shrink-0 text-[#3ca2b8]" />
+      <div className="min-w-0">
+        <p className="m-0 font-mono text-[6px] font-bold uppercase tracking-wider text-[#d58a3c] sm:text-[7px]">
+          {eyebrow}
+        </p>
+        <h3 className="m-0 mt-1 truncate text-[8px] font-semibold sm:text-[11px]">{title}</h3>
+        <small className="mt-1 block truncate text-[6px] text-slate-400 sm:text-[8px]">
+          {detail}
+        </small>
+      </div>
+    </article>
+  );
+}
+const taskTone = {
+  orange: "border-orange-400/35 text-orange-300",
+  green: "border-emerald-400/35 text-emerald-300",
+  pink: "border-pink-400/35 text-pink-300",
+} as const;
+function Task({
+  id,
+  icon: Icon,
+  tone,
+  eyebrow,
+  title,
+  detail,
+}: {
+  id: string;
+  icon: typeof Globe2;
+  tone: keyof typeof taskTone;
+  eyebrow: string;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <article {...connectionTarget(id)} className={`${node} ${taskTone[tone]} p-2 sm:p-3`}>
+      <Icon aria-hidden="true" className="size-3.5" />
+      <p className="m-0 mt-1.5 font-mono text-[5px] font-bold uppercase tracking-wider sm:text-[7px]">
+        {eyebrow}
+      </p>
+      <h3 className="m-0 mt-1 text-[7px] font-semibold text-slate-100 sm:text-[11px]">{title}</h3>
+      <small className="mt-1 block text-[5px] leading-snug text-slate-400 sm:text-[8px]">
+        {detail}
+      </small>
+    </article>
+  );
+}
+function CodeGroup({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex min-h-0 flex-col justify-center gap-1 border-b border-dashed border-slate-800 last:border-0 sm:gap-2">
+      {children}
+    </div>
+  );
+}
+function MutedCode({ children }: { children: React.ReactNode }) {
+  return (
+    <code className="block break-all text-[5px] leading-snug text-slate-600 sm:text-[8px]">
+      {children}
+    </code>
+  );
+}
+const codeTone = {
+  orange: "border-orange-400/35 bg-orange-400/10 text-orange-300",
+  green: "border-emerald-400/35 bg-emerald-400/10 text-emerald-300",
+  pink: "border-pink-400/35 bg-pink-400/10 text-pink-300",
+} as const;
+function InjectedCode({
+  id,
+  tone,
+  children,
+}: {
+  id: string;
+  tone: keyof typeof codeTone;
+  children: React.ReactNode;
+}) {
+  return (
+    <code
+      {...connectionTarget(id)}
+      className={`relative block break-all rounded border border-l-2 p-1 text-[5px] leading-snug sm:p-2 sm:text-[8px] ${codeTone[tone]}`}
+    >
+      {children}
+    </code>
+  );
+}
+17:X
+1c:X
+1c:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"connect","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Code transformation"}],["$","h1",null,{"children":"HTML Injection Map"}],["$","p",null,{"children":"Two isolated connection surfaces link an artifact pipeline to the exact HTML lines each transformation changes."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1","key":"ezmyqa"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1","key":"e1hn23"}]],"className":"lucide-braces","aria-hidden":"true"}]," ","Connect DOM"]}],["$","li",null,{"children":"advanced"}],[["$","li","code",{"children":"code"}],["$","li","connect",{"children":"connect"}],["$","li","dom",{"children":"dom"}],["$","li","workflow",{"children":"workflow"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6",null,"$L7",null,"$L8","$L9"]}]}],["$La","$Lb","$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14"],"$L15"]}],"isPartial":"$@16","staleTime":"$17","varyParams":null},{"rsc":"$L18","isPartial":"$@19","staleTime":"$17","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$17","varyParams":"$1c"}],"isUpgradeableISRFallback":false,"a":"$@1d","rootVaryParams":null,"needsRuntimeRequest":"$@1e"}
+1f:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+20:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+21:I[17641,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+22:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+24:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+25:"$Sreact.suspense"
+27:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+28:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+29:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+2a:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"DOM measurement, target lifecycle and connection geometry."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"JSX, CSS layout, reading order and responsive composition."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"2 surfaces · 11 DOM targets · 7 relations"}]]}]]}]]}]
+23:T2dbf,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import type { DiaxRelation } from "diax";
+import { BarChart3, Cloud, FileCode2, Globe2, Package, Smartphone, Syringe } from "lucide-react";
+
+const distribution = { archive: "archive", engine: "engine", html: "html", cdn: "cdn" } as const;
+const patch = {
+  base: "step-base",
+  track: "step-track",
+  app: "step-app",
+  baseLine: "line-base",
+  metaLine: "line-meta",
+  sdkLine: "line-sdk",
+  appLine: "line-app",
+} as const;
+
+const distributionRelations = [
+  edge("archive-engine", distribution.archive, distribution.engine, "#d58a3c"),
+  edge("engine-html", distribution.engine, distribution.html, "#3ca2b8"),
+  edge("engine-cdn", distribution.engine, distribution.cdn, "#3ca2b8"),
+] as const satisfies readonly DiaxRelation<never>[];
+
+const patchRelations = [
+  edge("base-line", patch.base, patch.baseLine, "#d58a3c"),
+  edge("track-meta", patch.track, patch.metaLine, "#3c9b71"),
+  edge("track-sdk", patch.track, patch.sdkLine, "#3c9b71"),
+  edge("app-line", patch.app, patch.appLine, "#ca5d88"),
+] as const satisfies readonly DiaxRelation<never>[];
+
+function edge(id: string, from: string, to: string, color: string): DiaxRelation<never> {
+  return { id, from, to, color, targetMarker: "arrow", gap: 5 };
+}
+
+const node =
+  "relative min-w-0 rounded-md border border-slate-700 bg-[#15212a] shadow-[0_10px_24px_rgb(0_0_0_/_0.2)]";
+
+export default function HtmlInjectionMap() {
+  return (
+    <figure
+      data-showcase-corpus="html-injection-map"
+      className="w-full max-w-[1120px] overflow-hidden rounded-xl border border-slate-800 bg-[#080d12] p-3 text-slate-100 shadow-[0_24px_70px_rgb(0_0_0_/_0.28)] sm:p-6"
+    >
+      <figcaption className="mb-5 flex flex-col justify-between gap-3 border-b border-slate-800 pb-4 sm:flex-row sm:items-end">
+        <div>
+          <p className="m-0 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-[#d58a3c]">
+            Two local connection surfaces
+          </p>
+          <h2 className="m-0 mt-1 text-xl font-semibold tracking-[-0.035em] sm:text-3xl">
+            HTML injection map
+          </h2>
+          <p className="m-0 mt-1 text-[10px] leading-relaxed text-slate-400 sm:text-xs">
+            Relations terminate on actual code lines without a port registry or imperative refresh.
+          </p>
+        </div>
+        <dl className="m-0 flex gap-4 font-mono text-[8px] text-slate-400">
+          <Stat label="Surfaces" value="2" />
+          <Stat label="Targets" value="11" />
+          <Stat label="Anchors" value="0" />
+        </dl>
+      </figcaption>
+
+      <section
+        className="mb-4 overflow-hidden rounded-lg border border-slate-800"
+        aria-labelledby="distribution-title"
+      >
+        <ScopeHeading
+          number="01"
+          id="distribution-title"
+          title="Artifact distribution"
+          detail="Archive → injection engine → HTML and versioned assets"
+        />
+        <ConnectionSurface
+          relations={distributionRelations}
+          className="grid min-h-64 grid-cols-2 gap-x-10 gap-y-16 bg-[#0d141b] p-3 pb-14 [background-image:linear-gradient(rgb(60_162_184_/_0.04)_1px,transparent_1px),linear-gradient(90deg,rgb(60_162_184_/_0.04)_1px,transparent_1px)] [background-size:22px_22px] sm:grid-cols-[minmax(120px,.7fr)_minmax(120px,.7fr)_minmax(220px,1.6fr)] sm:grid-rows-2 sm:gap-x-16 sm:gap-y-3 sm:p-6 sm:pb-14"
+        >
+          <DistributionNode
+            id={distribution.archive}
+            icon={Package}
+            eyebrow="Input"
+            title="dist archive"
+            detail="Unpack and classify"
+            className="sm:row-span-2"
+          />
+          <DistributionNode
+            id={distribution.engine}
+            icon={Syringe}
+            eyebrow="Transform"
+            title="Inject & deploy"
+            detail="base · tracking · app handoff"
+            className="sm:row-span-2"
+          />
+          <DistributionNode
+            id={distribution.html}
+            icon={Globe2}
+            eyebrow="HTML entry"
+            title="Public route"
+            detail="www.example.com/content/…"
+          />
+          <DistributionNode
+            id={distribution.cdn}
+            icon={Cloud}
+            eyebrow="Static CDN"
+            title="Versioned assets"
+            detail="CSS · JS · images · fonts"
+          />
+        </ConnectionSurface>
+      </section>
+
+      <section
+        className="overflow-hidden rounded-lg border border-slate-800"
+        aria-labelledby="patch-title"
+      >
+        <ScopeHeading
+          number="02"
+          id="patch-title"
+          title="Structured document patch"
+          detail="Each transformation points to the real line it owns"
+        />
+        <ConnectionSurface
+          relations={patchRelations}
+          className="grid min-h-[500px] grid-cols-[minmax(86px,.7fr)_minmax(0,1.3fr)] gap-8 bg-[#0d141b] p-2.5 pb-14 sm:grid-cols-[minmax(210px,.72fr)_minmax(0,1.28fr)] sm:gap-16 sm:p-6 sm:pb-14"
+        >
+          <div className="grid grid-rows-3 gap-2 sm:gap-3">
+            <Task
+              id={patch.base}
+              icon={Globe2}
+              tone="orange"
+              eyebrow="Path resolution"
+              title="Inject <base href>"
+              detail="Bundler stays publicPath-free."
+            />
+            <Task
+              id={patch.track}
+              icon={BarChart3}
+              tone="green"
+              eyebrow="Observability"
+              title="Inject telemetry"
+              detail="PV, UV and runtime errors."
+            />
+            <Task
+              id={patch.app}
+              icon={Smartphone}
+              tone="pink"
+              eyebrow="Mobile handoff"
+              title="Inject app bridge"
+              detail="Keep the content readable first."
+            />
+          </div>
+          <section
+            className="relative min-w-0 overflow-hidden rounded-lg border border-slate-700 bg-[#0a1016]"
+            aria-labelledby="code-title"
+          >
+            <header className="flex items-center gap-2 border-b border-slate-800 bg-[#101820] px-2 py-2 text-slate-400 sm:px-3">
+              <span className="flex gap-1" aria-hidden="true">
+                <i className="size-1.5 rounded-full bg-red-400" />
+                <i className="size-1.5 rounded-full bg-amber-400" />
+                <i className="size-1.5 rounded-full bg-emerald-500" />
+              </span>
+              <h3
+                id="code-title"
+                className="m-0 min-w-0 flex-1 truncate font-mono text-[7px] font-semibold sm:text-[9px]"
+              >
+                index.html
+              </h3>
+              <FileCode2 aria-hidden="true" className="size-3" />
+            </header>
+            <div className="grid h-[calc(100%-30px)] grid-rows-3 gap-1 p-1.5 sm:gap-2 sm:p-3">
+              <CodeGroup>
+                <MutedCode>{"<html><head>"}</MutedCode>
+                <InjectedCode id={patch.baseLine} tone="orange">
+                  {'<base href="//cdn.example.com/{v}/">'}
+                </InjectedCode>
+              </CodeGroup>
+              <CodeGroup>
+                <InjectedCode id={patch.metaLine} tone="green">
+                  {'<meta name="trace" content="content.read">'}
+                </InjectedCode>
+                <InjectedCode id={patch.sdkLine} tone="green">
+                  {'<script src="//cdn.example.com/telemetry.js"></script>'}
+                </InjectedCode>
+              </CodeGroup>
+              <CodeGroup>
+                <MutedCode>{'<body><main id="app">…</main>'}</MutedCode>
+                <InjectedCode id={patch.appLine} tone="pink">
+                  {'<script src="//cdn.example.com/open-app.js"></script>'}
+                </InjectedCode>
+                <MutedCode>{"</body></html>"}</MutedCode>
+              </CodeGroup>
+            </div>
+          </section>
+        </ConnectionSurface>
+      </section>
+    </figure>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt>{label}</dt>
+      <dd className="m-0 mt-0.5 text-base font-semibold text-slate-100">{value}</dd>
+    </div>
+  );
+}
+function ScopeHeading({
+  number,
+  id,
+  title,
+  detail,
+}: {
+  number: string;
+  id: string;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <header className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-2 border-b border-slate-800 bg-[#0c1319] p-2.5 sm:gap-3 sm:px-4">
+      <span className="rounded border border-slate-600 px-1.5 py-1 font-mono text-[7px] font-bold tracking-wider text-[#d58a3c]">
+        {number}
+      </span>
+      <div>
+        <h2 id={id} className="m-0 text-[11px] font-semibold sm:text-sm">
+          {title}
+        </h2>
+        <p className="m-0 mt-0.5 text-[7px] text-slate-400 sm:text-[9px]">{detail}</p>
+      </div>
+    </header>
+  );
+}
+function DistributionNode({
+  id,
+  icon: Icon,
+  eyebrow,
+  title,
+  detail,
+  className = "",
+}: {
+  id: string;
+  icon: typeof Package;
+  eyebrow: string;
+  title: string;
+  detail: string;
+  className?: string;
+}) {
+  return (
+    <article
+      {...connectionTarget(id)}
+      className={`${node} flex items-center gap-2 p-2 sm:p-3 ${className}`}
+    >
+      <Icon aria-hidden="true" className="size-4 shrink-0 text-[#3ca2b8]" />
+      <div className="min-w-0">
+        <p className="m-0 font-mono text-[6px] font-bold uppercase tracking-wider text-[#d58a3c] sm:text-[7px]">
+          {eyebrow}
+        </p>
+        <h3 className="m-0 mt-1 truncate text-[8px] font-semibold sm:text-[11px]">{title}</h3>
+        <small className="mt-1 block truncate text-[6px] text-slate-400 sm:text-[8px]">
+          {detail}
+        </small>
+      </div>
+    </article>
+  );
+}
+const taskTone = {
+  orange: "border-orange-400/35 text-orange-300",
+  green: "border-emerald-400/35 text-emerald-300",
+  pink: "border-pink-400/35 text-pink-300",
+} as const;
+function Task({
+  id,
+  icon: Icon,
+  tone,
+  eyebrow,
+  title,
+  detail,
+}: {
+  id: string;
+  icon: typeof Globe2;
+  tone: keyof typeof taskTone;
+  eyebrow: string;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <article {...connectionTarget(id)} className={`${node} ${taskTone[tone]} p-2 sm:p-3`}>
+      <Icon aria-hidden="true" className="size-3.5" />
+      <p className="m-0 mt-1.5 font-mono text-[5px] font-bold uppercase tracking-wider sm:text-[7px]">
+        {eyebrow}
+      </p>
+      <h3 className="m-0 mt-1 text-[7px] font-semibold text-slate-100 sm:text-[11px]">{title}</h3>
+      <small className="mt-1 block text-[5px] leading-snug text-slate-400 sm:text-[8px]">
+        {detail}
+      </small>
+    </article>
+  );
+}
+function CodeGroup({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex min-h-0 flex-col justify-center gap-1 border-b border-dashed border-slate-800 last:border-0 sm:gap-2">
+      {children}
+    </div>
+  );
+}
+function MutedCode({ children }: { children: React.ReactNode }) {
+  return (
+    <code className="block break-all text-[5px] leading-snug text-slate-600 sm:text-[8px]">
+      {children}
+    </code>
+  );
+}
+const codeTone = {
+  orange: "border-orange-400/35 bg-orange-400/10 text-orange-300",
+  green: "border-emerald-400/35 bg-emerald-400/10 text-emerald-300",
+  pink: "border-pink-400/35 bg-pink-400/10 text-pink-300",
+} as const;
+function InjectedCode({
+  id,
+  tone,
+  children,
+}: {
+  id: string;
+  tone: keyof typeof codeTone;
+  children: React.ReactNode;
+}) {
+  return (
+    <code
+      {...connectionTarget(id)}
+      className={`relative block break-all rounded border border-l-2 p-1 text-[5px] leading-snug sm:p-2 sm:text-[8px] ${codeTone[tone]}`}
+    >
+      {children}
+    </code>
+  );
+}
+7:["$","$L1f",null,{"title":"HTML Injection Map","entryLabel":"Connect DOM","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"html-injection-map","children":[["$","$L20",null,{"moduleIds":[951813]}],["$","$L21",null,{}]]}],"code":["$","$L22",null,{"files":[{"path":"components/diagrams/html-injection-map/html-injection-map.tsx","content":"$23"}],"slug":"html-injection-map"}]}]
+8:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","diax",{"translate":"no","children":"diax"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react/connect","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Connect DOM"]}],["$","strong",null,{"children":"Connect Authored DOM"}],["$","span",null,{"children":"Keep your JSX and CSS layout while DiaX measures and connects exact elements."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","dom-system-architecture",{"children":["$","$L2",null,{"href":"/showcase/dom-system-architecture","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"DOM System Architecture"}],["$","span",null,{"children":"9 DOM targets · 7 relations · 0 manual anchors"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","incident-response-workflow",{"children":["$","$L2",null,{"href":"/showcase/incident-response-workflow","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Incident Response Workflow"}],["$","span",null,{"children":"3 semantic lanes · 6 stable relations · conditional escalation · responsive source order"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","snapshot-fan-in",{"children":["$","$L2",null,{"href":"/showcase/snapshot-fan-in","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"T+0 Snapshot Fan-In"}],["$","span",null,{"children":"16 DOM targets · 15 relations · 5 rich labels"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+a:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+b:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+c:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+d:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+e:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+f:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+10:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+11:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+12:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+13:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+14:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+15:["$","$L24",null,{"children":["$","$25",null,{"name":"Next.MetadataOutlet","children":"$@26"}]}]
+18:["$","$1","h",{"children":[null,["$","$L27",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L28",null,{"children":["$","$25",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"HTML Injection Map — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"Two isolated connection surfaces link an artifact pipeline to the exact HTML lines each transformation changes."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/html-injection-map/"}],["$","meta","3",{"property":"og:title","content":"HTML Injection Map — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"Two isolated connection surfaces link an artifact pipeline to the exact HTML lines each transformation changes."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/html-injection-map/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1a:["$","$1","c",{"children":[null,["$","$L29",null,{"parallelRouterKey":"children","template":["$","$L2a",null,{}]}]]}]
+1e:true
+26:null
+17:300
+17:C
+1d:0
+19:"$undefined"
+1b:"$undefined"
+16:"$undefined"

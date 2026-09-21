@@ -1,0 +1,89 @@
+# Advanced (/docs/vanilla/advanced)
+
+
+
+DOM ID Namespaces [#dom-id-namespaces]
+
+Use `namespace` to prevent resolved DOM IDs from colliding across independent diagrams:
+
+```html
+<div style="display: flex; gap: 32px;">
+  <div id="frontend"></div>
+  <div id="backend"></div>
+</div>
+
+<script type="module">
+  import { createDiagram } from '@diax/vanilla';
+
+  // Frontend diagram
+  const feDiagram = createDiagram(document.getElementById('frontend'), {
+    namespace: 'fe',
+    nodes: [
+      { id: 'app', content: 'React App' },
+      { id: 'gw', content: 'API Gateway' },
+    ],
+    relations: ['app->gw'],
+  });
+
+  // Backend diagram
+  const beDiagram = createDiagram(document.getElementById('backend'), {
+    namespace: 'be',
+    nodes: [
+      { id: 'svc', content: 'User Service' },
+      { id: 'db', content: 'PostgreSQL' },
+    ],
+    relations: ['svc->db'],
+  });
+</script>
+```
+
+Node IDs become `namespace::nodeId` in the DOM. Each `createDiagram()` instance measures and draws
+inside its own container; it does not create a shared cross-container SVG overlay. Keep connected
+topology inside one diagram. DOM-first Connect is public from `@diax/react/connect`, but a Vanilla
+Connect adapter is not available yet.
+
+***
+
+Mindmap [#mindmap]
+
+Use `layout: 'mindmap'` to render a center-outward radial layout instead of the default DAG flow:
+
+```js
+const diagram = createDiagram(container, {
+  layout: 'mindmap',
+  nodes: [
+    { id: 'root', content: 'DiaX' },
+    { id: 'core', content: 'Core Engine' },
+    { id: 'react', content: 'React' },
+    { id: 'vue', content: 'Vue' },
+    { id: 'svelte', content: 'Svelte' },
+    { id: 'vanilla', content: 'Vanilla' },
+    { id: 'layout', content: 'CSS Grid' },
+    { id: 'edges', content: 'SVG Edges' },
+  ],
+  relations: [
+    'root->core',
+    'root->react',
+    'root->vue',
+    'root->svelte',
+    'root->vanilla',
+    'core->layout',
+    'core->edges',
+  ],
+});
+```
+
+Mindmap layout places the root node at the center and branches outward. It works well for hierarchical topic maps, brainstorming diagrams, and tree-like structures.
+
+You can combine mindmap with other options:
+
+```js
+const diagram = createDiagram(container, {
+  layout: 'mindmap',
+  direction: 'horizontal',
+  highlightOnHover: true,
+  pathType: 'bezier',
+  nodes: [...],
+  relations: [...],
+});
+```

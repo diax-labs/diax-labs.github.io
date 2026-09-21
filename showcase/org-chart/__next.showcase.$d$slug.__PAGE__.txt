@@ -1,0 +1,351 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T1486,"use client";
+
+import { FlowDiagram } from "@diax/react";
+import {
+  Briefcase,
+  Code,
+  Cpu,
+  Database,
+  type LucideIcon,
+  Paintbrush,
+  ShieldCheck,
+  User,
+} from "lucide-react";
+
+interface ProfileNodeProps {
+  icon: LucideIcon;
+  jobTitle: string;
+  name: string;
+  level: "c-suite" | "vp" | "lead";
+  active?: boolean;
+}
+
+// Beautiful interactive modern SaaS Profile Node
+const ProfileNode = ({ icon: Icon, jobTitle, name, level, active }: ProfileNodeProps) => {
+  const isCSuite = level === "c-suite";
+  const isVP = level === "vp";
+
+  return (
+    <div
+      className={`group relative flex flex-col items-center justify-center min-w-[200px] px-6 py-6 rounded-[2rem] border bg-black/40 backdrop-blur-xl shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.1)] overflow-hidden ${
+        isCSuite
+          ? "border-amber-500/30 hover:border-amber-500/60"
+          : isVP
+            ? "border-purple-500/30 hover:border-purple-500/60"
+            : "border-white/10 hover:border-white/30"
+      }`}
+    >
+      {/* Decorative inner glow */}
+      <div
+        className={`absolute top-0 right-0 h-16 w-16 bg-gradient-to-bl blur-[30px] rounded-full pointer-events-none opacity-60 ${
+          isCSuite ? "from-amber-400" : isVP ? "from-purple-400" : "from-emerald-400"
+        }`}
+      ></div>
+
+      {/* Status bead indicator */}
+      <div className="absolute top-4 left-4 flex gap-1 items-center">
+        <div
+          className={`h-1.5 w-1.5 rounded-full ${active ? "bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" : "bg-white/20"}`}
+        ></div>
+      </div>
+
+      {/* Avatar Container */}
+      <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5 shadow-inner border border-white/10 group-hover:scale-110 transition-transform duration-500 z-10">
+        <Icon
+          className={`h-7 w-7 ${
+            isCSuite ? "text-amber-400" : isVP ? "text-purple-400" : "text-emerald-400"
+          }`}
+          strokeWidth={1.5}
+        />
+      </div>
+
+      <div className="flex flex-col items-center text-center z-10 w-full mb-3">
+        <span className="text-sm font-bold tracking-wide text-white">{jobTitle}</span>
+        <span className="text-[11px] text-white/50 mt-1 uppercase tracking-[0.2em] font-mono">
+          {name}
+        </span>
+      </div>
+
+      {/* Mini interactive stats bar */}
+      <div className="flex items-center gap-3 w-full border-t border-white/10 pt-3 mt-1">
+        <div className="flex-1 flex flex-col">
+          <span className="text-[9px] text-white/30 uppercase">Reports</span>
+          <span className="text-xs text-white/80 font-mono font-medium">
+            {isCSuite ? 8 : isVP ? 4 : 12}
+          </span>
+        </div>
+        <div className="h-6 w-[1px] bg-white/10"></div>
+        <div className="flex-1 flex flex-col text-right">
+          <span className="text-[9px] text-white/30 uppercase">Perf</span>
+          <span className="text-xs text-emerald-400 font-mono font-medium">98%</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function OrgChart() {
+  return (
+    <div className="w-full h-full min-h-[700px] flex items-center justify-center bg-[#0a0a0a] rounded-xl relative overflow-hidden py-12 px-6">
+      {/* Deep Space Background Canvas */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(94,106,210,0.1),transparent)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.04)_1px,transparent_0)] bg-[size:16px_16px]"></div>
+
+      <FlowDiagram
+        nodes={[
+          {
+            id: "ceo",
+            content: (
+              <ProfileNode icon={User} jobTitle="CEO" name="Torvalds" level="c-suite" active />
+            ),
+          },
+          {
+            id: "cto",
+            content: <ProfileNode icon={Cpu} jobTitle="CTO" name="Turing" level="vp" active />,
+          },
+          {
+            id: "cpo",
+            content: <ProfileNode icon={Briefcase} jobTitle="CPO" name="Jobs" level="vp" />,
+          },
+          {
+            id: "fe",
+            content: (
+              <ProfileNode icon={Code} jobTitle="Frontend Lead" name="Hopper" level="lead" active />
+            ),
+          },
+          {
+            id: "be",
+            content: (
+              <ProfileNode icon={Database} jobTitle="Backend Lead" name="Hamilton" level="lead" />
+            ),
+          },
+          {
+            id: "design",
+            content: (
+              <ProfileNode
+                icon={Paintbrush}
+                jobTitle="Design Lead"
+                name="Ive"
+                level="lead"
+                active
+              />
+            ),
+          },
+          {
+            id: "security",
+            content: (
+              <ProfileNode
+                icon={ShieldCheck}
+                jobTitle="Security Lead"
+                name="Schneier"
+                level="lead"
+              />
+            ),
+          },
+        ]}
+        relations={["ceo->cto", "ceo->cpo", "cto->fe", "cto->be", "cto->security", "cpo->design"]}
+        direction="vertical"
+        centered
+        density="spacious"
+      />
+    </div>
+  );
+}
+17:X
+1c:X
+1c:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"diagram","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Organization map"}],["$","h1",null,{"children":"Organization Chart"}],["$","p",null,{"children":"Vertical layout with centered nodes for organizational hierarchy"}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M12 3v18","key":"108xh3"}],["path",{"d":"M3 12h18","key":"1i2n21"}],["rect",{"x":"3","y":"3","width":"18","height":"18","rx":"2","key":"h1oib"}]],"className":"lucide-grid2x2 lucide-grid-2x2","aria-hidden":"true"}]," ","Diagram"]}],["$","li",null,{"children":"beginner"}],[["$","li","centered",{"children":"centered"}],["$","li","flow",{"children":"flow"}],["$","li","vertical",{"children":"vertical"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6",null,"$L7",null,"$L8","$L9"]}]}],["$La","$Lb","$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14"],"$L15"]}],"isPartial":"$@16","staleTime":"$17","varyParams":null},{"rsc":"$L18","isPartial":"$@19","staleTime":"$17","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$17","varyParams":"$1c"}],"isUpgradeableISRFallback":false,"a":"$@1d","rootVaryParams":null,"needsRuntimeRequest":"$@1e"}
+1f:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+20:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+21:I[846580,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+22:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+24:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+25:"$Sreact.suspense"
+27:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+28:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+29:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+2a:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"Rank assignment, node placement, edge routing and label clearance."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"Node content, styling, interaction and application semantics."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"Centered hierarchy · framework-native node renderers"}]]}]]}]]}]
+23:T1486,"use client";
+
+import { FlowDiagram } from "@diax/react";
+import {
+  Briefcase,
+  Code,
+  Cpu,
+  Database,
+  type LucideIcon,
+  Paintbrush,
+  ShieldCheck,
+  User,
+} from "lucide-react";
+
+interface ProfileNodeProps {
+  icon: LucideIcon;
+  jobTitle: string;
+  name: string;
+  level: "c-suite" | "vp" | "lead";
+  active?: boolean;
+}
+
+// Beautiful interactive modern SaaS Profile Node
+const ProfileNode = ({ icon: Icon, jobTitle, name, level, active }: ProfileNodeProps) => {
+  const isCSuite = level === "c-suite";
+  const isVP = level === "vp";
+
+  return (
+    <div
+      className={`group relative flex flex-col items-center justify-center min-w-[200px] px-6 py-6 rounded-[2rem] border bg-black/40 backdrop-blur-xl shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(255,255,255,0.1)] overflow-hidden ${
+        isCSuite
+          ? "border-amber-500/30 hover:border-amber-500/60"
+          : isVP
+            ? "border-purple-500/30 hover:border-purple-500/60"
+            : "border-white/10 hover:border-white/30"
+      }`}
+    >
+      {/* Decorative inner glow */}
+      <div
+        className={`absolute top-0 right-0 h-16 w-16 bg-gradient-to-bl blur-[30px] rounded-full pointer-events-none opacity-60 ${
+          isCSuite ? "from-amber-400" : isVP ? "from-purple-400" : "from-emerald-400"
+        }`}
+      ></div>
+
+      {/* Status bead indicator */}
+      <div className="absolute top-4 left-4 flex gap-1 items-center">
+        <div
+          className={`h-1.5 w-1.5 rounded-full ${active ? "bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" : "bg-white/20"}`}
+        ></div>
+      </div>
+
+      {/* Avatar Container */}
+      <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5 shadow-inner border border-white/10 group-hover:scale-110 transition-transform duration-500 z-10">
+        <Icon
+          className={`h-7 w-7 ${
+            isCSuite ? "text-amber-400" : isVP ? "text-purple-400" : "text-emerald-400"
+          }`}
+          strokeWidth={1.5}
+        />
+      </div>
+
+      <div className="flex flex-col items-center text-center z-10 w-full mb-3">
+        <span className="text-sm font-bold tracking-wide text-white">{jobTitle}</span>
+        <span className="text-[11px] text-white/50 mt-1 uppercase tracking-[0.2em] font-mono">
+          {name}
+        </span>
+      </div>
+
+      {/* Mini interactive stats bar */}
+      <div className="flex items-center gap-3 w-full border-t border-white/10 pt-3 mt-1">
+        <div className="flex-1 flex flex-col">
+          <span className="text-[9px] text-white/30 uppercase">Reports</span>
+          <span className="text-xs text-white/80 font-mono font-medium">
+            {isCSuite ? 8 : isVP ? 4 : 12}
+          </span>
+        </div>
+        <div className="h-6 w-[1px] bg-white/10"></div>
+        <div className="flex-1 flex flex-col text-right">
+          <span className="text-[9px] text-white/30 uppercase">Perf</span>
+          <span className="text-xs text-emerald-400 font-mono font-medium">98%</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function OrgChart() {
+  return (
+    <div className="w-full h-full min-h-[700px] flex items-center justify-center bg-[#0a0a0a] rounded-xl relative overflow-hidden py-12 px-6">
+      {/* Deep Space Background Canvas */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(94,106,210,0.1),transparent)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.04)_1px,transparent_0)] bg-[size:16px_16px]"></div>
+
+      <FlowDiagram
+        nodes={[
+          {
+            id: "ceo",
+            content: (
+              <ProfileNode icon={User} jobTitle="CEO" name="Torvalds" level="c-suite" active />
+            ),
+          },
+          {
+            id: "cto",
+            content: <ProfileNode icon={Cpu} jobTitle="CTO" name="Turing" level="vp" active />,
+          },
+          {
+            id: "cpo",
+            content: <ProfileNode icon={Briefcase} jobTitle="CPO" name="Jobs" level="vp" />,
+          },
+          {
+            id: "fe",
+            content: (
+              <ProfileNode icon={Code} jobTitle="Frontend Lead" name="Hopper" level="lead" active />
+            ),
+          },
+          {
+            id: "be",
+            content: (
+              <ProfileNode icon={Database} jobTitle="Backend Lead" name="Hamilton" level="lead" />
+            ),
+          },
+          {
+            id: "design",
+            content: (
+              <ProfileNode
+                icon={Paintbrush}
+                jobTitle="Design Lead"
+                name="Ive"
+                level="lead"
+                active
+              />
+            ),
+          },
+          {
+            id: "security",
+            content: (
+              <ProfileNode
+                icon={ShieldCheck}
+                jobTitle="Security Lead"
+                name="Schneier"
+                level="lead"
+              />
+            ),
+          },
+        ]}
+        relations={["ceo->cto", "ceo->cpo", "cto->fe", "cto->be", "cto->security", "cpo->design"]}
+        direction="vertical"
+        centered
+        density="spacious"
+      />
+    </div>
+  );
+}
+7:["$","$L1f",null,{"title":"Organization Chart","entryLabel":"Diagram","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"org-chart","children":[["$","$L20",null,{"moduleIds":[473211]}],["$","$L21",null,{}]]}],"code":["$","$L22",null,{"files":[{"path":"components/diagrams/org-chart/org-chart.tsx","content":"$23"}],"slug":"org-chart"}]}]
+8:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Diagram"]}],["$","strong",null,{"children":"Build With Diagram"}],["$","span",null,{"children":"Start from nodes and relations, then let DiaX own placement and routing."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","decision-tree",{"children":["$","$L2",null,{"href":"/showcase/decision-tree","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"Decision Tree"}],["$","span",null,{"children":"Branch labels reserve rank clearance automatically"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","ci-pipeline",{"children":["$","$L2",null,{"href":"/showcase/ci-pipeline","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"CI/CD Pipeline"}],["$","span",null,{"children":"4 stages · parallel-ready flow layout"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","animated-edges",{"children":["$","$L2",null,{"href":"/showcase/animated-edges","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"Animated Edges"}],["$","span",null,{"children":"3 edge animation treatments · reduced-motion aware"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+a:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+b:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+c:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+d:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+e:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+f:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+10:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+11:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+12:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+13:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+14:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+15:["$","$L24",null,{"children":["$","$25",null,{"name":"Next.MetadataOutlet","children":"$@26"}]}]
+18:["$","$1","h",{"children":[null,["$","$L27",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L28",null,{"children":["$","$25",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Organization Chart — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"Vertical layout with centered nodes for organizational hierarchy"}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/org-chart/"}],["$","meta","3",{"property":"og:title","content":"Organization Chart — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"Vertical layout with centered nodes for organizational hierarchy"}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/org-chart/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1a:["$","$1","c",{"children":[null,["$","$L29",null,{"parallelRouterKey":"children","template":["$","$L2a",null,{}]}]]}]
+1e:true
+26:null
+17:300
+17:C
+1d:0
+19:"$undefined"
+1b:"$undefined"
+16:"$undefined"

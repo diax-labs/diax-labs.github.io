@@ -1,0 +1,112 @@
+# Visual Constitution (/docs/guide/visual-constitution)
+
+
+
+DiaX is infrastructure for visual explanation. Its most characteristic material is not a glow,
+gradient or card shape: it is a legible relationship between real DOM artifacts. This constitution
+governs the README, documentation site, Showcase, Playground and DiaX-owned UI recipes. It does not
+govern an application's brand and it is not a theme preset.
+
+<Callout type="info">
+  **The host owns visual identity. DiaX-owned surfaces make structure, evidence and state easier to
+  read.**
+</Callout>
+
+The seven rules [#the-seven-rules]
+
+1\. Respect the host [#1-respect-the-host]
+
+DOM-native content should inherit the host's typography, spacing, color scheme and component
+language. Defaults must be calm enough to compose with an existing design system. DiaX must not
+impose a terminal, neon, mono-everywhere, dark-first or "AI dashboard" identity on consumer content.
+
+2\. Put the reading path first [#2-put-the-reading-path-first]
+
+The title, primary claim, supporting evidence and next action form the page before decoration does.
+Node meaning must remain understandable when arrows are unavailable; relation meaning needs a text,
+semantic or accessible counterpart when the connector carries essential information. Hover, focus,
+motion and color may reinforce that path, but cannot create the only path.
+
+3\. Spend visual emphasis on meaning [#3-spend-visual-emphasis-on-meaning]
+
+Saturated color identifies a state, category, risk, decision or active path. A border separates
+materials. Radius groups a coherent surface. Shadow indicates elevation or overlap. If an effect
+does not explain hierarchy, state or material, remove it.
+
+This is intentionally stricter than "make every card consistent." A comparison table, architecture
+map, evidence trail and roadmap do different communication jobs and may require different visual
+grammars.
+
+4\. Design for the final use size [#4-design-for-the-final-use-size]
+
+A gallery thumbnail and a reading viewport have different contracts:
+
+| Context     | It must prove                                                                                           | It does not prove                                |
+| ----------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| Thumbnail   | Subject, broad composition, main regions and direction are recognizable                                 | Body copy and edge labels are readable           |
+| Reading     | Prose, metadata, node labels, edge labels, controls and focus state are usable at the intended viewport | The same result will survive print or projection |
+| Destination | The exported file remains legible in its actual slide, page, screen or print context                    | Every other destination is accepted              |
+
+Do not shrink a complete report until it technically fits a card and call that success. Use the
+thumbnail to select a story; use the detail page, Playground or host viewport to read it.
+
+5\. Keep interaction optional [#5-keep-interaction-optional]
+
+Pointer hover can reveal detail, but the same detail needs a keyboard and touch path. Motion can
+clarify a state transition, but reduced motion must preserve the result. Deleting animation should
+leave a coherent static composition. Canonical controls and content must not disappear only because
+the pointer is elsewhere.
+
+6\. Let recipes remain plural [#6-let-recipes-remain-plural]
+
+Showcase and `@diax/ui-react` demonstrate vocabulary, not one house skin. Reuse semantic roles when
+their meaning is stable; vary composition, density, typography and material according to the story.
+Do not turn every recipe into a rounded grid of glowing cards. A new Presentation role still needs
+two independent real scenarios; a new visual treatment does not justify a new public component.
+
+7\. Name the evidence boundary [#7-name-the-evidence-boundary]
+
+Automated checks prove only their named facts. A screenshot diff can prove pixel stability in its
+captured engine and viewport. It cannot claim taste, screen-reader comprehension, Windows High
+Contrast, hardware Safari, projector legibility or print quality. Those require the stated target
+environment and, where appropriate, an identified human reviewer.
+
+Obligations by surface [#obligations-by-surface]
+
+| DiaX-owned surface | Primary job                                  | Review obligation                                                                                                               |
+| ------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| README             | Explain the thesis and earn first trust      | Use a real artifact, current release truth and a short path to first success; avoid unverifiable adoption or performance claims |
+| Docs               | Get a user to a working result               | Task-first navigation, complete contracts where promised, visible results and honest maturity/runtime labels                    |
+| Showcase           | Help a reader choose a communication pattern | Preserve visual variety, label thumbnail versus reading evidence and provide a readable detail path                             |
+| Playground         | Turn source into a reviewable artifact       | Keep editing, diagnostics, preview state and export truth clearer than ambient decoration                                       |
+| `@diax/ui-react`   | Supply composable semantic DOM vocabulary    | Encode role and material without owning the page skin; keep optional leaves and host styling boundaries intact                  |
+
+Wide Showcase studies may provide a semantic overview beside the Guided Study controls. It is a
+viewer-only projection of final DOM target rectangles and the real scroll viewport: it does not
+reconstruct edge topology, enter canonical export or become a Core minimap. The overview belongs in
+normal document flow so chapter controls, legends and navigation cannot overlap by accident. It
+must expose keyboard and pointer navigation, stable target names, reduced-motion and forced-colors
+behavior, and disappear when the study has no genuine horizontal reading canvas.
+
+The subtractive review [#the-subtractive-review]
+
+Before accepting a DiaX-owned visual, review the real viewport and ask:
+
+1. What is the first sentence, object or path the reader should understand?
+2. If color, animation and hover disappear, what meaning disappears with them?
+3. Does every saturated color, border, radius and shadow explain something?
+4. Is this a thumbnail or a reading context, and are we testing the correct promise?
+5. Does the design inherit from its host, or does it look like a detached generated dashboard?
+6. Does the recipe solve this communication job differently for a reason?
+7. Which claims are automated evidence, and which still need human or hardware acceptance?
+
+If the answer relies on one more decorative layer, remove that layer and strengthen the information
+structure instead.
+
+Related contracts [#related-contracts]
+
+* [Accessibility](/docs/guide/accessibility) — semantics, keyboard behavior and assistive-technology evidence
+* [Export DOM Visuals](/docs/guide/exporting) — destination-specific capture and review truth
+* [Presentation Nodes](/docs/ui-react/presentation-nodes) — semantic DOM vocabulary
+* [Presentation Recipes](/docs/ui-react/presentation-recipes) — composed communication patterns
+* [Release Status](/docs/guide/release-status) — what current automation and manual review can claim

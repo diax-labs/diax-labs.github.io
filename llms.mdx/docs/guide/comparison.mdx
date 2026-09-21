@@ -1,0 +1,109 @@
+# Comparison (/docs/guide/comparison)
+
+
+
+
+
+Feature Comparison [#feature-comparison]
+
+| Capability                   | DiaX                                                                      | React Flow                                       | Mermaid                                                         | D2                                       |
+| ---------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------- | ---------------------------------------- |
+| **Primary job**              | DOM-native application diagrams                                           | Interactive React node editors                   | Portable text-to-SVG diagrams                                   | Text compiled to static diagrams         |
+| **Node presentation**        | Application-owned DOM/components                                          | Custom React nodes                               | Renderer-controlled SVG/HTML labels                             | Renderer-controlled SVG with rich labels |
+| **Layout ownership**         | Automatic Diagram mode; public React Connect leaf for authored DOM        | Positioned canvas nodes with layout integrations | Diagram-family renderer                                         | Compiler and selected layout engine      |
+| **Authoring input**          | Typed objects with JSX content, supported Mermaid import                  | Application data and React components            | Mermaid DSL                                                     | D2 DSL                                   |
+| **Framework story**          | Framework-agnostic Core; five Alpha adapters with disclosed parity limits | React                                            | Embeddable rendered output                                      | CLI/embedded rendered output             |
+| **Drag/pan/zoom editor**     | Outside the 1.0 goal                                                      | Core product capability                          | Not the primary job                                             | Not the primary job                      |
+| **Server rendering**         | Topology/Grid markup on server; pixel edges after client measurement      | Depends on integration                           | Commonly rendered client-side or pre-rendered by an integration | Static output is a primary workflow      |
+| **Generated-input boundary** | JSON schema + graph diagnostics; reviewed JSX/MDX only                    | Application-defined                              | Text parser diagnostics                                         | Text parser diagnostics                  |
+
+***
+
+When to Use What [#when-to-use-what]
+
+<Cards>
+  <Card title="Use DiaX when you need...">
+    * **Diagram-as-code** in a web app — define diagrams with JSON or JSX, not a visual editor
+    * **Dependency-light core** — no runtime dependencies, with package size tracked in the repository
+    * **Full styling control** — every node is a real DOM element you can style with Tailwind, CSS modules, or any CSS-in-JS
+    * **Framework flexibility** — a framework-agnostic Core with Alpha adapters that are converging on a shared contract
+    * **AI-generated diagrams** — validated JSON or a supported Mermaid subset, with explicit diagnostics
+    * **SSR-aware output** — topology and Grid markup can render on the server; measured SVG edges complete on the client
+  </Card>
+
+  <Card title="Use React Flow when you need...">
+    * **Interactive node editing** — users drag, connect, and rearrange nodes in real time
+    * **Visual programming** — workflow builders, pipeline editors, node-based UIs
+    * **Built-in controls** — minimap, zoom controls, background grid out of the box
+    * **Large graph handling** — virtualized rendering for hundreds of nodes
+  </Card>
+
+  <Card title="Use Mermaid when you need...">
+    * **Quick diagrams from text** — write a few lines of Mermaid DSL, get a diagram
+    * **Markdown integration** — many Markdown renderers support Mermaid natively
+    * **No framework dependency** — works anywhere you can embed an SVG
+    * **Portable sequence or Gantt text** — Mermaid has mature DSLs for families DiaX does not import;
+      DiaX can compose a DOM-native React sequence with Connect, but it is not Mermaid-compatible text
+  </Card>
+
+  <Card title="Use D2 when you need...">
+    * **Standalone diagram files** — compile `.d2` files into SVG/PNG in CI/CD
+    * **Rich text labels** — D2 supports Markdown inside node labels
+    * **Automatic layout engines** — ELK, dagre built-in with fine-grained control
+    * **No web dependency** — runs as a CLI binary, no browser required
+  </Card>
+</Cards>
+
+***
+
+Positioning Summary [#positioning-summary]
+
+<DiagramPreview
+  title="Where DiaX fits in the ecosystem"
+  code="`<Mindmap
+nodes={[
+  { id: 'diax', content: 'DiaX' },
+  { id: 'mermaid', content: 'Mermaid' },
+  { id: 'd2', content: 'D2' },
+  { id: 'reactflow', content: 'React Flow' },
+  { id: 'headless', content: 'Headless' },
+  { id: 'static', content: 'Static' },
+  { id: 'code', content: 'Code-defined' },
+]}
+relations={[
+  'diax->headless', 'diax->code', 'diax->static',
+  'mermaid->static', 'mermaid->code',
+  'd2->static', 'd2->code',
+  'reactflow->headless',
+]}
+density=&#x22;comfortable&#x22;
+/>`"
+>
+  <Mindmap
+    nodes="[
+    { id: 'diax', content: 'DiaX' },
+    { id: 'mermaid', content: 'Mermaid' },
+    { id: 'd2', content: 'D2' },
+    { id: 'reactflow', content: 'React Flow' },
+    { id: 'headless', content: 'Headless' },
+    { id: 'static', content: 'Static' },
+    { id: 'code', content: 'Code-defined' },
+  ]"
+    relations="[
+    'diax->headless',
+    'diax->code',
+    'diax->static',
+    'mermaid->static',
+    'mermaid->code',
+    'd2->static',
+    'd2->code',
+    'reactflow->headless',
+  ]"
+    density="comfortable"
+  />
+</DiagramPreview>
+
+DiaX occupies a focused space: **DOM-native, code-defined application diagrams**. Choose it when a
+node must remain part of your application UI and automatic layout or DOM connection removes real
+graph mechanics. Choose Mermaid for broad portable text coverage, React Flow for an interactive
+canvas editor, and D2 for a compiler-first static diagram workflow.

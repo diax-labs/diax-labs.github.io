@@ -1,0 +1,162 @@
+# Edge Rendering Primitives (/docs/reference/edge-rendering)
+
+
+
+**Audience:** custom renderer and framework adapter authors.\
+&#x2A;*Runtime:** geometry is server-safe; DOM event helpers require browser events.\
+&#x2A;*Imports:** `diax/layout-plan` for Diagram-aware routing; `diax/edge-geometry` for direct geometry.
+
+Official adapters already compose these functions. Use them directly when you are building a
+different SVG overlay, exporting geometry, or implementing another framework binding.
+
+Geometry pipeline [#geometry-pipeline]
+
+| Stage                        | Functions                                                                       |
+| ---------------------------- | ------------------------------------------------------------------------------- |
+| Anchors                      | `anchorPoint`, `computeAnchors`, `applyGap`                                     |
+| Path shape                   | `cubicBezierPath`, `straightPath`, `orthogonalPath`, `selfLoopPath`             |
+| Diagram batch computation    | `computeEdgePaths`                                                              |
+| Engine-neutral planning      | `planLayeredLayout`, `withGroupBoundaryPorts`, `computeEdgePathsFromLayoutPlan` |
+| Direct DOM-owned computation | `computeDirectEdgePaths` from `diax/edge-geometry`                              |
+| Labels and dash              | `bezierLabelPoint`, `resolveDashArray`                                          |
+
+```ts contract
+import { computeAnchors, cubicBezierPath, straightPath } from 'diax';
+
+const anchors = computeAnchors(
+  { id: 'a', col: 0, row: 0 },
+  { id: 'b', col: 1, row: 0 },
+  'horizontal',
+);
+
+straightPath(0, 20, 120, 20);
+cubicBezierPath(0, 20, anchors.sourceAnchor, 120, 20, anchors.targetAnchor);
+```
+
+`computeEdgePaths(edges, rects, layoutMap, direction, pathType?, routingOptions?)` combines measured
+node rectangles with layout positions. Internally it creates a `LayoutPlan` with stable edge IDs,
+fan-in/out ports, one section per crossed rank, parallel lanes, a feedback gutter, and measured label
+tracks. Self-loops use the same port, section, label, and bounds contract instead of a renderer-only
+special path. Its `ComputedEdgePath` output includes path data, endpoints, label position, resolved
+dash style, order, and hit-slop metadata.
+
+Advanced engines and custom renderers can use the structured seam directly:
+
+```ts contract
+import type { LayoutNode } from 'diax';
+import {
+  computeEdgePathsFromLayoutPlan,
+  planLayeredLayout,
+  type NodeRect,
+} from 'diax/layout-plan';
+
+const rects = new Map<string, NodeRect>();
+const layoutMap = new Map<string, LayoutNode>();
+const plan = planLayeredLayout({ edges: [], rects, layoutMap });
+const paths = computeEdgePathsFromLayoutPlan(plan, []);
+```
+
+`LayoutPlan` contains only authored nodes plus final pixels, optional engine-derived group bounds,
+node ports, ordered group entry/exit ports, route sections, labels, overall bounds, and diagnostics.
+Dummy items remain an engine implementation detail. Custom layout adapters can call
+`withGroupBoundaryPorts(plan)` after producing final group and route geometry; built-in and ELK
+plans already do this.
+
+`groupLabelRects` is a measured adapter fact, not authored diagram data. Official adapters obtain it
+from `createDiagramMeasurementObserver` in `diax/diagram-measurement`. The planner projects a label
+that intersects a group border into an exclusion interval, allocates the remaining side capacity,
+and inserts a short boundary dogleg when a port moves. Rich JSX/Vue/Svelte labels therefore use their
+actual rendered box without adding `labelWidth`, bend, gate, or port-offset authoring options.
+
+Use the direct leaf when your application owns DOM placement and does not want Diagram routing:
+
+```ts contract
+import { computeDirectEdgePaths } from 'diax/edge-geometry';
+
+const paths = computeDirectEdgePaths([], new Map(), new Map(), 'horizontal', 'bezier');
+```
+
+This is the primitive used by Connect. It includes anchors, stable `createEdgeIds`, self-loops, gap,
+parallel-pair offsets, labels, and path interpolation, but it deliberately excludes obstacle routing
+and graph layout. The separate package entry also keeps the automatic router out of native ESM and
+federation consumers. Connect adds DOM-owned obstacle-aware anchor selection and automatic shared-side
+port spreading privately; those policies are not extra direct-geometry modes.
+
+`pathType` describes how a planned route is drawn. Explicit `straight` remains a direct escape hatch
+and is not automatically rerouted around nodes. A self-loop still follows its planned outer route
+because a direct line from a node to itself has no visible geometry. Semantic compound routes now
+retain their actual group-boundary crossings; authored portals, collapse, and nested Connect
+surfaces remain out of scope.
+
+Markers [#markers]
+
+| Function                              | Purpose                                                  |
+| ------------------------------------- | -------------------------------------------------------- |
+| `normalizeMarker(marker)`             | Expand a shape or config into normalized marker data     |
+| `resolveEdgeMarkers(edge)`            | Resolve source/target markers and bidirectional defaults |
+| `markerId(shape, color, size?)`       | Produce a stable CSS-safe marker ID                      |
+| `markerUrl(shape, color, size?)`      | Produce an SVG `url(#id)` reference                      |
+| `collectMarkers(edges, color, size?)` | Deduplicate marker definitions needed by a surface       |
+| `MARKER_SHAPES`                       | Built-in SVG marker definitions                          |
+
+`MarkerShape` supports arrows, triangles, diamonds, circles, cross, bar, crow's-foot variants, and
+`none`. A renderer should emit one `<defs>` marker per `MarkerInstance`, not one per edge.
+
+Render-ready data [#render-ready-data]
+
+`prepareEdgeRenderData(edgePaths, options?)` centralizes marker resolution, highlighting,
+accessibility, hit targets, and display colors:
+
+```ts
+const { markers, paths } = prepareEdgeRenderData(computedPaths, {
+  strokeColor: '#64748b',
+  arrowSize: 6,
+  highlightedNodes,
+  highlightedEdgeIds,
+  accentColor: '#5e6ad2',
+});
+```
+
+Each `RenderReadyPath` includes the final marker URLs, display color, `actionable` state,
+`hitSlop`, and `ariaLabel`. Using this output prevents framework adapters from drifting on
+keyboard or visual semantics.
+
+Additional helpers:
+
+* `isEdgeHighlighted(edge, highlightedNodes, highlightedEdgeIds?)`
+* `getEdgeDisplayColor(edge, defaultColor, highlightedNodes, accentColor?, dimmedColor?)`
+* `getNodeDisplayOpacity(nodeId, highlightedNodes)`
+
+Pass both sets from `computeHighlight()` when relation identity matters. Omitting
+`highlightedEdgeIds` preserves the legacy endpoint fallback for custom renderers that have not yet
+carried stable `edgeId` values through their geometry pipeline.
+
+Interaction contract [#interaction-contract]
+
+`dispatchEdgeEvent(edge, handler, originalEvent)` forwards the shared
+`{ from, to, originalEvent }` payload to a relation handler.
+
+`activateEdgeOnKeyDown(event)` gives actionable SVG paths button-like Enter and Space behavior.
+Only edges with click behavior should receive `role="button"`, focusability, and keyboard
+activation. Hover-only edges must not pretend to be controls.
+
+For reliable pointer interaction, draw a separate transparent hit path using the resolved
+`hitSlop`; do not inflate the visible stroke.
+
+Renderer responsibilities [#renderer-responsibilities]
+
+A custom edge renderer must provide:
+
+1. A surface-local SVG overlay and marker definitions.
+2. Stable node measurement owned by the same surface.
+3. Visible and pointer hit paths.
+4. Accessible names and keyboard behavior for actionable edges.
+5. Highlight consistency and cleanup on unmount.
+
+If you do not need to own all five, use an official framework adapter.
+
+Related [#related]
+
+* [Measurement](/docs/reference/measurement)
+* [Edge behavior guide](/docs/guide/edge-types)
+* [Accessibility](/docs/guide/accessibility)

@@ -1,0 +1,169 @@
+# AI Authoring Context (/docs/guide/skills)
+
+
+
+
+
+Choose the smallest context source [#choose-the-smallest-context-source]
+
+AI coding assistants already understand JSX, HTML, CSS, Markdown and framework composition. DiaX
+context should teach only the product decisions they cannot infer: who owns layout, which package
+entry represents the job, how relations are validated, and which presentation roles are trusted.
+
+| Agent task                                      | Give it this context                                                                             |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Answer questions or inspect an existing project | [`/llms.txt`](/llms.txt) plus the relevant guide                                                 |
+| Work offline with the complete documentation    | [`/llms-full.txt`](/llms-full.txt)                                                               |
+| Choose and implement one DiaX workflow          | The `skills/diax/SKILL.md` router, then one relevant detail skill                                |
+| Generate untrusted runtime output               | The [Agent-first Workflow](/docs/guide/agent-workflow), then the JSON schema and validation loop |
+| Author reviewed JSX, MDX or a report            | The [Agent-first Workflow](/docs/guide/agent-workflow), AI Cookbook and relevant framework guide |
+
+<Callout type="warn">
+  DiaX is still an unpublished workspace preview. The repository can now compile and verify one
+  local, single-router Skill artifact, but no `diax/skills` repository or universal install URL has
+  been published. Use the checked-in sources or a locally built artifact from the same commit; do
+  not treat installer discovery as a release or model-success claim.
+</Callout>
+
+Repository-bundled skills [#repository-bundled-skills]
+
+The canonical, exact-case `SKILL.md` sources live in the
+[`skills/` directory](https://github.com/diax-labs/diax/tree/main/skills) of this repository:
+
+| Skill           | Use it for                                                                   |
+| --------------- | ---------------------------------------------------------------------------- |
+| `diax`          | Small task router for layout ownership, trust boundary and package selection |
+| `diax-basics`   | Diagram definitions, relation syntax and the Diagram / Connect choice        |
+| `diax-react`    | React Diagram, JSX Definition and Connect entries                            |
+| `diax-vue`      | Vue components, scoped slots and composables                                 |
+| `diax-svelte`   | Svelte components, slots and stores                                          |
+| `diax-solid`    | Solid components, render functions and signals                               |
+| `diax-vanilla`  | Imperative lifecycle and DOM render callbacks                                |
+| `diax-themes`   | Theme values, CSS variables and application-owned theme state                |
+| `diax-mermaid`  | Supported Mermaid import, diagnostics and `remark-diax`                      |
+| `diax-ui-react` | Mermaid-shaped primitives and semantic Presentation roles                    |
+| `diax-advanced` | Namespaces, layout plans, ELK and custom renderers                           |
+| `diax-docs`     | Documentation terminology, runnable examples and release truth               |
+
+The repository runs `pnpm smoke:skills` to verify exact entry casing, required frontmatter,
+relative references, package subpath exports, removed interface names and current release truth.
+This validates the checked-in skill sources; it does not claim that a universal installer or
+separately versioned skill package has been published.
+
+Single-router distribution artifact [#single-router-distribution-artifact]
+
+Maintainers can compile the twelve source Skills into one installable artifact. Only `diax` remains
+discoverable; the eleven task-specific Skills become routed `references/*.md` files so an agent does
+not install or load them all as peers.
+
+```bash
+node scripts/build-agent-skill.mjs --output /an/empty/output/diax-skill
+npx --yes skills@1.5.22 add /an/empty/output/diax-skill --list --full-depth
+```
+
+The compiler refuses an existing output directory, stages only an explicit source allowlist, and
+records every payload SHA-256 plus package entries, release truth, adapter capabilities, source
+commit, dirty state and untracked inputs. It also embeds the generated question-first scenario
+corpus so a user question can select one checked recipe without loading the complete Showcase.
+Offline smoke verifies exactly one `SKILL.md`, all routed references, schema/resources, manifest
+containment and byte-identical rebuilds. The optional
+installer smoke pins `skills@1.5.22` and must report exactly one `diax` Skill.
+
+Generated artifacts remain `releaseEligible: false`. Publication still requires the real-model
+attempt-one matrix and identified human review; a clean artifact and a successful installer scan do
+not prove that an ordinary model produced a useful visual.
+
+Maintainer evaluation status [#maintainer-evaluation-status]
+
+DiaX now includes a provider-neutral, six-case attempt-one benchmark for Diagram JSON, Connect TSX,
+Mermaid import, trusted MDX, dense layout and Presentation roles. It freezes the prompt, routed
+Skills, public package-entry hashes and the first candidate, then produces a deterministic receipt.
+
+This is maintainer tooling, not a published success-rate claim. Fast runs use workspace entries;
+reviewable runs can now freeze and install real package tarballs in an isolated consumer with
+`--qualification packed-artifact`, then render the exact candidate with the isolated `browser`
+command. A private provider-neutral `capture` command accepts the untouched external output once or
+records a provider/no-candidate failure log; it does not call a provider or make a fixture into model
+evidence. Receipts say `modelExecution: not-recorded` when that intake was not used. No ordinary-model
+result matrix has been published. The checked-in browser fixtures and
+their automated screenshots do not replace an identified human visual reviewer. The browser
+evidence also freezes an ARIA snapshot and checks DOM-id/`aria-flowto` integrity. Chromium exercises
+forced-colors and reduced-motion emulation; Firefox and WebKit cross a representative packed route.
+These are automated preflights, not screen-reader, Windows High Contrast or hardware Safari results.
+See the
+[`ordinary-model-floor` protocol](https://github.com/diax-labs/diax/tree/main/benchmarks/ordinary-model-floor)
+for the exact evidence boundary.
+
+Clone or download the repository, start with `skills/diax/SKILL.md`, then copy only the routed detail
+skill into the project-instruction location supported by your coding assistant. Do not install all
+skills globally by default: narrower context makes package and layout ownership easier for an agent
+to preserve.
+
+AI-safe Diagram output [#ai-safe-diagram-output]
+
+For untrusted runtime generation, ask for serializable Diagram data—not JSX. A minimal output looks
+like this:
+
+```json title="AI-generated Diagram Definition"
+{
+  "nodes": [
+    { "id": "browser", "content": "Browser" },
+    { "id": "api", "content": "API" },
+    { "id": "database", "content": "Database" }
+  ],
+  "relations": [
+    { "from": "browser", "to": "api", "label": "HTTPS" },
+    { "from": "api", "to": "database", "label": "SQL" }
+  ]
+}
+```
+
+This is an example value, not a hand-written substitute for the schema. Resolve the published
+workspace schema from `diax/schemas/diax.json`, validate its structure, then run
+`validateDiagram()` before rendering. Preserve diagnostic `code`, `path`, `message` and `hint` when
+asking the model to repair invalid output.
+
+Task classification prompt [#task-classification-prompt]
+
+Give an agent the ownership decision before asking it to write code:
+
+If the request starts from a communication question rather than a package name, match it against
+the question-first recipes in the [AI Cookbook](/docs/guide/ai-cookbook), then load only the selected
+task context.
+
+1. Use **Diagram** when nodes and relations are data and DiaX should place them.
+2. Use **Connect** when reviewed JSX, Tailwind or semantic HTML already owns placement.
+3. Use **Mermaid Import** only when Mermaid text is the source; do not make every Diagram consumer
+   load the parser.
+4. Use `@diax/ui-react/presentation` when the reader needs stable semantic roles such as actor,
+   system, artifact, metric, evidence, decision, risk or data store.
+5. Keep relations centralized. Do not invent a universal `mode`, duplicate topology inside node
+   components, or expose routing waypoints to generated output.
+
+For a concrete engineering output, distinguish all three surrounding meanings:
+
+* `SystemNode` is the producer or consumer that performs work.
+* `ArtifactNode` is one versioned output moving between systems.
+* `DataStoreNode` is the registry or durable collection that stores many outputs.
+
+Trust boundary [#trust-boundary]
+
+Reviewed source code may use JSX, MDX and application components because a human and the normal
+build pipeline remain in the loop. Untrusted model output should stay schema-validated data mapped
+through an allowlisted renderer registry. Do not compile arbitrary model-produced JSX in the
+browser.
+
+Keep context current [#keep-context-current]
+
+Package entry points and maturity can change before 1.0. Prefer this documentation site's
+`/llms.txt`, the checked-in skills from the same commit, and the
+[Release Status](/docs/guide/release-status) page over copied prompts from an older version.
+
+Next steps [#next-steps]
+
+* [Agent-first Workflow](/docs/guide/agent-workflow) — one bounded path from question to delivered artifact
+* [AI integration](/docs/guide/ai-integration) — schema, validation, diagnostics and repair
+* [AI Cookbook](/docs/guide/ai-cookbook) — Diagram and Connect choices for real visual stories
+* [Presentation Nodes](/docs/ui-react/presentation-nodes) — trusted semantic DOM vocabulary
+* [Package Entry Points](/docs/reference/package-entry-points) — loading and runtime boundaries
+* [MDX Guide](/docs/guide/mdx-guide) — reviewed Markdown/MDX authoring and `remark-diax`

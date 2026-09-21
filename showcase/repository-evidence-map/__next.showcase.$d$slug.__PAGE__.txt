@@ -1,0 +1,327 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T15ff,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DecisionNode, DiagramFrame, EvidenceNode } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import { FileCheck2, GitCommitHorizontal } from "lucide-react";
+import type { ReactNode } from "react";
+
+const revision = "3e0f4d8382c500c286fe5d5d29ec28597ed58c7c";
+const repository = "https://github.com/tt-a1i/archify";
+
+const sources = [
+  {
+    id: "bounded-authoring",
+    eyebrow: "Authoring contract",
+    title: "Write the candidate before reading renderer internals",
+    description:
+      "The first pass stays semantic, automatic, and bounded; repair follows diagnostics.",
+    path: "archify/SKILL.md",
+    lines: "L15-L37",
+  },
+  {
+    id: "scenario-registry",
+    eyebrow: "Content source",
+    title: "Scenario guidance is one immutable data projection",
+    description:
+      "The same records preserve localized questions, required facts, and presentation policy.",
+    path: "archify/recipes/scenarios.mjs",
+    lines: "L235-L264",
+  },
+  {
+    id: "verified-evidence",
+    eyebrow: "Proof boundary",
+    title: "Repository evidence fails closed at the pinned revision",
+    description:
+      "Commit, blob, and line-range checks happen before stable source links are emitted.",
+    path: "archify/renderers/shared/repository-evidence.mjs",
+    lines: "L149-L234",
+  },
+] as const;
+
+const relations: readonly DiaxRelation<ReactNode>[] = sources.map((source) => ({
+  id: `${source.id}-decision`,
+  from: source.id,
+  to: "adoption-decision",
+  color: "#6676a8",
+  targetMarker: "arrow",
+  gap: 8,
+  label: <RelationLabel>supports</RelationLabel>,
+}));
+
+function sourceHref(path: string, lines: string) {
+  return `${repository}/blob/${revision}/${path}#${lines}`;
+}
+
+export default function RepositoryEvidenceMap() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="repository-evidence-map"
+      eyebrow="Repository evidence · Authored DOM"
+      title="Pin the fact before drawing the conclusion."
+      description="Source links remain reviewable because every path and line range names one immutable commit."
+      icon={<GitCommitHorizontal aria-hidden="true" />}
+      caption="This specimen demonstrates trusted evidence already verified by the authoring workflow. DiaX performs no Git or network access."
+      className="w-full max-w-[1120px] [--diax-accent:#91a0d0] [--diax-frame-bg:#0b1018] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#111824] [--diax-node-border:#334057] [--diax-node-shadow:none] [--diax-node-text:#e7ebf4] [--diax-ui-radius:3px]"
+    >
+      <div className="mb-5 grid border-y border-slate-700 sm:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="min-w-0 px-3 py-3 sm:border-r sm:border-slate-700">
+          <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-slate-500">
+            Repository
+          </p>
+          <p className="m-0 mt-1 truncate text-[10px] text-slate-300">{repository}</p>
+        </div>
+        <div className="min-w-0 border-t border-slate-700 px-3 py-3 sm:border-t-0">
+          <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-slate-500">
+            Full revision
+          </p>
+          <code className="mt-1 block truncate font-mono text-[9px] text-indigo-200">
+            {revision}
+          </code>
+        </div>
+      </div>
+
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Pinned source facts supporting one adoption decision"
+        className="grid gap-20 py-2 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-24 sm:py-4"
+      >
+        {sources.map((source) => (
+          <EvidenceNode
+            key={source.id}
+            {...connectionTarget(source.id)}
+            eyebrow={source.eyebrow}
+            title={source.title}
+            description={source.description}
+            strength="high"
+            strengthLabel="verified source"
+            sourceLabel="Pinned citation"
+            source={
+              <a
+                href={sourceHref(source.path, source.lines)}
+                target="_blank"
+                rel="noreferrer"
+                className="font-mono text-[9px] text-indigo-200 underline decoration-indigo-300/40 underline-offset-2 focus-visible:outline-2 focus-visible:outline-indigo-300"
+              >
+                {source.path} · {source.lines}
+              </a>
+            }
+            className="relative max-w-none"
+          />
+        ))}
+
+        <DecisionNode
+          {...connectionTarget("adoption-decision")}
+          title="Adopt the discipline, preserve the DiaX product boundary"
+          outcome="Question-first corpus, bounded repair, and pinned evidence stay in authoring and Docs seams."
+          criteria={[
+            "No new diagram modes",
+            "No Git or network access in Core",
+            "No inferred runtime causality",
+          ]}
+          rationale="The source facts justify an evidence loop; they do not justify copying Archify's renderer or coordinate model."
+          status="approved"
+          owner="DiaX architecture"
+          icon={<FileCheck2 aria-hidden="true" />}
+          className="relative max-w-none sm:col-span-3 sm:mx-auto sm:w-[54%]"
+        />
+      </ConnectionSurface>
+    </DiagramFrame>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-600 bg-[#0b1018] px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.06em] text-slate-300">
+      {children}
+    </span>
+  );
+}
+18:X
+1d:X
+1d:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"connect","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Source-grounded architecture review"}],["$","h1",null,{"children":"Repository Evidence Map"}],["$","p",null,{"children":"A source-grounded decision study that keeps full-commit file and line evidence in real DOM without teaching Core about Git or GitHub."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1","key":"ezmyqa"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1","key":"e1hn23"}]],"className":"lucide-braces","aria-hidden":"true"}]," ","Connect DOM"]}],["$","li",null,{"children":"intermediate"}],[["$","li","ai",{"children":"ai"}],["$","li","citation",{"children":"citation"}],["$","li","connect",{"children":"connect"}],["$","li","decision",{"children":"decision"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6","$L7","$L8",null,"$L9","$La"]}]}],["$Lb","$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14","$L15"],"$L16"]}],"isPartial":"$@17","staleTime":"$18","varyParams":null},{"rsc":"$L19","isPartial":"$@1a","staleTime":"$18","varyParams":null},{"rsc":"$L1b","isPartial":"$@1c","staleTime":"$18","varyParams":"$1d"}],"isUpgradeableISRFallback":false,"a":"$@1e","rootVaryParams":null,"needsRuntimeRequest":"$@1f"}
+20:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+21:I[87565,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseReader"]
+22:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+23:I[671018,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+24:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+26:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+27:"$Sreact.suspense"
+29:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+2a:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+2b:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+2c:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"DOM measurement, target lifecycle and connection geometry."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"JSX, CSS layout, reading order and responsive composition."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"3 pinned source facts · 1 bounded adoption decision · no inferred topology"}]]}]]}]]}]
+7:["$","section",null,{"className":"showcase-module__5fFjmW__scenarioGuidance","aria-labelledby":"repository-evidence-map-scenario-question","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Question-First Recipe"}],["$","h2",null,{"id":"repository-evidence-map-scenario-question","children":"Which source facts justify this architecture decision at one exact repository revision?"}],["$","p",null,{"children":"Verify Git facts in an authoring or build step, then pass trusted links into EvidenceNode and use Connect only for the declared review relationship."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioDecisionGrid","children":[["$","section",null,{"aria-labelledby":"repository-evidence-map-use-when","children":[["$","h3",null,{"id":"repository-evidence-map-use-when","children":"Use this shape when"}],["$","ul",null,{"children":[["$","li","Explain an architecture decision with reviewable file and line evidence",{"children":"Explain an architecture decision with reviewable file and line evidence"}],["$","li","Give an AI-generated technical map citations that survive branch movement",{"children":"Give an AI-generated technical map citations that survive branch movement"}]]}]]}],["$","section",null,{"aria-labelledby":"repository-evidence-map-avoid-when","children":[["$","h3",null,{"id":"repository-evidence-map-avoid-when","children":"Choose another shape when"}],["$","p",null,{"children":"Avoid this recipe when the repository is private to the audience, the revision or line ranges cannot be verified, or the visual would imply runtime causality that the source does not establish."}]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioFacts","children":[["$","h3",null,{"children":"Facts the author or agent must know first"}],["$","ol",null,{"children":[["$","li","A full 40-character commit SHA",{"children":"A full 40-character commit SHA"}],["$","li","A public HTTPS repository URL",{"children":"A public HTTPS repository URL"}],["$","li","Repository-relative POSIX file paths",{"children":"Repository-relative POSIX file paths"}],["$","li","The bounded decision each fact supports without inventing causality",{"children":"The bounded decision each fact supports without inventing causality"}],["$","li","Verified line ranges at that exact commit",{"children":"Verified line ranges at that exact commit"}]]}]]}],["$","details",null,{"className":"showcase-module__5fFjmW__scenarioPrompt","children":[["$","summary",null,{"children":"Copy-ready agent prompts"}],["$","div",null,{"children":[["$","section",null,{"children":[["$","h3",null,{"children":"English"}],["$","p",null,{"children":"Create a source-grounded DiaX Connect study from a public repository. Pin a full commit SHA, verify every file and line range at that revision, render citations as trusted DOM links, and connect facts only to the decision they explicitly support. Fail closed on missing evidence."}]]}],["$","section",null,{"lang":"zh-CN","children":[["$","h3",null,{"children":"中文"}],["$","p",null,{"children":"基于公开仓库创建一个有源码依据的 DiaX Connect 图示。固定完整 40 位 commit SHA，验证该版本下每个文件与行号范围，把引用渲染为可信 DOM 链接；只把事实连接到其明确支持的决策，证据缺失时必须失败关闭。"}]]}]]}]]}]]}]
+25:T15ff,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DecisionNode, DiagramFrame, EvidenceNode } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import { FileCheck2, GitCommitHorizontal } from "lucide-react";
+import type { ReactNode } from "react";
+
+const revision = "3e0f4d8382c500c286fe5d5d29ec28597ed58c7c";
+const repository = "https://github.com/tt-a1i/archify";
+
+const sources = [
+  {
+    id: "bounded-authoring",
+    eyebrow: "Authoring contract",
+    title: "Write the candidate before reading renderer internals",
+    description:
+      "The first pass stays semantic, automatic, and bounded; repair follows diagnostics.",
+    path: "archify/SKILL.md",
+    lines: "L15-L37",
+  },
+  {
+    id: "scenario-registry",
+    eyebrow: "Content source",
+    title: "Scenario guidance is one immutable data projection",
+    description:
+      "The same records preserve localized questions, required facts, and presentation policy.",
+    path: "archify/recipes/scenarios.mjs",
+    lines: "L235-L264",
+  },
+  {
+    id: "verified-evidence",
+    eyebrow: "Proof boundary",
+    title: "Repository evidence fails closed at the pinned revision",
+    description:
+      "Commit, blob, and line-range checks happen before stable source links are emitted.",
+    path: "archify/renderers/shared/repository-evidence.mjs",
+    lines: "L149-L234",
+  },
+] as const;
+
+const relations: readonly DiaxRelation<ReactNode>[] = sources.map((source) => ({
+  id: `${source.id}-decision`,
+  from: source.id,
+  to: "adoption-decision",
+  color: "#6676a8",
+  targetMarker: "arrow",
+  gap: 8,
+  label: <RelationLabel>supports</RelationLabel>,
+}));
+
+function sourceHref(path: string, lines: string) {
+  return `${repository}/blob/${revision}/${path}#${lines}`;
+}
+
+export default function RepositoryEvidenceMap() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="repository-evidence-map"
+      eyebrow="Repository evidence · Authored DOM"
+      title="Pin the fact before drawing the conclusion."
+      description="Source links remain reviewable because every path and line range names one immutable commit."
+      icon={<GitCommitHorizontal aria-hidden="true" />}
+      caption="This specimen demonstrates trusted evidence already verified by the authoring workflow. DiaX performs no Git or network access."
+      className="w-full max-w-[1120px] [--diax-accent:#91a0d0] [--diax-frame-bg:#0b1018] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#111824] [--diax-node-border:#334057] [--diax-node-shadow:none] [--diax-node-text:#e7ebf4] [--diax-ui-radius:3px]"
+    >
+      <div className="mb-5 grid border-y border-slate-700 sm:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="min-w-0 px-3 py-3 sm:border-r sm:border-slate-700">
+          <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-slate-500">
+            Repository
+          </p>
+          <p className="m-0 mt-1 truncate text-[10px] text-slate-300">{repository}</p>
+        </div>
+        <div className="min-w-0 border-t border-slate-700 px-3 py-3 sm:border-t-0">
+          <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-slate-500">
+            Full revision
+          </p>
+          <code className="mt-1 block truncate font-mono text-[9px] text-indigo-200">
+            {revision}
+          </code>
+        </div>
+      </div>
+
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Pinned source facts supporting one adoption decision"
+        className="grid gap-20 py-2 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-24 sm:py-4"
+      >
+        {sources.map((source) => (
+          <EvidenceNode
+            key={source.id}
+            {...connectionTarget(source.id)}
+            eyebrow={source.eyebrow}
+            title={source.title}
+            description={source.description}
+            strength="high"
+            strengthLabel="verified source"
+            sourceLabel="Pinned citation"
+            source={
+              <a
+                href={sourceHref(source.path, source.lines)}
+                target="_blank"
+                rel="noreferrer"
+                className="font-mono text-[9px] text-indigo-200 underline decoration-indigo-300/40 underline-offset-2 focus-visible:outline-2 focus-visible:outline-indigo-300"
+              >
+                {source.path} · {source.lines}
+              </a>
+            }
+            className="relative max-w-none"
+          />
+        ))}
+
+        <DecisionNode
+          {...connectionTarget("adoption-decision")}
+          title="Adopt the discipline, preserve the DiaX product boundary"
+          outcome="Question-first corpus, bounded repair, and pinned evidence stay in authoring and Docs seams."
+          criteria={[
+            "No new diagram modes",
+            "No Git or network access in Core",
+            "No inferred runtime causality",
+          ]}
+          rationale="The source facts justify an evidence loop; they do not justify copying Archify's renderer or coordinate model."
+          status="approved"
+          owner="DiaX architecture"
+          icon={<FileCheck2 aria-hidden="true" />}
+          className="relative max-w-none sm:col-span-3 sm:mx-auto sm:w-[54%]"
+        />
+      </ConnectionSurface>
+    </DiagramFrame>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-600 bg-[#0b1018] px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.06em] text-slate-300">
+      {children}
+    </span>
+  );
+}
+8:["$","$L20",null,{"title":"Repository Evidence Map","entryLabel":"Connect DOM","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"repository-evidence-map","children":["$","$L21",null,{"definition":{"steps":[{"id":"bound-the-authoring-pass","title":"Bound the authoring pass","description":"Start from the semantic candidate. Renderer internals are not evidence for the first draft.","nodeIds":["bounded-authoring"],"edgeIds":[],"evidenceIds":["bounded-authoring-source"]},{"id":"reuse-one-scenario-source","title":"Reuse one scenario source","description":"Questions, required facts, and presentation guidance remain one immutable projection.","nodeIds":["scenario-registry"],"edgeIds":[],"evidenceIds":["scenario-registry-source"]},{"id":"verify-before-linking","title":"Verify before linking","description":"Commit, blob, path, and line-range checks fail closed before a source link is trusted.","nodeIds":["verified-evidence"],"edgeIds":[],"evidenceIds":["repository-evidence-source"]},{"id":"make-the-bounded-decision","title":"Make the bounded decision","description":"The three source facts support one adoption decision; they do not prove runtime causality.","nodeIds":["bounded-authoring","scenario-registry","verified-evidence","adoption-decision"],"edgeIds":["bounded-authoring-decision","scenario-registry-decision","verified-evidence-decision"],"evidenceIds":["bounded-authoring-source","scenario-registry-source","repository-evidence-source"]}],"evidence":[{"id":"bounded-authoring-source","title":"Bounded authoring contract","description":"The Skill asks for a semantic candidate before renderer spelunking and permits only diagnosed repair.","source":{"repository":"https://github.com/tt-a1i/archify","revision":"3e0f4d8382c500c286fe5d5d29ec28597ed58c7c","path":"archify/SKILL.md","lines":{"start":15,"end":37}}},{"id":"scenario-registry-source","title":"Scenario projection","description":"One source record carries the question, required facts, and presentation policy.","source":{"repository":"https://github.com/tt-a1i/archify","revision":"3e0f4d8382c500c286fe5d5d29ec28597ed58c7c","path":"archify/recipes/scenarios.mjs","lines":{"start":235,"end":264}}},{"id":"repository-evidence-source","title":"Fail-closed evidence verification","description":"Repository origin, full commit, blob, path, and line range are checked before immutable links are emitted.","source":{"repository":"https://github.com/tt-a1i/archify","revision":"3e0f4d8382c500c286fe5d5d29ec28597ed58c7c","path":"archify/renderers/shared/repository-evidence.mjs","lines":{"start":149,"end":234}}}]},"children":[["$","$L22",null,{"moduleIds":[579276]}],["$","$L23",null,{}]]}]}],"code":["$","$L24",null,{"files":[{"path":"components/diagrams/repository-evidence-map/repository-evidence-map.tsx","content":"$25"}],"slug":"repository-evidence-map"}]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","@diax/ui-react",{"translate":"no","children":"@diax/ui-react"}],["$","li","diax",{"translate":"no","children":"diax"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+a:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react/connect","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Connect DOM"]}],["$","strong",null,{"children":"Connect Authored DOM"}],["$","span",null,{"children":"Keep your JSX and CSS layout while DiaX measures and connects exact elements."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","release-gate-decision",{"children":["$","$L2",null,{"href":"/showcase/release-gate-decision","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Collect Evidence, Decide Once"}],["$","span",null,{"children":"3 semantic targets · 2 evidence relations · native HTML comparison"}]]}],["$","$L3",null,{"iconNode":"$a:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","ai-content-compiler",{"children":["$","$L2",null,{"href":"/showcase/ai-content-compiler","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"AI Content Compiler"}],["$","span",null,{"children":"2 scoped surfaces · 10 DOM targets · 8 relations"}]]}],["$","$L3",null,{"iconNode":"$a:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","agent-review-sequence",{"children":["$","$L2",null,{"href":"/showcase/agent-review-sequence","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Agent Review Sequence"}],["$","span",null,{"children":"4 participants · 6 ordered messages · 12 measured row endpoints · responsive transcript"}]]}],["$","$L3",null,{"iconNode":"$a:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+b:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+c:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+d:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+e:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+f:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+10:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+11:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+12:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+13:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+14:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+15:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+16:["$","$L26",null,{"children":["$","$27",null,{"name":"Next.MetadataOutlet","children":"$@28"}]}]
+19:["$","$1","h",{"children":[null,["$","$L29",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L2a",null,{"children":["$","$27",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Repository Evidence Map — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"A source-grounded decision study that keeps full-commit file and line evidence in real DOM without teaching Core about Git or GitHub."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/repository-evidence-map/"}],["$","meta","3",{"property":"og:title","content":"Repository Evidence Map — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"A source-grounded decision study that keeps full-commit file and line evidence in real DOM without teaching Core about Git or GitHub."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/repository-evidence-map/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1b:["$","$1","c",{"children":[null,["$","$L2b",null,{"parallelRouterKey":"children","template":["$","$L2c",null,{}]}]]}]
+1f:true
+28:null
+18:300
+18:C
+1e:0
+1a:"$undefined"
+1c:"$undefined"
+17:"$undefined"

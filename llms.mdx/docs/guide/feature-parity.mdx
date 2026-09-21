@@ -1,0 +1,150 @@
+# Framework Parity Matrix (/docs/guide/feature-parity)
+
+
+
+Same semantics, native composition [#same-semantics-native-composition]
+
+All five adapters can render the same Diagram Definition. React, Vue, Solid and Svelte expose
+`FlowDiagram` and `Mindmap` components; Vanilla uses the imperative `createDiagram()` interface.
+They share layout semantics and runtime behavior, but they should not imitate one another's
+composition syntax. A missing React-shaped prop is not automatically a missing capability.
+
+The table below reports the current runtime surface. Its values are locked to the repository's
+internal `docs/adapter-capabilities.json` manifest so documentation changes cannot silently outrun
+the tested adapter surface. `⚠` means the underlying Core capability exists, but the high-level
+adapter does not provide the complete lifecycle or convenience contract.
+
+{/* adapter-capabilities:start */}
+
+| Capability                           |          React          |          Vue          |        Solid       |         Svelte         |      Vanilla      |
+| ------------------------------------ | :---------------------: | :-------------------: | :----------------: | :--------------------: | :---------------: |
+| Automatic Flow / Mindmap             |       ✅ Components      |      ✅ Components     |    ✅ Components    |      ✅ Components      | ✅ `createDiagram` |
+| Headless binding interface           |          ✅ Hook         |      ✅ Composable     |      ✅ Signals     | ✅ `createDiagramStore` | ⚠ use `diax` Core |
+| High-level reactive update lifecycle |            ✅            |           ✅           |          ✅         |    ✅ Component props   |    ✅ `update()`   |
+| Custom node renderer                 |      ✅ `renderNode`     |     ✅ scoped slot     |   ✅ `renderNode`   |       ✅ node slot      |   ✅ `renderNode`  |
+| `nodeTypes` registry                 |            ✅            |           ✅           |          ✅         |            —           |         ✅         |
+| String edge labels                   |            ✅            |           ✅           |          ✅         |            ✅           |         ✅         |
+| Framework-native rich edge label     |       ✅ React node      |     ✅ scoped slot     |  ✅ render function |      ✅ named slot      |   ✅ DOM callback  |
+| Framework-native rich group label    |       ✅ React node      |     ✅ scoped slot     |     ✅ Solid JSX    |      ✅ named slot      |   ✅ DOM callback  |
+| Label-aware node clearance           |            ✅            |           ✅           |          ✅         |            ✅           |         ✅         |
+| Hover path highlighting              |            ✅            |           ✅           |          ✅         |            ✅           |         ✅         |
+| Interactive edge events              |            ✅            |           ✅           |          ✅         |            ✅           |         ✅         |
+| Nested group boundaries              |            ✅            |           ✅           |          ✅         |            ✅           |         ✅         |
+| High-level namespace isolation       |            ✅            |           ✅           |          ✅         |            ✅           |         ✅         |
+| SSR shell and hydration              |  ✅ SSR shell + hydrate  | ✅ SSR shell + hydrate | ✅ built conditions |  ✅ Vite SSR + hydrate  |         —         |
+| JSX Definition Adapter               |   ✅ `@diax/react/jsx`   |           —           |          —         |            —           |         —         |
+| Connect authored DOM                 | ✅ `@diax/react/connect` |           —           |          —         |            —           |         —         |
+
+{/* adapter-capabilities:end */}
+
+`—` means the adapter does not expose that interface today. It does not imply that the Core engine
+or relation model lacks the underlying capability.
+
+Required parity: runtime contract [#required-parity-runtime-contract]
+
+Every stable official adapter must eventually satisfy the same behavioral contract for:
+
+* relation parsing and graph validation;
+* Flow and Mindmap placement;
+* anchors, paths and markers;
+* DOM measurement and stable target identity;
+* semantic group validation, nested placement, and derived boundary bindings;
+* highlight semantics and accessible edge interaction;
+* prop/input updates without losing authored DOM state;
+* observer cleanup, SSR safety, and hydration stability;
+* intrinsic edge-label measurement and automatic node clearance when Diagram owns layout;
+* theme values from `diax/themes`.
+
+These are product guarantees, not optional syntax sugar. The release browser contract covers built
+package output for React, Vue, Solid, Svelte and Vanilla in Chromium, Firefox and WebKit, while
+framework pages document adapter-specific SSR and composition rules.
+
+The SSR row describes adapter-level evidence, not every meta-framework. Next RSC and the
+`remark-diax` Fumadocs pipeline have dedicated production fixtures. Nuxt, SolidStart, SvelteKit,
+Next MDX and Docusaurus remain host-specific follow-up work even where the underlying Vue, Solid,
+Svelte or React adapter already has an SSR shell and hydration contract.
+
+All five adapters preserve stable label identity, feed per-label measurements into the shared
+routing plan, and reserve the largest intrinsic label on the primary Grid axis. The feedback remains
+private adapter lifecycle behavior; users do not provide dimensions or manually refresh Diagram.
+
+Idiomatic convenience: same capability, native syntax [#idiomatic-convenience-same-capability-native-syntax]
+
+DOM presentation seams should follow each framework rather than share one artificial prop shape:
+
+| Need            | Idiomatic interface                                                 |
+| --------------- | ------------------------------------------------------------------- |
+| React content   | JSX / React nodes and render functions                              |
+| Vue content     | Scoped slots and VNodes                                             |
+| Solid content   | Accessor-preserving render functions                                |
+| Svelte content  | Slots today; typed snippets when the support floor permits Svelte 5 |
+| Vanilla content | DOM callbacks receiving an owned element                            |
+
+Rich edge and group labels belong in this tier because DOM-native presentation is a core DiaX
+value. Edge labels use a Vue `#edge-label` slot, a Solid render function, a Svelte named slot and a
+Vanilla DOM callback. Group labels use the corresponding native presentation seam while keeping
+derived boundary geometry private. The shared meaning matches while the syntax remains native.
+Typed Svelte snippets can replace the legacy slot surface only when the support floor permits a
+Svelte 5-only interface.
+
+`nodeTypes` is useful when application or AI-authored `node.type` values map to a trusted design
+system registry. Svelte's node slot already supports an idiomatic component map, so DiaX should not
+add a React-shaped registry merely to turn one table cell green.
+
+Framework-specific authoring leaves [#framework-specific-authoring-leaves]
+
+React-only authoring leaves [#react-only-authoring-leaves]
+
+JSX Definition and Connect accept framework-native React content, so they live in isolated React
+subpaths rather than Core or every adapter. Diagram-only users do not load either optional runtime.
+
+Other adapters may gain their own authoring leaves only where their ecosystem provides a genuinely
+better interface—for example Vue directives, Solid directives, or Svelte actions for connecting
+already-authored DOM. They should first prove a real user workflow and a second adapter seam; they
+must not be mechanical ports of React JSX components.
+
+Node presentation [#node-presentation]
+
+Vue and Svelte use slots, Solid uses functions returning Solid JSX, and Vanilla renders into a real
+element passed to a callback. These adapters share the semantic node and relation model without
+pretending framework composition is identical.
+
+Naming and reactivity [#naming-and-reactivity]
+
+Parity does not require every reactive primitive to be named `useDiagram`. React hooks and Vue
+composables make that name natural; Solid primitives generally use `create*`, and Svelte uses
+`createDiagramStore`. The store exposes `updateOptions()` for explicit topology and layout updates;
+the former `useDiagram` spelling remains a deprecated compatibility alias during Alpha.
+
+Generics [#generics]
+
+The low-level Core, hooks, composables, stores and Vanilla interface independently preserve node
+content, edge labels, and group labels in the order `<NodeContent, EdgeLabel, GroupLabel>`.
+High-level components constrain content to values their framework renderer can safely display; check
+the adapter's Props page before designing a cross-framework component library.
+
+Maturity [#maturity]
+
+The adapters remain Alpha. “Official” means they are maintained and release-tested in this
+repository; it does not promise identical ecosystem integrations or authoring syntax.
+
+The next adapter work is ordered by user-visible leverage:
+
+1. complete Safari + VoiceOver, Edge + NVDA and real Windows High Contrast hardware acceptance;
+2. evaluate a second Connect-style adapter only from a real Vue, Solid or Svelte authored-DOM case;
+3. add framework-specific authoring leaves only after a real adopter proves the seam.
+
+The maintenance rationale and package deletion-test results are recorded in the
+[Owner package and interface audit](https://github.com/diax-labs/diax/blob/main/docs/owner/2026-07-package-capability-interface-audit.md).
+
+<Cards>
+  <Card title="React" href="/docs/react" description="Diagram, JSX Definition and Connect" />
+
+  <Card title="Vue" href="/docs/vue" description="Components, slots and composables" />
+
+  <Card title="Svelte" href="/docs/svelte" description="Components, slots and stores" />
+
+  <Card title="Solid" href="/docs/solid" description="Components, render functions and signals" />
+
+  <Card title="Vanilla" href="/docs/vanilla" description="Imperative DOM lifecycle" />
+</Cards>

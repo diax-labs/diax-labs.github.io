@@ -1,0 +1,122 @@
+# Core Interface (/docs/reference/core-interface)
+
+
+
+**Audience:** custom renderer authors, validation services, and framework adapter authors.\
+&#x2A;*Runtime:** server-safe and framework-agnostic.\
+&#x2A;*Import:** `diax`.
+
+`computeLayout(input)` [#computelayoutinput]
+
+This is the primary Core interface. It validates input, normalizes relations, partitions qualified
+edges, runs the selected layout, and produces CSS Grid bindings.
+
+```ts contract
+import { computeLayout } from 'diax';
+
+const layout = computeLayout({
+  nodes: [
+    { id: 'web', content: 'Web' },
+    { id: 'api', content: 'API' },
+    { id: 'db', content: 'Database' },
+  ],
+  relations: ['web->api', 'api->db'],
+  layout: 'flow',
+  direction: 'horizontal',
+  centered: true,
+});
+```
+
+Input [#input]
+
+| Field           | Type                      | Default        | Notes                                            |                    |
+| --------------- | ------------------------- | -------------- | ------------------------------------------------ | ------------------ |
+| `nodes`         | `readonly DiaxNode[]`     | required       | Stable unique IDs                                |                    |
+| `relations`     | `readonly DiaxRelation[]` | required       | String or object form                            |                    |
+| `groups`        | `readonly DiaxGroup[]`    | `[]`           | Semantic containment from direct node membership |                    |
+| `layout`        | \`'flow' \\               | 'mindmap'\`    | `'flow'`                                         | Built-in algorithm |
+| `direction`     | `Direction`               | `'horizontal'` | Includes reverse directions                      |                    |
+| `namespace`     | `string`                  | —              | Qualifies DOM IDs                                |                    |
+| `centered`      | `boolean`                 | `false`        | Centers nodes in grid tracks                     |                    |
+| `autoRelations` | `boolean`                 | `false`        | Creates sequential edges only when none exist    |                    |
+
+Output [#output]
+
+| Field            | Purpose                                                     |
+| ---------------- | ----------------------------------------------------------- |
+| `nodeBindings`   | Node data, resolved IDs, ARIA flow targets, and grid styles |
+| `groupBindings`  | Outermost-first group data and derived CSS Grid boundaries  |
+| `parsedEdges`    | Normalized relations for measurement and edge rendering     |
+| `containerStyle` | Framework-neutral CSS Grid properties                       |
+| `layoutResult`   | Raw layout nodes, rows, and columns                         |
+| `layoutMap`      | Node ID to layout-position lookup                           |
+| `cols` / `rows`  | Grid dimensions                                             |
+
+The function does not read the DOM and does not compute hover state. A renderer still owns DOM
+creation, measurement, edge overlay lifecycle, and cleanup.
+
+`LayoutInput<NodeContent, EdgeLabel, GroupLabel>` and the matching output keep all three payload
+channels independent. TypeScript normally infers them; use explicit arguments only when a custom
+renderer or an empty input array prevents useful inference. See [Authoring Model](/docs/reference/authoring-model#independent-payload-types).
+
+Failure contract [#failure-contract]
+
+Invalid definitions throw `DiaxValidationError` before layout:
+
+```ts contract
+import { computeLayout, DiaxValidationError } from 'diax';
+
+try {
+  computeLayout({
+    nodes: [{ id: 'only', content: 'Only node' }],
+    relations: [{ from: 'only', to: 'missing' }],
+  });
+} catch (error) {
+  if (error instanceof DiaxValidationError) {
+    error.diagnostics.forEach(item => console.error(item.code, item.path));
+  } else {
+    throw error;
+  }
+}
+```
+
+Do not catch and replace this error with a blank diagram. Show an actionable error state or pass
+the diagnostics into an AI repair loop.
+
+`computeHighlight(hoveredId, nodes, parsedEdges)` [#computehighlighthoveredid-nodes-parsededges]
+
+Highlight state is deliberately separate so hover does not rerun layout:
+
+```ts contract
+import { computeHighlight, computeLayout } from 'diax';
+
+const nodes = [
+  { id: 'a', content: 'A' },
+  { id: 'b', content: 'B' },
+];
+const computed = computeLayout({ nodes, relations: ['a->b'] });
+const highlight = computeHighlight('a', nodes, computed.parsedEdges);
+
+highlight.highlightedNodes;
+highlight.highlightedEdgeIds;
+highlight.nodeStates;
+```
+
+Pass `null` as the hovered ID to return the idle state. Official adapters use
+`getNodeDisplayOpacity()` and edge render helpers so the visual policy stays consistent.
+`highlightedEdgeIds` contains exact stable relation occurrences, not every edge whose endpoints
+happen to be highlighted. For `a → focus → b` plus a bypass `a → b`, hovering `focus` selects the
+incoming and outgoing relations while the bypass remains dimmed. Parallel relations, cycles and
+self-loops remain deterministic; authored `from → to` direction is never reversed by inspection.
+
+When not to call Core directly [#when-not-to-call-core-directly]
+
+Use a framework `FlowDiagram` when you do not need to own rendering lifecycle. Use React
+[Connect](/docs/react/connect) when CSS already owns placement. Calling `computeLayout` does not
+turn Connect into an automatic-layout surface.
+
+Related [#related]
+
+* [Graph & Layout Primitives](/docs/reference/graph-layout)
+* [Edge Rendering Primitives](/docs/reference/edge-rendering)
+* [Measurement](/docs/reference/measurement)

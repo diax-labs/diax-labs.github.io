@@ -1,0 +1,70 @@
+# Props Reference (/docs/vue/props)
+
+
+
+Props Reference [#props-reference]
+
+`<FlowDiagram>` / `<Mindmap>` Props [#flowdiagram--mindmap-props]
+
+<TypeTable
+  type="{
+  nodes: { description: 'Node definitions', type: 'DiaxNode[]', default: 'required' },
+  relations: { description: 'Relations (string DSL or object form)', type: 'DiaxRelation[]', default: 'required' },
+  groups: { description: 'Nested semantic boundaries derived from direct members', type: 'DiaxGroup[]', default: '[]' },
+  direction: { description: 'Layout direction', type: &#x22;'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse'&#x22;, default: &#x22;'horizontal'&#x22; },
+  density: { description: 'Spacing', type: &#x22;'compact' | 'comfortable' | 'spacious'&#x22;, default: &#x22;'comfortable'&#x22; },
+  centered: { description: 'Center nodes in cells', type: 'boolean', default: 'false' },
+  highlightOnHover: { description: 'Highlight path on hover', type: 'boolean', default: 'false' },
+  theme: { description: 'Theme preset or object', type: &#x22;'linear' | 'light' | 'notion' | 'github' | DiaxTheme&#x22;, default: '—' },
+  namespace: { description: 'Resolved DOM ID namespace', type: 'string', default: '—' },
+  nodeTypes: { description: 'Node type registry', type: 'Record<string, (node, state) => VNode>', default: '—' },
+  pathType: { description: 'Edge path type', type: &#x22;'bezier' | 'straight' | 'orthogonal'&#x22;, default: &#x22;'bezier'&#x22; },
+  strokeColor: { description: 'Edge color; inherits currentColor when unthemed', type: 'string', default: &#x22;'var(--diax-edge-color, currentColor)'&#x22; },
+  strokeWidth: { description: 'Edge width', type: 'number', default: '1' },
+  arrowSize: { description: 'Arrow marker size', type: 'number', default: '6' },
+}"
+/>
+
+Scoped Slots [#scoped-slots]
+
+<TypeTable
+  type="{
+  '#node': { description: 'Custom node renderer. Receives { node, state }', type: 'SlotProps<{ node: DiaxNode; state?: FlowState }>' },
+  '#edge-label': { description: 'Vue-native presentation for a semantic edge label. Receives { label }', type: 'SlotProps<{ label: unknown }>' },
+  '#group-label': { description: 'Vue-native presentation for a semantic group label. Receives { group, label }', type: 'SlotProps<{ group: DiaxGroup; label: unknown }>' },
+}"
+/>
+
+***
+
+useDiagram Options [#usediagram-options]
+
+<TypeTable
+  type="{
+  nodes: { description: 'Node definitions', type: 'DiaxNode[]', default: 'required' },
+  relations: { description: 'Relations', type: 'DiaxRelation[]', default: 'required' },
+  groups: { description: 'Nested semantic boundaries', type: 'DiaxGroup[]', default: '[]' },
+  namespace: { description: 'Resolved DOM ID namespace', type: 'string' },
+  direction: { description: 'Layout direction', type: &#x22;'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse'&#x22;, default: &#x22;'horizontal'&#x22; },
+  layout: { description: 'Layout algorithm', type: &#x22;'flow' | 'mindmap'&#x22;, default: &#x22;'flow'&#x22; },
+  centered: { description: 'Center nodes', type: 'boolean', default: 'false' },
+  highlightOnHover: { description: 'Highlight path on hover', type: 'boolean', default: 'false' },
+}"
+/>
+
+useDiagram Return Values [#usediagram-return-values]
+
+<TypeTable
+  type="{
+  nodes: { description: 'Bound node data with bindProps for v-bind', type: 'Ref<DiagramNodeBinding[]>' },
+  groups: { description: 'Outermost-first derived boundary bindings', type: 'Ref<DiagramGroupBinding[]>' },
+  layout: { description: 'Layout computation result', type: 'Ref<LayoutResult>' },
+  edges: { description: 'Parsed edges', type: 'Ref<ParsedRelation[]>' },
+  layoutMap: { description: 'Layout map', type: 'Ref<Map<string, LayoutNode>>' },
+  containerStyle: { description: 'CSS Grid styles for container', type: 'Ref<Record<string, string>>' },
+  highlightedNodes: { description: 'Currently highlighted nodes', type: 'Ref<Set<string> | null>' },
+  direction: { description: 'Current direction', type: 'Ref<Direction>' },
+  cols: { description: 'Grid columns', type: 'Ref<number>' },
+  rows: { description: 'Grid rows', type: 'Ref<number>' },
+}"
+/>

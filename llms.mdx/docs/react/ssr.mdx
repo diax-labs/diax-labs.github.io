@@ -1,0 +1,134 @@
+# Next.js & SSR (/docs/react/ssr)
+
+
+
+Put the renderer behind a client boundary [#put-the-renderer-behind-a-client-boundary]
+
+DiaX can validate, parse, and plan pure data on the server, but the React renderer measures real DOM
+after hydration to place its SVG edge layer. In Next.js App Router, put the file that imports
+`@diax/react` behind a `'use client'` boundary:
+
+```tsx title="app/dashboard/my-diagram.tsx" contract
+'use client';
+
+import { FlowDiagram } from '@diax/react';
+
+export function MyDiagram() {
+  return (
+    <FlowDiagram
+      nodes={[
+        { id: 'gateway', content: 'Gateway' },
+        { id: 'service', content: 'Service' },
+        { id: 'database', content: 'Database' },
+      ]}
+      relations={['gateway->service', 'service->database']}
+    />
+  );
+}
+```
+
+The Server Component can render that client boundary normally:
+
+```tsx title="app/dashboard/page.tsx"
+import { MyDiagram } from './my-diagram';
+
+export default function DashboardPage() {
+  return (
+    <main>
+      <h1>Architecture</h1>
+      <MyDiagram />
+    </main>
+  );
+}
+```
+
+The page block is a two-file Next.js project fragment; the client module above is the standalone
+TypeScript contract. A Client Component can still contribute prerendered HTML. The important
+boundary is that DOM measurement and interaction start in the browser after hydration—not that the
+entire route must return an empty server response.
+
+Cross the RSC boundary with data [#cross-the-rsc-boundary-with-data]
+
+Prefer a small serializable definition across Server and Client Components:
+
+```ts title="diagram-definition.ts" contract
+export interface DiagramDefinition {
+  nodes: Array<{ id: string; content: string }>;
+  relations: Array<{
+    from: string;
+    to: string;
+    label?: string;
+    style?: 'solid' | 'dashed';
+  }>;
+}
+```
+
+Server code may fetch or validate that definition, or parse supported Mermaid source through
+`@diax/mermaid`. Pass only JSON-safe node fields and relations to the client renderer. Do not cross
+the boundary with React nodes, event handlers, parser diagnostics, layout worker state, or generated
+unreviewed JSX.
+
+The release gate includes a real Next production fixture that proves Mermaid parsing remains in the
+Server Component graph while `@diax/react` remains in the client graph:
+
+```bash
+pnpm smoke:rsc
+```
+
+Lazy load an optional diagram [#lazy-load-an-optional-diagram]
+
+Use `next/dynamic` when the feature itself is optional or below the fold. In the App Router,
+`ssr: false` must be declared from a Client Component:
+
+```tsx title="app/dashboard/lazy-diagram.tsx" contract
+'use client';
+
+import dynamic from 'next/dynamic';
+
+const LazyFlowDiagram = dynamic(
+  () => import('@diax/react').then((module) => module.FlowDiagram),
+  {
+    ssr: false,
+    loading: () => <p role="status">Loading diagram…</p>,
+  },
+);
+
+export function LazyDiagram() {
+  return (
+    <LazyFlowDiagram
+      nodes={[
+        { id: 'author', content: 'Author' },
+        { id: 'reader', content: 'Reader' },
+      ]}
+      relations={['author->reader']}
+    />
+  );
+}
+```
+
+This is a loading decision, not a correctness requirement. The normal client-boundary example is
+preferred when the diagram is primary page content. Keep the dynamic declaration at module scope so
+React and Next can retain its identity and cached import.
+
+Avoid hydration drift [#avoid-hydration-drift]
+
+* Keep the initial serializable definition deterministic between server render and hydration.
+* Do not branch node content on `window`, viewport width, random IDs, or local time during render.
+* Let responsive CSS change presentation; do not produce a different topology for the first client
+  render.
+* Reserve meaningful loading space for lazily loaded diagrams to reduce layout shift.
+* When node content changes after hydration, let the adapter's measurement lifecycle recompute edge
+  geometry rather than caching DOM rectangles in application state.
+
+Server-safe and browser-only leaves [#server-safe-and-browser-only-leaves]
+
+| Job                                                     | Entry                 | Runtime                                      |
+| ------------------------------------------------------- | --------------------- | -------------------------------------------- |
+| Validate and compute a basic definition                 | `diax`                | Server-safe for pure APIs                    |
+| Plan measured automatic routes from supplied rectangles | `diax/layout-plan`    | Server-safe                                  |
+| Parse supported Mermaid source                          | `@diax/mermaid`       | Server-safe, ESM-only                        |
+| Render and measure a React Diagram                      | `@diax/react`         | Client boundary; measurement after hydration |
+| Connect already-positioned DOM                          | `@diax/react/connect` | Browser-only client entry                    |
+
+See [Package Entry Points](/docs/reference/package-entry-points) for the complete loading and SSR
+contract.

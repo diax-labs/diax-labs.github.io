@@ -1,0 +1,200 @@
+# UI Primitives (/docs/ui-react)
+
+
+
+Overview [#overview]
+
+`@diax/ui-react` provides composable DOM presentation primitives for recurring visual roles such as
+processes, decisions, entities, states and hierarchical ideas. The family names below are a useful
+vocabulary, not a closed renderer or a promise to mirror every Mermaid chart type one for one.
+
+Each primitive follows a composable DOM pattern and is compatible with DiaX CSS variables. Use the
+pieces inside Diagram or Connect, or independently in ordinary application UI. The package ships a
+self-contained stylesheet; Tailwind remains an application choice rather than a peer requirement.
+
+Standalone `@diax/ui-react/presentation` consumers install only `@diax/ui-react` (plus the required
+React peer). Add the React adapter and Core only when the application also renders Diagram or
+Connect:
+
+<InstallTabs packages="['@diax/ui-react', '@diax/react']" description="DOM presets plus the React diagram runtime" />
+
+Add `@diax/mermaid` only when importing Mermaid source through `@diax/ui-react/mermaid`:
+
+<InstallTabs packages="['@diax/mermaid']" description="Optional Mermaid parser" />
+
+Import the preset stylesheet once in your application entry:
+
+```css title="app.css"
+@import '@diax/ui-react/styles.css';
+```
+
+The stylesheet uses low-specificity selectors and DiaX CSS variables, so application styles and
+`className` overrides remain in control. Tailwind is optional for npm consumers.
+
+Quick Start: style Diagram data [#quick-start-style-diagram-data]
+
+Keep topology as data and allowlist the presentation for each node type:
+
+```tsx contract
+import { FlowDiagram } from '@diax/react';
+import { flowNodeRenderer } from '@diax/ui-react';
+
+export function ReleaseDecision() {
+  return (
+    <FlowDiagram
+      nodes={[
+        { id: 'build', type: 'process', content: 'Build' },
+        { id: 'tests', type: 'decision', content: 'Tests pass?' },
+        { id: 'deploy', type: 'terminal', content: 'Deploy' },
+      ]}
+      relations={['build->tests', 'tests->deploy']}
+      nodeTypes={{
+        process: flowNodeRenderer('process'),
+        decision: flowNodeRenderer('decision'),
+        terminal: flowNodeRenderer('terminal'),
+      }}
+    />
+  );
+}
+```
+
+The root entry contains only DOM primitives and renderer adapters. It does not parse Mermaid.
+
+When to use primitives [#when-to-use-primitives]
+
+Use a primitive when the same semantic card or visual role has appeared in at least 2 real diagrams
+and should share structure, accessibility and theme tokens. Keep one-off report composition in your
+application's JSX and design system. This package should reduce repeated presentation work without
+turning every Mermaid grammar family into a permanent React component hierarchy.
+
+DiaX-owned examples follow the [Visual Constitution](/docs/guide/visual-constitution): semantic roles
+may share structure, but the host owns visual identity and different communication jobs should not
+collapse into one rounded-card skin.
+
+For promotion reviews, architecture briefs and AI-generated visual explanations, start with the
+[Presentation Recipes](/docs/ui-react/presentation-recipes). They combine semantic HTML, metrics and
+Connect without turning report-specific cards into permanent package exports.
+
+For relational schemas, record lifecycles, migration history and performance evidence, use the
+[Data Model Recipes](/docs/ui-react/data-model-recipes). They demonstrate how the root shape entry,
+the isolated Presentation entry and opt-in Connect compose without a `schema` mode.
+
+For outcome evidence, decision scopes, reversible source changes and adoption policy, use the
+[Product Brief Recipes](/docs/ui-react/product-brief-recipes). They deliberately load only the
+Presentation entry and native HTML—no graph, Mermaid or chart runtime.
+
+Optional: render supported Mermaid [#optional-render-supported-mermaid]
+
+Add `@diax/mermaid` and use the separate composition entry only when Mermaid text is your input:
+
+```tsx
+import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram chart={`
+  classDiagram
+  class Animal
+  class Dog
+  Animal <|-- Dog
+`} />
+```
+
+`SmartMermaidDiagram` detects the supported family and applies its matching DOM renderers.
+Unsupported Mermaid families are reported rather than silently approximated.
+
+Available Components [#available-components]
+
+| Component                                                           | Diagram Type             | Key Features                                                                                    |
+| ------------------------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------- |
+| [`DiagramFrame`, semantic nodes](/docs/ui-react/presentation-nodes) | Reports and architecture | Actors, systems, artifacts, metrics, stages, evidence, decisions, risk, stores and custom roles |
+| [`FlowNode`](/docs/ui-react/flowchart)                              | Flowchart                | 6 shape variants (default, decision, terminal, database, process, io)                           |
+| [`ClassNode`](/docs/ui-react/class-diagram)                         | UML Class                | Three-section compound (header, attributes, methods)                                            |
+| [`EntityNode`](/docs/ui-react/er-diagram)                           | ER Diagram               | Table-style with PK/FK/UK constraint badges                                                     |
+| [`StateNode`](/docs/ui-react/state-diagram)                         | State Machine            | Three variants (default, initial dot, final double circle)                                      |
+| [`RequirementNode`](/docs/ui-react/requirement-diagram)             | Requirements             | Type badge + priority indicator                                                                 |
+| [`MindmapNode`](/docs/ui-react/mindmap)                             | Mindmap                  | Depth-aware auto styling with color cycling                                                     |
+
+Choosing a Diagram Type [#choosing-a-diagram-type]
+
+Not sure which component to use? Here's a quick guide:
+
+| Need to show\...                               | Use                                                       | Example                                             |
+| ---------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------- |
+| A report, architecture brief or evidence chain | [`Presentation Nodes`](/docs/ui-react/presentation-nodes) | Promotion review, incident response, AI explanation |
+| Processes, workflows, pipelines                | [`FlowNode`](/docs/ui-react/flowchart)                    | CI/CD pipelines, user flows, decision trees         |
+| Class hierarchies, interfaces                  | [`ClassNode`](/docs/ui-react/class-diagram)               | UML class diagrams, API schemas                     |
+| Database schemas, relationships                | [`EntityNode`](/docs/ui-react/er-diagram)                 | ER diagrams, data models                            |
+| State machines, transitions                    | [`StateNode`](/docs/ui-react/state-diagram)               | Auth flows, lifecycle states                        |
+| Requirements traceability                      | [`RequirementNode`](/docs/ui-react/requirement-diagram)   | Spec documents, compliance                          |
+| Hierarchical/radial ideas                      | [`MindmapNode`](/docs/ui-react/mindmap)                   | Brainstorming, topic trees                          |
+| **Mixed / Unknown**                            | [`SmartMermaidDiagram`](/docs/ui-react/smart-mermaid)     | Auto-detects from Mermaid syntax                    |
+
+Usage Patterns [#usage-patterns]
+
+1\. nodeTypes registry (recommended for application data) [#1-nodetypes-registry-recommended-for-application-data]
+
+Use individual renderer adapters with `FlowDiagram`:
+
+```tsx
+import { flowNodeRenderer, classNodeRenderer } from '@diax/ui-react';
+
+<FlowDiagram
+  nodeTypes={{
+    decision: flowNodeRenderer("decision"),
+    class: classNodeRenderer,
+  }}
+  nodes={nodes}
+  relations={relations}
+/>
+```
+
+2\. Direct compound components [#2-direct-compound-components]
+
+Compose one semantic node without adopting a diagram renderer:
+
+```tsx
+import { ClassNode, ClassHeader, ClassAttributes } from '@diax/ui-react';
+
+<ClassNode>
+  <ClassHeader stereotype="interface">Serializable</ClassHeader>
+  <ClassAttributes items={["+serialize(): string"]} />
+</ClassNode>
+```
+
+3\. SmartMermaidDiagram [#3-smartmermaiddiagram]
+
+Detect and render a supported Mermaid family:
+
+```tsx
+import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram chart={mermaidText} theme="light" />
+```
+
+4\. Family-specific Mermaid composition [#4-family-specific-mermaid-composition]
+
+When the family is already known:
+
+```tsx
+import { ClassDiagram, ERDiagram } from '@diax/ui-react/mermaid';
+
+<ClassDiagram chart={classMermaid} />
+<ERDiagram chart={erMermaid} />
+```
+
+Theme Integration [#theme-integration]
+
+All components respect DiaX CSS variables set by the `theme` prop:
+
+```tsx
+<SmartMermaidDiagram chart={chart} theme="notion" />
+```
+
+Override individual variables:
+
+```css
+.my-diagram {
+  --diax-node-bg: #1a1a2e;
+  --diax-accent: #e94560;
+  --diax-node-text: #eee;
+}
+```

@@ -1,0 +1,411 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T19a9,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DecisionNode, DiagramFrame, EvidenceNode, SystemNode } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import { Check, GitPullRequestArrow, X } from "lucide-react";
+import type { ReactNode } from "react";
+
+const checks = ["Static analysis", "Type coverage", "Supply chain", "Contract tests"] as const;
+
+const relations: readonly DiaxRelation<ReactNode>[] = [
+  {
+    id: "collect-normalize",
+    from: "collect",
+    to: "normalize",
+    color: "#25879a",
+    targetMarker: "arrow",
+    gap: 8,
+    label: <RelationLabel>Complete evidence</RelationLabel>,
+  },
+  {
+    id: "normalize-decide",
+    from: "normalize",
+    to: "decide",
+    color: "#7062b7",
+    targetMarker: "arrow",
+    gap: 8,
+    label: <RelationLabel>Policy input</RelationLabel>,
+  },
+];
+
+export default function ReleaseGateDecision() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="release-gate-decision"
+      eyebrow="Decision architecture · Authored DOM"
+      title="Collect evidence. Decide once."
+      description="A gate can preserve every diagnostic without turning every tool failure into a fragmented developer loop."
+      icon={<GitPullRequestArrow aria-hidden="true" />}
+      caption="Comparison is native HTML. Only the reviewable evidence chain participates in connection geometry."
+      className="w-full max-w-[1120px] [--diax-accent:#8b7ad1] [--diax-frame-bg:#0a1117] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#111b24] [--diax-node-border:#344451] [--diax-node-shadow:none] [--diax-node-text:#e5edf2] [--diax-ui-radius:3px]"
+    >
+      <section className="grid gap-3 md:grid-cols-2" aria-label="Quality gate behavior comparison">
+        <ComparisonCard
+          label="Fail-fast"
+          title="First failure ends the run"
+          summary="Developers repair one tool at a time and repeatedly wait for the same pipeline."
+          status="failure"
+        />
+        <ComparisonCard
+          label="Delayed decision"
+          title="Every check reports before policy runs"
+          summary="One execution returns the complete evidence set and a single accountable verdict."
+          status="success"
+        />
+      </section>
+
+      <div className="my-5 flex items-center gap-3" aria-hidden="true">
+        <span className="h-px flex-1 bg-slate-700" />
+        <span className="font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500">
+          Reviewable evidence path
+        </span>
+        <span className="h-px flex-1 bg-slate-700" />
+      </div>
+
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Delayed release decision relationships"
+        className="grid gap-20 py-2 sm:grid-cols-3 sm:gap-12 sm:py-5"
+      >
+        <EvidenceNode
+          {...connectionTarget("collect")}
+          title="Run every check"
+          source="lint · types · dependencies · tests"
+          sourceLabel="Inputs"
+          strength="high"
+          description="Failures become evidence records instead of immediate process exits."
+          className="relative max-w-none"
+        />
+        <SystemNode
+          {...connectionTarget("normalize")}
+          name="Normalize results"
+          kind="Policy boundary"
+          status="healthy"
+          tags={["severity", "scope", "source"]}
+          description="Translate tool-specific output into one stable decision contract."
+          className="relative max-w-none"
+        />
+        <DecisionNode
+          {...connectionTarget("decide")}
+          title="Evaluate once"
+          outcome="Pass or fail with full context"
+          criteria={[
+            "All tools completed",
+            "Thresholds are versioned",
+            "Diagnostics remain actionable",
+          ]}
+          status="approved"
+          owner="Release policy"
+          className="relative max-w-none"
+        />
+      </ConnectionSurface>
+
+      <dl className="m-0 mt-5 grid grid-cols-3 border-y border-slate-700 text-center">
+        <GateMetric label="Pipeline verdicts" value="1" />
+        <GateMetric label="Evidence sources" value="4" />
+        <GateMetric label="Hidden failures" value="0" />
+      </dl>
+    </DiagramFrame>
+  );
+}
+
+function ComparisonCard({
+  label,
+  title,
+  summary,
+  status,
+}: {
+  label: string;
+  title: string;
+  summary: string;
+  status: "failure" | "success";
+}) {
+  const failure = status === "failure";
+  return (
+    <article className="border border-slate-700 bg-[#0d161e] p-4">
+      <div className="flex items-center justify-between gap-3 border-b border-slate-700 pb-3">
+        <span
+          className={`font-mono text-[9px] font-bold uppercase tracking-[0.1em] ${failure ? "text-rose-300" : "text-emerald-300"}`}
+        >
+          {label}
+        </span>
+        {failure ? (
+          <X aria-hidden="true" className="size-4 text-rose-300" />
+        ) : (
+          <Check aria-hidden="true" className="size-4 text-emerald-300" />
+        )}
+      </div>
+      <h2 className="m-0 mt-3 text-sm font-semibold text-slate-100">{title}</h2>
+      <p className="m-0 mt-1 text-[11px] leading-relaxed text-slate-400">{summary}</p>
+      <ol className="m-0 mt-4 grid list-none grid-cols-2 gap-px bg-slate-700 p-px">
+        {checks.map((check, index) => {
+          const skipped = failure && index > 0;
+          return (
+            <li
+              key={check}
+              className={`flex items-center gap-1.5 bg-[#111b24] px-2 py-2 text-[9px] ${skipped ? "text-slate-600" : "text-slate-300"}`}
+            >
+              <span
+                aria-hidden="true"
+                className={`size-1.5 ${skipped ? "bg-slate-700" : failure ? "bg-rose-400" : "bg-emerald-400"}`}
+              />
+              {check}
+            </li>
+          );
+        })}
+      </ol>
+    </article>
+  );
+}
+
+function GateMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="border-l border-slate-700 px-2 py-3 first:border-l-0">
+      <dt className="text-[8px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+        {label}
+      </dt>
+      <dd className="m-0 mt-1 font-mono text-xl font-bold text-slate-100">{value}</dd>
+    </div>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-600 bg-[#0a1117] px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.06em] text-slate-300">
+      {children}
+    </span>
+  );
+}
+19:X
+1e:X
+1e:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"connect","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Release gate design"}],["$","h1",null,{"children":"Collect Evidence, Decide Once"}],["$","p",null,{"children":"A quality-gate study that keeps fail-fast comparison in ordinary HTML and connects only the three stages of the delayed decision chain."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1","key":"ezmyqa"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1","key":"e1hn23"}]],"className":"lucide-braces","aria-hidden":"true"}]," ","Connect DOM"]}],["$","li",null,{"children":"intermediate"}],[["$","li","ci",{"children":"ci"}],["$","li","comparison",{"children":"comparison"}],["$","li","connect",{"children":"connect"}],["$","li","decision",{"children":"decision"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6","$L7","$L8","$L9","$La","$Lb"]}]}],["$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14","$L15","$L16"],"$L17"]}],"isPartial":"$@18","staleTime":"$19","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$19","varyParams":null},{"rsc":"$L1c","isPartial":"$@1d","staleTime":"$19","varyParams":"$1e"}],"isUpgradeableISRFallback":false,"a":"$@1f","rootVaryParams":null,"needsRuntimeRequest":"$@20"}
+21:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+22:I[87565,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseReader"]
+23:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+24:I[623562,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+25:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+2a:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+2b:"$Sreact.suspense"
+2d:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+2e:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+2f:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+30:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"DOM measurement, target lifecycle and connection geometry."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"JSX, CSS layout, reading order and responsive composition."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"3 semantic targets · 2 evidence relations · native HTML comparison"}]]}]]}]]}]
+7:["$","section",null,{"className":"showcase-module__5fFjmW__scenarioGuidance","aria-labelledby":"release-gate-decision-scenario-question","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Question-First Recipe"}],["$","h2",null,{"id":"release-gate-decision-scenario-question","children":"What evidence should delay a release decision, and which gate owns the final outcome?"}],["$","p",null,{"children":"Use native HTML for the comparison and Connect only for the evidence chain leading to the decision."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioDecisionGrid","children":[["$","section",null,{"aria-labelledby":"release-gate-decision-use-when","children":[["$","h3",null,{"id":"release-gate-decision-use-when","children":"Use this shape when"}],["$","ul",null,{"children":[["$","li","Compare a fail-fast policy with an evidence-collecting release gate",{"children":"Compare a fail-fast policy with an evidence-collecting release gate"}],["$","li","Present metrics, risks, and a single accountable decision in a review or promotion narrative",{"children":"Present metrics, risks, and a single accountable decision in a review or promotion narrative"}]]}]]}],["$","section",null,{"aria-labelledby":"release-gate-decision-avoid-when","children":[["$","h3",null,{"id":"release-gate-decision-avoid-when","children":"Choose another shape when"}],["$","p",null,{"children":"Avoid this authored report shape when the task is only to document pipeline order or when no verified evidence supports the decision."}]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioFacts","children":[["$","h3",null,{"children":"Facts the author or agent must know first"}],["$","ol",null,{"children":[["$","li","The accountable decision owner",{"children":"The accountable decision owner"}],["$","li","The approved, blocked, or pending outcome",{"children":"The approved, blocked, or pending outcome"}],["$","li","The baseline policy being compared",{"children":"The baseline policy being compared"}],["$","li","The evidence collected before the decision",{"children":"The evidence collected before the decision"}],["$","li","The threshold or rule used by the gate",{"children":"The threshold or rule used by the gate"}]]}]]}],["$","details",null,{"className":"showcase-module__5fFjmW__scenarioPrompt","children":[["$","summary",null,{"children":"Copy-ready agent prompts"}],["$","div",null,{"children":[["$","section",null,{"children":[["$","h3",null,{"children":"English"}],["$","p",null,{"children":"Create reviewed Connect JSX for a release-gate decision. Keep the policy comparison in semantic HTML, connect only verified evidence to one accountable decision, state thresholds explicitly, and never infer causality from visual proximity."}]]}],["$","section",null,{"lang":"zh-CN","children":[["$","h3",null,{"children":"中文"}],["$","p",null,{"children":"使用经过代码审查的 Connect JSX 表达发布门禁决策。用语义化 HTML 展示策略对比，只把已验证证据连接到一个明确责任人的决策，显式写出阈值，不要从视觉邻近关系推断因果。"}]]}]]}]]}]]}]
+26:T19a9,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DecisionNode, DiagramFrame, EvidenceNode, SystemNode } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import { Check, GitPullRequestArrow, X } from "lucide-react";
+import type { ReactNode } from "react";
+
+const checks = ["Static analysis", "Type coverage", "Supply chain", "Contract tests"] as const;
+
+const relations: readonly DiaxRelation<ReactNode>[] = [
+  {
+    id: "collect-normalize",
+    from: "collect",
+    to: "normalize",
+    color: "#25879a",
+    targetMarker: "arrow",
+    gap: 8,
+    label: <RelationLabel>Complete evidence</RelationLabel>,
+  },
+  {
+    id: "normalize-decide",
+    from: "normalize",
+    to: "decide",
+    color: "#7062b7",
+    targetMarker: "arrow",
+    gap: 8,
+    label: <RelationLabel>Policy input</RelationLabel>,
+  },
+];
+
+export default function ReleaseGateDecision() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="release-gate-decision"
+      eyebrow="Decision architecture · Authored DOM"
+      title="Collect evidence. Decide once."
+      description="A gate can preserve every diagnostic without turning every tool failure into a fragmented developer loop."
+      icon={<GitPullRequestArrow aria-hidden="true" />}
+      caption="Comparison is native HTML. Only the reviewable evidence chain participates in connection geometry."
+      className="w-full max-w-[1120px] [--diax-accent:#8b7ad1] [--diax-frame-bg:#0a1117] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#111b24] [--diax-node-border:#344451] [--diax-node-shadow:none] [--diax-node-text:#e5edf2] [--diax-ui-radius:3px]"
+    >
+      <section className="grid gap-3 md:grid-cols-2" aria-label="Quality gate behavior comparison">
+        <ComparisonCard
+          label="Fail-fast"
+          title="First failure ends the run"
+          summary="Developers repair one tool at a time and repeatedly wait for the same pipeline."
+          status="failure"
+        />
+        <ComparisonCard
+          label="Delayed decision"
+          title="Every check reports before policy runs"
+          summary="One execution returns the complete evidence set and a single accountable verdict."
+          status="success"
+        />
+      </section>
+
+      <div className="my-5 flex items-center gap-3" aria-hidden="true">
+        <span className="h-px flex-1 bg-slate-700" />
+        <span className="font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500">
+          Reviewable evidence path
+        </span>
+        <span className="h-px flex-1 bg-slate-700" />
+      </div>
+
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Delayed release decision relationships"
+        className="grid gap-20 py-2 sm:grid-cols-3 sm:gap-12 sm:py-5"
+      >
+        <EvidenceNode
+          {...connectionTarget("collect")}
+          title="Run every check"
+          source="lint · types · dependencies · tests"
+          sourceLabel="Inputs"
+          strength="high"
+          description="Failures become evidence records instead of immediate process exits."
+          className="relative max-w-none"
+        />
+        <SystemNode
+          {...connectionTarget("normalize")}
+          name="Normalize results"
+          kind="Policy boundary"
+          status="healthy"
+          tags={["severity", "scope", "source"]}
+          description="Translate tool-specific output into one stable decision contract."
+          className="relative max-w-none"
+        />
+        <DecisionNode
+          {...connectionTarget("decide")}
+          title="Evaluate once"
+          outcome="Pass or fail with full context"
+          criteria={[
+            "All tools completed",
+            "Thresholds are versioned",
+            "Diagnostics remain actionable",
+          ]}
+          status="approved"
+          owner="Release policy"
+          className="relative max-w-none"
+        />
+      </ConnectionSurface>
+
+      <dl className="m-0 mt-5 grid grid-cols-3 border-y border-slate-700 text-center">
+        <GateMetric label="Pipeline verdicts" value="1" />
+        <GateMetric label="Evidence sources" value="4" />
+        <GateMetric label="Hidden failures" value="0" />
+      </dl>
+    </DiagramFrame>
+  );
+}
+
+function ComparisonCard({
+  label,
+  title,
+  summary,
+  status,
+}: {
+  label: string;
+  title: string;
+  summary: string;
+  status: "failure" | "success";
+}) {
+  const failure = status === "failure";
+  return (
+    <article className="border border-slate-700 bg-[#0d161e] p-4">
+      <div className="flex items-center justify-between gap-3 border-b border-slate-700 pb-3">
+        <span
+          className={`font-mono text-[9px] font-bold uppercase tracking-[0.1em] ${failure ? "text-rose-300" : "text-emerald-300"}`}
+        >
+          {label}
+        </span>
+        {failure ? (
+          <X aria-hidden="true" className="size-4 text-rose-300" />
+        ) : (
+          <Check aria-hidden="true" className="size-4 text-emerald-300" />
+        )}
+      </div>
+      <h2 className="m-0 mt-3 text-sm font-semibold text-slate-100">{title}</h2>
+      <p className="m-0 mt-1 text-[11px] leading-relaxed text-slate-400">{summary}</p>
+      <ol className="m-0 mt-4 grid list-none grid-cols-2 gap-px bg-slate-700 p-px">
+        {checks.map((check, index) => {
+          const skipped = failure && index > 0;
+          return (
+            <li
+              key={check}
+              className={`flex items-center gap-1.5 bg-[#111b24] px-2 py-2 text-[9px] ${skipped ? "text-slate-600" : "text-slate-300"}`}
+            >
+              <span
+                aria-hidden="true"
+                className={`size-1.5 ${skipped ? "bg-slate-700" : failure ? "bg-rose-400" : "bg-emerald-400"}`}
+              />
+              {check}
+            </li>
+          );
+        })}
+      </ol>
+    </article>
+  );
+}
+
+function GateMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="border-l border-slate-700 px-2 py-3 first:border-l-0">
+      <dt className="text-[8px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+        {label}
+      </dt>
+      <dd className="m-0 mt-1 font-mono text-xl font-bold text-slate-100">{value}</dd>
+    </div>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-600 bg-[#0a1117] px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.06em] text-slate-300">
+      {children}
+    </span>
+  );
+}
+8:["$","$L21",null,{"title":"Collect Evidence, Decide Once","entryLabel":"Connect DOM","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"release-gate-decision","children":["$","$L22",null,{"definition":{"steps":[{"id":"collect-complete-evidence","title":"Collect complete evidence","description":"Let every check report before policy turns tool output into a verdict.","nodeIds":["collect","normalize"],"edgeIds":["collect-normalize"],"evidenceIds":[]},{"id":"normalize-one-contract","title":"Normalize one contract","description":"Severity, scope, and source cross one stable policy seam instead of leaking tool-specific behavior.","nodeIds":["normalize","decide"],"edgeIds":["normalize-decide"],"evidenceIds":[]},{"id":"decide-once","title":"Decide once","description":"One accountable gate evaluates versioned thresholds while preserving the complete diagnostic record.","nodeIds":["decide"],"edgeIds":[],"evidenceIds":[]}],"evidence":[]},"children":[["$","$L23",null,{"moduleIds":[702194]}],["$","$L24",null,{}]]}]}],"code":["$","$L25",null,{"files":[{"path":"components/diagrams/release-gate-decision/release-gate-decision.tsx","content":"$26"}],"slug":"release-gate-decision"}]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__proofRegion","aria-label":"Reproducible evidence","children":["$","details",null,{"className":"showcase-module__5fFjmW__proofDisclosure","data-showcase-proof":"release-gate-decision","data-manual-review":"pending","children":[["$","summary",null,{"children":[["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryTitle","children":[["$","span",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Verification Manifest"}],["$","strong",null,{"children":"Reproducible evidence"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryState","children":[["$","span",null,{"children":"Automated contract"}],["$","span",null,{"children":"Human visual review pending"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofToggle","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__proofBody","children":[["$","p",null,{"className":"showcase-module__5fFjmW__proofBoundary","children":"This receipt binds the committed specimen to its generated registry artifact. It describes a reproducible contract, not the result of the latest CI run or a hardware browser sign-off."}],["$","div",null,{"className":"showcase-module__5fFjmW__proofManifest","children":[["$","section",null,{"aria-labelledby":"release-gate-decision-integrity-title","children":[["$","h3",null,{"id":"release-gate-decision-integrity-title","children":"Integrity"}],["$","dl",null,{"className":"showcase-module__5fFjmW__proofIntegrity","children":[["$","div","source",{"children":[["$","dt",null,{"children":"source"}],["$","dd",null,{"children":[["$","span",null,{"children":"registry/examples/release-gate-decision/release-gate-decision.tsx"}],["$","code",null,{"translate":"no","data-proof-hash":"source","data-sha256":"4b03a07a2aed78419b3ea96ebab8e519d9807f43679f71badab0553f97938305","title":"4b03a07a2aed78419b3ea96ebab8e519d9807f43679f71badab0553f97938305","children":["sha256:","4b03a07a2aed...97938305"]}]]}]]}],["$","div","artifact",{"children":[["$","dt",null,{"children":"artifact"}],["$","dd",null,{"children":[["$","span",null,{"children":"public/r/release-gate-decision.json"}],["$","code",null,{"translate":"no","data-proof-hash":"artifact","data-sha256":"5911183befe84aba2663b4c89517c836dc6780f08b4773e19c8ebbc7b5483737","title":"5911183befe84aba2663b4c89517c836dc6780f08b4773e19c8ebbc7b5483737","children":["sha256:","5911183befe8...b5483737"]}]]}]]}]]}]]}],["$","section",null,{"aria-labelledby":"release-gate-decision-checks-title","children":[["$","h3",null,{"id":"release-gate-decision-checks-title","children":"Deterministic checks"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofChecks","children":[["$","li","registry-source-contract",{"children":[["$","span",null,{"aria-hidden":"true"}],"Registry source contract"]}],["$","li","artifact-drift-check",{"children":[["$","span",null,{"aria-hidden":"true"}],"Artifact drift check"]}],["$","li","public-entry-boundary",{"children":[["$","span",null,{"aria-hidden":"true"}],"Public entry boundary"]}],["$","li","browser-render",{"children":[["$","span",null,{"aria-hidden":"true"}],"Browser render contract"]}]]}]]}],["$","section",null,{"aria-labelledby":"release-gate-decision-surface-title","children":[["$","h3",null,{"id":"release-gate-decision-surface-title","children":"Exercised surface"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Exact public entries"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofEntries","children":[["$","li","@diax/react/connect",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"@diax/react/connect"}]}],["$","li","@diax/ui-react/presentation",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"@diax/ui-react/presentation"}]}],["$","li","diax",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"diax"}]}]]}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Browser contract targets"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofBrowsers","aria-label":"Browser contract targets","children":[["$","li","chromium",{"data-proof-browser":"chromium","children":"chromium"}],"$L27","$L28"]}]]}],"$L29"]}]]}]]}]}]
+a:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","@diax/ui-react",{"translate":"no","children":"@diax/ui-react"}],["$","li","diax",{"translate":"no","children":"diax"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+b:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react/connect","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Connect DOM"]}],["$","strong",null,{"children":"Connect Authored DOM"}],["$","span",null,{"children":"Keep your JSX and CSS layout while DiaX measures and connects exact elements."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","repository-evidence-map",{"children":["$","$L2",null,{"href":"/showcase/repository-evidence-map","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Repository Evidence Map"}],["$","span",null,{"children":"3 pinned source facts · 1 bounded adoption decision · no inferred topology"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","agent-review-sequence",{"children":["$","$L2",null,{"href":"/showcase/agent-review-sequence","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Agent Review Sequence"}],["$","span",null,{"children":"4 participants · 6 ordered messages · 12 measured row endpoints · responsive transcript"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","dom-system-architecture",{"children":["$","$L2",null,{"href":"/showcase/dom-system-architecture","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"DOM System Architecture"}],["$","span",null,{"children":"9 DOM targets · 7 relations · 0 manual anchors"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+c:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+d:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+e:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+f:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+10:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+11:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+12:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+13:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+14:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+15:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+16:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+17:["$","$L2a",null,{"children":["$","$2b",null,{"name":"Next.MetadataOutlet","children":"$@2c"}]}]
+1a:["$","$1","h",{"children":[null,["$","$L2d",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L2e",null,{"children":["$","$2b",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Collect Evidence, Decide Once — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"A quality-gate study that keeps fail-fast comparison in ordinary HTML and connects only the three stages of the delayed decision chain."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/release-gate-decision/"}],["$","meta","3",{"property":"og:title","content":"Collect Evidence, Decide Once — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"A quality-gate study that keeps fail-fast comparison in ordinary HTML and connects only the three stages of the delayed decision chain."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/release-gate-decision/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1c:["$","$1","c",{"children":[null,["$","$L2f",null,{"parallelRouterKey":"children","template":["$","$L30",null,{}]}]]}]
+20:true
+27:["$","li","firefox",{"data-proof-browser":"firefox","children":"firefox"}]
+28:["$","li","webkit",{"data-proof-browser":"webkit","children":"webkit"}]
+29:["$","section",null,{"aria-labelledby":"release-gate-decision-review-title","children":[["$","h3",null,{"id":"release-gate-decision-review-title","children":"Human review"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofReviewPending","children":[["$","strong",null,{"children":"Pending"}],"Visual quality, assistive technology and physical browser environments still require an identified reviewer."]}]]}]
+2c:null
+19:300
+19:C
+1f:0
+1b:"$undefined"
+1d:"$undefined"
+18:"$undefined"

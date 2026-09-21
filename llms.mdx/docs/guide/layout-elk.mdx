@@ -1,0 +1,247 @@
+# ELK Layout (/docs/guide/layout-elk)
+
+
+
+<InstallTabs packages="['@diax/layout-elk']" description="Experimental ELK.js LayoutPlan adapter" />
+
+What ELK adds [#what-elk-adds]
+
+ELK (Eclipse Layout Kernel) is the opt-in engine for graphs that need stronger port ordering,
+crossing minimization, orthogonal sections, or non-layered algorithms. DiaX does not bundle ELK into
+Core or any framework package.
+
+Use the built-in planner for ordinary layered diagrams: pipelines, architecture overviews, and
+small-to-medium DAGs with a readable number of relations per rank transition. Escalate to ELK when
+a transition is highly congested, ports need strict ordering, or preserving exact routed sections
+matters more than synchronous startup and bundle size.
+
+The recommended API is `computeLayoutPlan()`. It preserves:
+
+* exact pixel node placements and measured node sizes;
+* stable source and target ports;
+* every ELK edge section and bend point;
+* exact label coordinates and measured label sizes;
+* native compound-group bounds and absolute descendant positions;
+* ordered entry/exit ports where native routes cross semantic group bounds;
+* complete plan bounds.
+
+The output is the same engine-neutral `LayoutPlan` used by the built-in planner.
+
+When not to choose ELK [#when-not-to-choose-elk]
+
+Stay with the built-in planner when the graph is an ordinary pipeline, architecture overview or
+small-to-medium DAG. ELK adds an asynchronous dependency and a measurement handoff; it does not make
+rich DOM content automatically measurable and it does not replace a presentation design system.
+
+Do not choose ELK only because one edge looks imperfect. First confirm that node sizes and edge-label
+sizes are measured, the intended layout owner is Diagram rather than Connect, and the graph actually
+needs strict port ordering, compound geometry or denser crossing minimization. React can consume an
+external `LayoutPlan` today; the other high-level adapters do not yet expose that seam.
+
+<Callout type="warn">
+  `@diax/layout-elk` remains experimental. React `DiagramEdges` can consume its plan today. Vue,
+  Solid, Svelte, and Vanilla already have per-edge label measurement and incremental route-stability
+  parity for their built-in planner, but do not yet expose an external `LayoutPlan` rendering prop.
+  A custom compound renderer must place `plan.groups` behind `plan.nodes`; `DiagramEdges` only owns
+  edge geometry.
+</Callout>
+
+Compound groups [#compound-groups]
+
+Pass the same semantic `groups` used by `FlowDiagram` in the layout context. You still do not author
+group coordinates. ELK creates native compound nodes, and `LayoutPlan.groups` retains their final
+pixel bounds outermost first. Invalid members, duplicate ownership, or parent cycles fail with the
+same structured `DiaxValidationError` diagnostics as the built-in engine.
+
+If a custom ELK renderer places rich group labels on those bounds, pass their measured local boxes
+as `groupLabelRects` in `ElkLayoutContext`. DiaX then applies the same border exclusion and group-port
+normalization as the built-in planner. Do not estimate label width in the graph definition.
+
+```ts contract
+import { elkLayout } from '@diax/layout-elk';
+import { parseRelations } from 'diax';
+
+const nodes = [
+  { id: 'browser', content: 'Browser' },
+  { id: 'api', content: 'API' },
+  { id: 'db', content: 'DB' },
+];
+const groups = [
+  { id: 'backend', nodeIds: ['api', 'db'], parentId: 'system' },
+  { id: 'system', nodeIds: ['browser'] },
+];
+const plan = await elkLayout().computeLayoutPlan(
+  nodes,
+  parseRelations(['browser->api', 'api->db']),
+  { groups },
+);
+
+plan.groups;
+plan.edges.flatMap((edge) => edge.groupPorts ?? []);
+```
+
+Use ELK for strict compound geometry or dense cross-group routing. The built-in flow layout keeps
+automatic group subtrees in exclusive CSS Grid row bands and derives measured group bounds, which
+is sufficient for ordinary architecture and pipeline diagrams.
+
+React: preserve the complete plan [#react-preserve-the-complete-plan]
+
+ELK owns both node placement and routes in this example. The application still owns each node's
+actual DOM content.
+
+<CodeBlockTabs defaultValue="React">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="React">
+      React
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="React">
+    ```tsx  title="ElkDiagram.tsx" contract
+    import { elkLayout } from '@diax/layout-elk';
+    import { DiagramEdges } from '@diax/react';
+    import { parseRelations, type LayoutPlan } from 'diax';
+    import { useEffect, useState } from 'react';
+
+    const nodes = [
+      { id: 'gateway', content: 'API Gateway' },
+      { id: 'auth', content: 'Auth Service' },
+      { id: 'users', content: 'User Service' },
+      { id: 'db', content: 'PostgreSQL' },
+    ];
+
+    const edges = parseRelations([
+      { id: 'gateway-auth', from: 'gateway', to: 'auth', label: 'JWT' },
+      { id: 'gateway-users', from: 'gateway', to: 'users', label: 'HTTPS' },
+      { id: 'auth-db', from: 'auth', to: 'db', label: 'SQL' },
+      { id: 'users-db', from: 'users', to: 'db', label: 'SQL' },
+    ]);
+
+    export function ElkDiagram() {
+      const [plan, setPlan] = useState<LayoutPlan | null>(null);
+
+      useEffect(() => {
+        void elkLayout({ algorithm: 'layered', direction: 'horizontal' })
+          .computeLayoutPlan(nodes, edges, {
+            nodeSizes: new Map(nodes.map(node => [node.id, { width: 160, height: 56 }])),
+            labelSizes: new Map(edges.map(edge => [edge.id!, { width: 64, height: 24 }])),
+          })
+          .then(setPlan);
+      }, []);
+
+      if (!plan) return <p>Computing layout…</p>;
+      const content = new Map(nodes.map(node => [node.id, node.content]));
+
+      return (
+        <div
+          style={{
+            position: 'relative',
+            width: plan.bounds.width,
+            height: plan.bounds.height,
+          }}
+        >
+          {plan.nodes.map(node => (
+            <div
+              key={node.id}
+              data-diax-node={node.id}
+              style={{
+                position: 'absolute',
+                left: node.x,
+                top: node.y,
+                width: node.width,
+                height: node.height,
+              }}
+            >
+              {content.get(node.id)}
+            </div>
+          ))}
+          <DiagramEdges edges={edges} layoutPlan={plan} pathType="orthogonal" />
+        </div>
+      );
+    }
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+Real applications usually measure their node and label components before running ELK. The fixed
+sizes above keep the example focused on the adapter contract. Supplying actual sizes is what lets
+ELK reserve enough space for rich JSX/Tailwind content.
+
+Invalid geometry fails at the owner [#invalid-geometry-fails-at-the-owner]
+
+ELK is a numeric trust boundary. DiaX validates resolved layout options, consumed node and label
+measurements, group-label rectangles, the raw ELK result, and the final engine-neutral plan. A
+`NaN`, `Infinity`, or negative extent fails once with `code: "invalid-elk-geometry"` and the exact
+path before label, port, crossing, group, or SVG calculations run.
+
+```ts
+await elkLayout().computeLayoutPlan(nodes, edges, {
+  nodeSizes: new Map([
+    ['gateway', { width: Number.NaN, height: 56 }],
+  ]),
+});
+// DiaxElkGeometryError:
+// [DiaX: invalid-elk-geometry] context.nodeSizes["gateway"].width ...
+```
+
+This adapter-local error is intentionally not another Core diagnostic code or public repair mode.
+Fix the owning DOM measurement. Do not replace an invalid value with zero merely to make layout
+continue; doing so would turn missing geometry into invented geometry.
+
+Engine-neutral consumption [#engine-neutral-consumption]
+
+Custom renderers can turn a plan into styled SVG path data without depending on React:
+
+```ts contract
+import type { LayoutPlan, ParsedRelation } from 'diax';
+import { computeEdgePathsFromLayoutPlan } from 'diax/layout-plan';
+
+declare const plan: LayoutPlan;
+declare const edges: ParsedRelation[];
+
+const paths = computeEdgePathsFromLayoutPlan(plan, edges, {
+  pathType: 'orthogonal',
+});
+```
+
+`pathType` only selects the visual interpolation of an already planned route. It does not rerun ELK
+or replace its sections with a direct Bézier.
+
+Compatibility bridge [#compatibility-bridge]
+
+The original `computeLayout()` method still returns `LayoutResult` for existing integrations:
+
+```ts contract
+import { elkLayout } from '@diax/layout-elk';
+import { parseRelations } from 'diax';
+
+const nodes = [
+  { id: 'a', content: 'A' },
+  { id: 'b', content: 'B' },
+];
+const result = await elkLayout().computeLayout(nodes, parseRelations(['a->b']));
+```
+
+<Callout type="warn">
+  This bridge quantizes ELK pixels back to DiaX `col`/`row` positions and necessarily discards the
+  advanced route geometry. Use it only while migrating an existing `FlowDiagram` integration.
+</Callout>
+
+Available algorithms [#available-algorithms]
+
+| Algorithm | Best for                                   |
+| --------- | ------------------------------------------ |
+| `layered` | Directed flows and architectures (default) |
+| `force`   | Organic network relationships              |
+| `stress`  | Distance-preserving graph placement        |
+| `mrtree`  | Tree structures                            |
+| `radial`  | Center-out structures                      |
+
+All algorithms return the same `LayoutPlan` shape. Algorithm-specific tuning stays inside the
+opt-in ELK package; ordinary DiaX users should not need raw ELK option keys.
+
+Related [#related]
+
+* [Graph & Layout Primitives](/docs/reference/graph-layout)
+* [Edge Rendering Primitives](/docs/reference/edge-rendering)
+* [Layout modes](/docs/guide/layout-modes)

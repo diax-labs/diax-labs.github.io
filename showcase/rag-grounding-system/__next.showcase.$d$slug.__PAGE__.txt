@@ -1,0 +1,545 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T2553,"use client";
+
+import { FlowDiagram } from "@diax/react";
+import {
+  DataStoreNode,
+  DiagramFrame,
+  EvidenceNode,
+  NodeBadge,
+  SystemNode,
+} from "@diax/ui-react/presentation";
+import type { DiaxGroup, DiaxNode, DiaxRelation } from "diax";
+import { BookOpenCheck, DatabaseZap, SearchCheck } from "lucide-react";
+import type { KeyboardEvent, ReactNode } from "react";
+
+const nodeClass = "w-[176px] max-w-[176px] [--diax-node-radius:2px]";
+
+const nodes = [
+  system("question", "Reader question", "Application input", ["intent", "tenant"], "info"),
+  system("guard", "Request policy", "Safety boundary", ["auth", "scope", "PII"], "warning"),
+  system(
+    "orchestrator",
+    "Retrieval orchestrator",
+    "Query runtime",
+    ["plan", "budget", "trace"],
+    "accent",
+  ),
+  store("semantic-cache", "Semantic cache", "TTL + policy key", ["safe response", "source set"]),
+  system("query-embed", "Query embedding", "Model boundary", ["normalized vector"], "neutral"),
+  store("vector-store", "Knowledge index", "Vector + metadata", ["chunk", "source", "ACL"]),
+  system("retrieve", "Candidate retrieval", "Search stage", ["top-k", "ACL filter"], "info"),
+  system("rerank", "Evidence reranker", "Ranking stage", ["relevance", "diversity"], "accent"),
+  system("answer", "Grounded answer", "Generation stage", ["claim", "citation"], "success"),
+  {
+    id: "evidence",
+    content: (
+      <EvidenceNode
+        className={nodeClass}
+        title="Citation receipt"
+        source="document revision + chunk ID"
+        sourceLabel="Trace"
+        strength="high"
+        description="Every material claim retains the exact retrieved source used to compose it."
+      />
+    ),
+  },
+  system("ingest", "Source intake", "Index pipeline", ["docs", "tickets", "runbooks"], "neutral"),
+  system("chunk", "Semantic chunking", "Transform stage", ["section", "overlap"], "info"),
+  system("doc-embed", "Document embedding", "Model boundary", ["batch", "revision"], "neutral"),
+] satisfies readonly DiaxNode<ReactNode>[];
+
+const relations = [
+  relation("question-guard", "question", "guard", "request"),
+  relation("guard-orchestrator", "guard", "orchestrator", "authorized intent"),
+  relation("orchestrator-cache", "orchestrator", "semantic-cache", "policy-aware lookup"),
+  relation("cache-orchestrator", "semantic-cache", "orchestrator", "safe hit"),
+  relation("orchestrator-query-embed", "orchestrator", "query-embed", "search plan"),
+  relation("query-embed-vector", "query-embed", "vector-store", "similarity query"),
+  relation("vector-retrieve", "vector-store", "retrieve", "scoped candidates"),
+  relation("retrieve-rerank", "retrieve", "rerank", "top-k passages"),
+  relation("rerank-orchestrator", "rerank", "orchestrator", "ranked evidence"),
+  relation("orchestrator-answer", "orchestrator", "answer", "grounded prompt"),
+  relation("answer-evidence", "answer", "evidence", "claims + citations"),
+  relation("ingest-chunk", "ingest", "chunk", "versioned source"),
+  relation("chunk-doc-embed", "chunk", "doc-embed", "semantic units"),
+  relation("doc-embed-vector", "doc-embed", "vector-store", "upsert revision"),
+] satisfies readonly DiaxRelation<ReactNode>[];
+
+const groups = [
+  {
+    id: "rag-system",
+    label: <GroupLabel index="00">Grounded answer system</GroupLabel>,
+    nodeIds: [],
+  },
+  {
+    id: "query-runtime",
+    parentId: "rag-system",
+    label: <GroupLabel index="01">Online question path</GroupLabel>,
+    nodeIds: [
+      "question",
+      "guard",
+      "orchestrator",
+      "semantic-cache",
+      "query-embed",
+      "retrieve",
+      "rerank",
+      "answer",
+      "evidence",
+    ],
+  },
+  {
+    id: "index-pipeline",
+    parentId: "rag-system",
+    label: <GroupLabel index="02">Versioned knowledge path</GroupLabel>,
+    nodeIds: ["ingest", "chunk", "doc-embed", "vector-store"],
+  },
+] satisfies readonly DiaxGroup<ReactNode>[];
+
+export default function RagGroundingSystem() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="rag-grounding-system"
+      eyebrow="AI architecture · Automatic topology"
+      title="A grounded answer has two supply chains"
+      description="The online question path consumes a separately versioned knowledge path. DiaX owns their topology, nested boundaries and feedback routes."
+      icon={<BookOpenCheck aria-hidden="true" />}
+      caption="The cache can return to orchestration, but every delivered claim still terminates in a citation receipt."
+      className="w-full max-w-[1120px] [--diax-accent:#176d68] [--diax-frame-bg:#f0ede4] [--diax-frame-radius:2px] [--diax-frame-shadow:none] [--diax-node-bg:#fffdf8] [--diax-node-border:#9ea9a5] [--diax-node-shadow:none] [--diax-node-text:#17272b] [--diax-ui-radius:2px]"
+    >
+      <div className="mb-4 grid border-y border-[#aeb6b0] md:grid-cols-3">
+        <SystemFact
+          icon={<SearchCheck aria-hidden="true" />}
+          label="Online path"
+          value="9 stages"
+        />
+        <SystemFact icon={<DatabaseZap aria-hidden="true" />} label="Index path" value="4 stages" />
+        <SystemFact icon={<BookOpenCheck aria-hidden="true" />} label="Manual geometry" value="0" />
+      </div>
+
+      <div className="mb-2 flex items-center justify-between gap-3 text-[11px] leading-5 text-[#52605d] sm:hidden">
+        <span>Wide topology map</span>
+        <span
+          aria-hidden="true"
+          className="font-mono font-semibold uppercase tracking-[0.06em] text-[#176d68]"
+        >
+          Scroll →
+        </span>
+      </div>
+
+      <section
+        data-diax-reading-canvas
+        className="overflow-x-auto overscroll-x-contain border border-[#aeb6b0] bg-[#f8f5ed] p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#176d68] sm:p-5"
+        aria-label="Grounded answer retrieval and ingestion architecture. Scroll horizontally to inspect the complete topology."
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: this overflow region must remain keyboard-scrollable in browsers that do not auto-focus it.
+        tabIndex={0}
+        onKeyDown={scrollTopologyOnArrow}
+      >
+        <FlowDiagram
+          nodes={nodes}
+          relations={relations}
+          groups={groups}
+          direction="horizontal"
+          density="compact"
+          pathType="orthogonal"
+          strokeColor="#526d6b"
+          highlightOnHover
+          className="min-w-[1020px] [--diax-group-background:rgb(23_109_104_/_0.025)] [--diax-group-border:#8da8a4] [--diax-group-label-background:#f8f5ed] [--diax-group-label-inset:14px] [--diax-group-radius:2px]"
+          renderEdgeLabel={(label) => <RelationLabel>{label}</RelationLabel>}
+        />
+      </section>
+
+      <p className="m-0 mt-4 border-l-[3px] border-[#b65d3a] pl-3 text-xs leading-relaxed text-[#52605d]">
+        Retrieval is not trusted merely because it returned text. Authorization constrains search,
+        revisions constrain the index, and citation identity constrains the final answer.
+      </p>
+    </DiagramFrame>
+  );
+}
+
+function system(
+  id: string,
+  name: string,
+  kind: string,
+  tags: readonly string[],
+  tone: "neutral" | "accent" | "info" | "success" | "warning",
+): DiaxNode<ReactNode> {
+  return {
+    id,
+    content: (
+      <SystemNode
+        className={nodeClass}
+        name={name}
+        kind={kind}
+        tags={tags}
+        tone={tone}
+        status={tone === "warning" ? "degraded" : tone === "success" ? "healthy" : undefined}
+        statusLabel={
+          tone === "warning" ? "policy gate" : tone === "success" ? "grounded" : undefined
+        }
+      />
+    ),
+  };
+}
+
+function store(
+  id: string,
+  name: string,
+  engine: string,
+  entries: readonly string[],
+): DiaxNode<ReactNode> {
+  return {
+    id,
+    content: <DataStoreNode className={nodeClass} name={name} engine={engine} entries={entries} />,
+  };
+}
+
+function relation(id: string, from: string, to: string, label: string): DiaxRelation<ReactNode> {
+  return {
+    id,
+    from,
+    to,
+    label,
+    targetMarker: "arrow",
+    gap: 7,
+  };
+}
+
+function scrollTopologyOnArrow(event: KeyboardEvent<HTMLElement>) {
+  if (event.target !== event.currentTarget) return;
+  const direction = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+  if (direction === 0) return;
+  event.preventDefault();
+  event.currentTarget.scrollBy({
+    behavior: "auto",
+    left: direction * Math.max(96, Math.round(event.currentTarget.clientWidth * 0.75)),
+  });
+}
+
+function GroupLabel({ index, children }: { index: string; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2 whitespace-nowrap text-[#234643]">
+      <NodeBadge tone="info">{index}</NodeBadge>
+      <strong className="font-mono text-[11px] uppercase tracking-[0.08em]">{children}</strong>
+    </span>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-[#91a19d] bg-[#fffdf8] px-1.5 py-0.5 font-mono text-[11px] font-semibold text-[#345451]">
+      {children}
+    </span>
+  );
+}
+
+function SystemFact({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
+  return (
+    <div className="flex items-center gap-3 border-[#aeb6b0] px-3 py-3 md:border-l md:first:border-l-0">
+      <span className="text-[#176d68] [&>svg]:size-4">{icon}</span>
+      <span>
+        <span className="block font-mono text-[10px] uppercase tracking-[0.08em] text-[#687470]">
+          {label}
+        </span>
+        <strong className="block text-sm text-[#17272b]">{value}</strong>
+      </span>
+    </div>
+  );
+}
+19:X
+1e:X
+1e:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"diagram","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Grounded AI answer architecture"}],["$","h1",null,{"children":"RAG Grounding System"}],["$","p",null,{"children":"A two-path retrieval architecture that automatically lays out online questioning, versioned ingestion, cache feedback, safety gates and citation receipts."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M12 3v18","key":"108xh3"}],["path",{"d":"M3 12h18","key":"1i2n21"}],["rect",{"x":"3","y":"3","width":"18","height":"18","rx":"2","key":"h1oib"}]],"className":"lucide-grid2x2 lucide-grid-2x2","aria-hidden":"true"}]," ","Diagram"]}],["$","li",null,{"children":"advanced"}],[["$","li","ai",{"children":"ai"}],["$","li","architecture",{"children":"architecture"}],["$","li","citations",{"children":"citations"}],["$","li","diagram",{"children":"diagram"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6","$L7","$L8","$L9","$La","$Lb"]}]}],["$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14","$L15","$L16"],"$L17"]}],"isPartial":"$@18","staleTime":"$19","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$19","varyParams":null},{"rsc":"$L1c","isPartial":"$@1d","staleTime":"$19","varyParams":"$1e"}],"isUpgradeableISRFallback":false,"a":"$@1f","rootVaryParams":null,"needsRuntimeRequest":"$@20"}
+21:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+22:I[87565,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseReader"]
+23:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+24:I[424251,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+25:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+2a:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+2b:"$Sreact.suspense"
+2d:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+2e:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+2f:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+30:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"Rank assignment, node placement, edge routing and label clearance."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"Node content, styling, interaction and application semantics."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"13 rich DOM nodes · 14 relations · 2 nested paths · 0 manual geometry"}]]}]]}]]}]
+7:["$","section",null,{"className":"showcase-module__5fFjmW__scenarioGuidance","aria-labelledby":"rag-grounding-system-scenario-question","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Question-First Recipe"}],["$","h2",null,{"id":"rag-grounding-system-scenario-question","children":"Which independent controls make an AI answer grounded, authorized and reviewable?"}],["$","p",null,{"children":"Use Diagram because topology and nested containment own placement; render system, durable-store and evidence roles as ordinary DOM and keep geometry automatic. Preserve readable node, edge-label and group-title type on narrow screens: use a visibly labelled horizontal reading canvas instead of scaling the complete architecture down."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioDecisionGrid","children":[["$","section",null,{"aria-labelledby":"rag-grounding-system-use-when","children":[["$","h3",null,{"id":"rag-grounding-system-use-when","children":"Use this shape when"}],["$","ul",null,{"children":[["$","li","Explain how an online retrieval path consumes a separately versioned knowledge index",{"children":"Explain how an online retrieval path consumes a separately versioned knowledge index"}],["$","li","Review cache, authorization, retrieval, ranking and citation responsibilities as one system",{"children":"Review cache, authorization, retrieval, ranking and citation responsibilities as one system"}]]}]]}],["$","section",null,{"aria-labelledby":"rag-grounding-system-avoid-when","children":[["$","h3",null,{"id":"rag-grounding-system-avoid-when","children":"Choose another shape when"}],["$","p",null,{"children":"Avoid this architecture when the product performs no retrieval, or when a short sequence can explain the behavior without system boundaries."}]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioFacts","children":[["$","h3",null,{"children":"Facts the author or agent must know first"}],["$","ol",null,{"children":[["$","li","The authorization and tenant boundary applied before retrieval",{"children":"The authorization and tenant boundary applied before retrieval"}],["$","li","The cache key and invalidation policy",{"children":"The cache key and invalidation policy"}],["$","li","The citation identity retained with every material answer claim",{"children":"The citation identity retained with every material answer claim"}],["$","li","The retrieval and reranking responsibilities",{"children":"The retrieval and reranking responsibilities"}],["$","li","The source revision and access metadata stored with every chunk",{"children":"The source revision and access metadata stored with every chunk"}]]}]]}],["$","details",null,{"className":"showcase-module__5fFjmW__scenarioPrompt","children":[["$","summary",null,{"children":"Copy-ready agent prompts"}],["$","div",null,{"children":[["$","section",null,{"children":[["$","h3",null,{"children":"English"}],["$","p",null,{"children":"Create a bounded DiaX Diagram for a grounded RAG system. Separate the online question path from the versioned indexing path, name authorization, cache, retrieval, reranking and citation contracts, preserve stable IDs, and do not add coordinates, bend points or a RAG-specific mode."}]]}],["$","section",null,{"lang":"zh-CN","children":[["$","h3",null,{"children":"中文"}],["$","p",null,{"children":"使用 DiaX Diagram 创建一个有边界的可信 RAG 系统图。分离在线提问链路与版本化索引链路，明确授权、缓存、检索、重排和引用契约，保持稳定 ID，不要添加坐标、折点或 RAG 专用 mode。"}]]}]]}]]}]]}]
+26:T2553,"use client";
+
+import { FlowDiagram } from "@diax/react";
+import {
+  DataStoreNode,
+  DiagramFrame,
+  EvidenceNode,
+  NodeBadge,
+  SystemNode,
+} from "@diax/ui-react/presentation";
+import type { DiaxGroup, DiaxNode, DiaxRelation } from "diax";
+import { BookOpenCheck, DatabaseZap, SearchCheck } from "lucide-react";
+import type { KeyboardEvent, ReactNode } from "react";
+
+const nodeClass = "w-[176px] max-w-[176px] [--diax-node-radius:2px]";
+
+const nodes = [
+  system("question", "Reader question", "Application input", ["intent", "tenant"], "info"),
+  system("guard", "Request policy", "Safety boundary", ["auth", "scope", "PII"], "warning"),
+  system(
+    "orchestrator",
+    "Retrieval orchestrator",
+    "Query runtime",
+    ["plan", "budget", "trace"],
+    "accent",
+  ),
+  store("semantic-cache", "Semantic cache", "TTL + policy key", ["safe response", "source set"]),
+  system("query-embed", "Query embedding", "Model boundary", ["normalized vector"], "neutral"),
+  store("vector-store", "Knowledge index", "Vector + metadata", ["chunk", "source", "ACL"]),
+  system("retrieve", "Candidate retrieval", "Search stage", ["top-k", "ACL filter"], "info"),
+  system("rerank", "Evidence reranker", "Ranking stage", ["relevance", "diversity"], "accent"),
+  system("answer", "Grounded answer", "Generation stage", ["claim", "citation"], "success"),
+  {
+    id: "evidence",
+    content: (
+      <EvidenceNode
+        className={nodeClass}
+        title="Citation receipt"
+        source="document revision + chunk ID"
+        sourceLabel="Trace"
+        strength="high"
+        description="Every material claim retains the exact retrieved source used to compose it."
+      />
+    ),
+  },
+  system("ingest", "Source intake", "Index pipeline", ["docs", "tickets", "runbooks"], "neutral"),
+  system("chunk", "Semantic chunking", "Transform stage", ["section", "overlap"], "info"),
+  system("doc-embed", "Document embedding", "Model boundary", ["batch", "revision"], "neutral"),
+] satisfies readonly DiaxNode<ReactNode>[];
+
+const relations = [
+  relation("question-guard", "question", "guard", "request"),
+  relation("guard-orchestrator", "guard", "orchestrator", "authorized intent"),
+  relation("orchestrator-cache", "orchestrator", "semantic-cache", "policy-aware lookup"),
+  relation("cache-orchestrator", "semantic-cache", "orchestrator", "safe hit"),
+  relation("orchestrator-query-embed", "orchestrator", "query-embed", "search plan"),
+  relation("query-embed-vector", "query-embed", "vector-store", "similarity query"),
+  relation("vector-retrieve", "vector-store", "retrieve", "scoped candidates"),
+  relation("retrieve-rerank", "retrieve", "rerank", "top-k passages"),
+  relation("rerank-orchestrator", "rerank", "orchestrator", "ranked evidence"),
+  relation("orchestrator-answer", "orchestrator", "answer", "grounded prompt"),
+  relation("answer-evidence", "answer", "evidence", "claims + citations"),
+  relation("ingest-chunk", "ingest", "chunk", "versioned source"),
+  relation("chunk-doc-embed", "chunk", "doc-embed", "semantic units"),
+  relation("doc-embed-vector", "doc-embed", "vector-store", "upsert revision"),
+] satisfies readonly DiaxRelation<ReactNode>[];
+
+const groups = [
+  {
+    id: "rag-system",
+    label: <GroupLabel index="00">Grounded answer system</GroupLabel>,
+    nodeIds: [],
+  },
+  {
+    id: "query-runtime",
+    parentId: "rag-system",
+    label: <GroupLabel index="01">Online question path</GroupLabel>,
+    nodeIds: [
+      "question",
+      "guard",
+      "orchestrator",
+      "semantic-cache",
+      "query-embed",
+      "retrieve",
+      "rerank",
+      "answer",
+      "evidence",
+    ],
+  },
+  {
+    id: "index-pipeline",
+    parentId: "rag-system",
+    label: <GroupLabel index="02">Versioned knowledge path</GroupLabel>,
+    nodeIds: ["ingest", "chunk", "doc-embed", "vector-store"],
+  },
+] satisfies readonly DiaxGroup<ReactNode>[];
+
+export default function RagGroundingSystem() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="rag-grounding-system"
+      eyebrow="AI architecture · Automatic topology"
+      title="A grounded answer has two supply chains"
+      description="The online question path consumes a separately versioned knowledge path. DiaX owns their topology, nested boundaries and feedback routes."
+      icon={<BookOpenCheck aria-hidden="true" />}
+      caption="The cache can return to orchestration, but every delivered claim still terminates in a citation receipt."
+      className="w-full max-w-[1120px] [--diax-accent:#176d68] [--diax-frame-bg:#f0ede4] [--diax-frame-radius:2px] [--diax-frame-shadow:none] [--diax-node-bg:#fffdf8] [--diax-node-border:#9ea9a5] [--diax-node-shadow:none] [--diax-node-text:#17272b] [--diax-ui-radius:2px]"
+    >
+      <div className="mb-4 grid border-y border-[#aeb6b0] md:grid-cols-3">
+        <SystemFact
+          icon={<SearchCheck aria-hidden="true" />}
+          label="Online path"
+          value="9 stages"
+        />
+        <SystemFact icon={<DatabaseZap aria-hidden="true" />} label="Index path" value="4 stages" />
+        <SystemFact icon={<BookOpenCheck aria-hidden="true" />} label="Manual geometry" value="0" />
+      </div>
+
+      <div className="mb-2 flex items-center justify-between gap-3 text-[11px] leading-5 text-[#52605d] sm:hidden">
+        <span>Wide topology map</span>
+        <span
+          aria-hidden="true"
+          className="font-mono font-semibold uppercase tracking-[0.06em] text-[#176d68]"
+        >
+          Scroll →
+        </span>
+      </div>
+
+      <section
+        data-diax-reading-canvas
+        className="overflow-x-auto overscroll-x-contain border border-[#aeb6b0] bg-[#f8f5ed] p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#176d68] sm:p-5"
+        aria-label="Grounded answer retrieval and ingestion architecture. Scroll horizontally to inspect the complete topology."
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: this overflow region must remain keyboard-scrollable in browsers that do not auto-focus it.
+        tabIndex={0}
+        onKeyDown={scrollTopologyOnArrow}
+      >
+        <FlowDiagram
+          nodes={nodes}
+          relations={relations}
+          groups={groups}
+          direction="horizontal"
+          density="compact"
+          pathType="orthogonal"
+          strokeColor="#526d6b"
+          highlightOnHover
+          className="min-w-[1020px] [--diax-group-background:rgb(23_109_104_/_0.025)] [--diax-group-border:#8da8a4] [--diax-group-label-background:#f8f5ed] [--diax-group-label-inset:14px] [--diax-group-radius:2px]"
+          renderEdgeLabel={(label) => <RelationLabel>{label}</RelationLabel>}
+        />
+      </section>
+
+      <p className="m-0 mt-4 border-l-[3px] border-[#b65d3a] pl-3 text-xs leading-relaxed text-[#52605d]">
+        Retrieval is not trusted merely because it returned text. Authorization constrains search,
+        revisions constrain the index, and citation identity constrains the final answer.
+      </p>
+    </DiagramFrame>
+  );
+}
+
+function system(
+  id: string,
+  name: string,
+  kind: string,
+  tags: readonly string[],
+  tone: "neutral" | "accent" | "info" | "success" | "warning",
+): DiaxNode<ReactNode> {
+  return {
+    id,
+    content: (
+      <SystemNode
+        className={nodeClass}
+        name={name}
+        kind={kind}
+        tags={tags}
+        tone={tone}
+        status={tone === "warning" ? "degraded" : tone === "success" ? "healthy" : undefined}
+        statusLabel={
+          tone === "warning" ? "policy gate" : tone === "success" ? "grounded" : undefined
+        }
+      />
+    ),
+  };
+}
+
+function store(
+  id: string,
+  name: string,
+  engine: string,
+  entries: readonly string[],
+): DiaxNode<ReactNode> {
+  return {
+    id,
+    content: <DataStoreNode className={nodeClass} name={name} engine={engine} entries={entries} />,
+  };
+}
+
+function relation(id: string, from: string, to: string, label: string): DiaxRelation<ReactNode> {
+  return {
+    id,
+    from,
+    to,
+    label,
+    targetMarker: "arrow",
+    gap: 7,
+  };
+}
+
+function scrollTopologyOnArrow(event: KeyboardEvent<HTMLElement>) {
+  if (event.target !== event.currentTarget) return;
+  const direction = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+  if (direction === 0) return;
+  event.preventDefault();
+  event.currentTarget.scrollBy({
+    behavior: "auto",
+    left: direction * Math.max(96, Math.round(event.currentTarget.clientWidth * 0.75)),
+  });
+}
+
+function GroupLabel({ index, children }: { index: string; children: ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2 whitespace-nowrap text-[#234643]">
+      <NodeBadge tone="info">{index}</NodeBadge>
+      <strong className="font-mono text-[11px] uppercase tracking-[0.08em]">{children}</strong>
+    </span>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-[#91a19d] bg-[#fffdf8] px-1.5 py-0.5 font-mono text-[11px] font-semibold text-[#345451]">
+      {children}
+    </span>
+  );
+}
+
+function SystemFact({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
+  return (
+    <div className="flex items-center gap-3 border-[#aeb6b0] px-3 py-3 md:border-l md:first:border-l-0">
+      <span className="text-[#176d68] [&>svg]:size-4">{icon}</span>
+      <span>
+        <span className="block font-mono text-[10px] uppercase tracking-[0.08em] text-[#687470]">
+          {label}
+        </span>
+        <strong className="block text-sm text-[#17272b]">{value}</strong>
+      </span>
+    </div>
+  );
+}
+8:["$","$L21",null,{"title":"RAG Grounding System","entryLabel":"Diagram","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"rag-grounding-system","children":["$","$L22",null,{"definition":{"steps":[{"id":"authorize-the-question","title":"Authorize the question","description":"Intent, tenant and safety policy are fixed before cache or retrieval can answer.","nodeIds":["question","guard","orchestrator"],"edgeIds":["question-guard","guard-orchestrator"],"evidenceIds":[]},{"id":"retrieve-scoped-evidence","title":"Retrieve scoped evidence","description":"The query crosses the versioned index boundary and returns ranked passages to orchestration.","nodeIds":["orchestrator","query-embed","vector-store","retrieve","rerank"],"edgeIds":["orchestrator-query-embed","query-embed-vector","vector-retrieve","retrieve-rerank","rerank-orchestrator"],"evidenceIds":[]},{"id":"version-the-knowledge","title":"Version the knowledge","description":"Source revision, chunks and embeddings reach the same durable index through a separate supply chain.","nodeIds":["ingest","chunk","doc-embed","vector-store"],"edgeIds":["ingest-chunk","chunk-doc-embed","doc-embed-vector"],"evidenceIds":[]},{"id":"deliver-a-reviewable-answer","title":"Deliver a reviewable answer","description":"A cache hit may shorten the path, but the final answer still terminates in exact citation identity.","nodeIds":["semantic-cache","orchestrator","answer","evidence"],"edgeIds":["orchestrator-cache","cache-orchestrator","orchestrator-answer","answer-evidence"],"evidenceIds":[]}],"evidence":[]},"children":[["$","$L23",null,{"moduleIds":[631758]}],["$","$L24",null,{}]]}]}],"code":["$","$L25",null,{"files":[{"path":"components/diagrams/rag-grounding-system/rag-grounding-system.tsx","content":"$26"}],"slug":"rag-grounding-system"}]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__proofRegion","aria-label":"Reproducible evidence","children":["$","details",null,{"className":"showcase-module__5fFjmW__proofDisclosure","data-showcase-proof":"rag-grounding-system","data-manual-review":"pending","children":[["$","summary",null,{"children":[["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryTitle","children":[["$","span",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Verification Manifest"}],["$","strong",null,{"children":"Reproducible evidence"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryState","children":[["$","span",null,{"children":"Automated contract"}],["$","span",null,{"children":"Human visual review pending"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofToggle","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__proofBody","children":[["$","p",null,{"className":"showcase-module__5fFjmW__proofBoundary","children":"This receipt binds the committed specimen to its generated registry artifact. It describes a reproducible contract, not the result of the latest CI run or a hardware browser sign-off."}],["$","div",null,{"className":"showcase-module__5fFjmW__proofManifest","children":[["$","section",null,{"aria-labelledby":"rag-grounding-system-integrity-title","children":[["$","h3",null,{"id":"rag-grounding-system-integrity-title","children":"Integrity"}],["$","dl",null,{"className":"showcase-module__5fFjmW__proofIntegrity","children":[["$","div","source",{"children":[["$","dt",null,{"children":"source"}],["$","dd",null,{"children":[["$","span",null,{"children":"registry/examples/rag-grounding-system/rag-grounding-system.tsx"}],["$","code",null,{"translate":"no","data-proof-hash":"source","data-sha256":"7ece3bcdec0d6c4266bdba69d5242aa56e2223809340673b2818d5b6397109ed","title":"7ece3bcdec0d6c4266bdba69d5242aa56e2223809340673b2818d5b6397109ed","children":["sha256:","7ece3bcdec0d...397109ed"]}]]}]]}],["$","div","artifact",{"children":[["$","dt",null,{"children":"artifact"}],["$","dd",null,{"children":[["$","span",null,{"children":"public/r/rag-grounding-system.json"}],["$","code",null,{"translate":"no","data-proof-hash":"artifact","data-sha256":"2ec7ae161751c7d7894066d53a99c8dbd13b7a58374dcc1ed8e44d61c0db8ffb","title":"2ec7ae161751c7d7894066d53a99c8dbd13b7a58374dcc1ed8e44d61c0db8ffb","children":["sha256:","2ec7ae161751...c0db8ffb"]}]]}]]}]]}]]}],["$","section",null,{"aria-labelledby":"rag-grounding-system-checks-title","children":[["$","h3",null,{"id":"rag-grounding-system-checks-title","children":"Deterministic checks"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofChecks","children":[["$","li","registry-source-contract",{"children":[["$","span",null,{"aria-hidden":"true"}],"Registry source contract"]}],["$","li","artifact-drift-check",{"children":[["$","span",null,{"aria-hidden":"true"}],"Artifact drift check"]}],["$","li","public-entry-boundary",{"children":[["$","span",null,{"aria-hidden":"true"}],"Public entry boundary"]}],["$","li","browser-render",{"children":[["$","span",null,{"aria-hidden":"true"}],"Browser render contract"]}]]}]]}],["$","section",null,{"aria-labelledby":"rag-grounding-system-surface-title","children":[["$","h3",null,{"id":"rag-grounding-system-surface-title","children":"Exercised surface"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Exact public entries"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofEntries","children":[["$","li","@diax/react",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"@diax/react"}]}],["$","li","@diax/ui-react/presentation",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"@diax/ui-react/presentation"}]}],["$","li","diax",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"diax"}]}]]}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Browser contract targets"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofBrowsers","aria-label":"Browser contract targets","children":[["$","li","chromium",{"data-proof-browser":"chromium","children":"chromium"}],"$L27","$L28"]}]]}],"$L29"]}]]}]]}]}]
+a:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","@diax/ui-react",{"translate":"no","children":"@diax/ui-react"}],["$","li","diax",{"translate":"no","children":"diax"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+b:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Diagram"]}],["$","strong",null,{"children":"Build With Diagram"}],["$","span",null,{"children":"Start from nodes and relations, then let DiaX own placement and routing."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","release-lifecycle",{"children":["$","$L2",null,{"href":"/showcase/release-lifecycle","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"Release Candidate Lifecycle"}],["$","span",null,{"children":"5 semantic states · 6 stable transitions · 2 feedback routes · 0 manual geometry"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","app-handoff-flow",{"children":["$","$L2",null,{"href":"/showcase/app-handoff-flow","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"Native App Handoff"}],["$","span",null,{"children":"7 rich DOM nodes · 6 relations · 4 branch labels · live UI mock"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","ci-pipeline",{"children":["$","$L2",null,{"href":"/showcase/ci-pipeline","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"CI/CD Pipeline"}],["$","span",null,{"children":"4 stages · parallel-ready flow layout"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+c:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+d:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+e:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+f:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+10:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+11:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+12:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+13:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+14:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+15:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+16:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+17:["$","$L2a",null,{"children":["$","$2b",null,{"name":"Next.MetadataOutlet","children":"$@2c"}]}]
+1a:["$","$1","h",{"children":[null,["$","$L2d",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L2e",null,{"children":["$","$2b",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"RAG Grounding System — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"A two-path retrieval architecture that automatically lays out online questioning, versioned ingestion, cache feedback, safety gates and citation receipts."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/rag-grounding-system/"}],["$","meta","3",{"property":"og:title","content":"RAG Grounding System — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"A two-path retrieval architecture that automatically lays out online questioning, versioned ingestion, cache feedback, safety gates and citation receipts."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/rag-grounding-system/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1c:["$","$1","c",{"children":[null,["$","$L2f",null,{"parallelRouterKey":"children","template":["$","$L30",null,{}]}]]}]
+20:true
+27:["$","li","firefox",{"data-proof-browser":"firefox","children":"firefox"}]
+28:["$","li","webkit",{"data-proof-browser":"webkit","children":"webkit"}]
+29:["$","section",null,{"aria-labelledby":"rag-grounding-system-review-title","children":[["$","h3",null,{"id":"rag-grounding-system-review-title","children":"Human review"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofReviewPending","children":[["$","strong",null,{"children":"Pending"}],"Visual quality, assistive technology and physical browser environments still require an identified reviewer."]}]]}]
+2c:null
+19:300
+19:C
+1f:0
+1b:"$undefined"
+1d:"$undefined"
+18:"$undefined"

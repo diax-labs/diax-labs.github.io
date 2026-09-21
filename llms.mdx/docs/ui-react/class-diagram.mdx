@@ -1,0 +1,138 @@
+# ClassNode (/docs/ui-react/class-diagram)
+
+
+
+
+
+Overview [#overview]
+
+`ClassNode` renders UML class diagram nodes with three sections: header (name + stereotype),
+attributes, and methods. Supports both compound composition and data-driven modes.
+
+Compound Composition [#compound-composition]
+
+<DiagramPreview
+  title="ClassNode — compound composition"
+  code="`import { ClassNode, ClassHeader, ClassAttributes, ClassMethods } from '@diax/ui-react';
+
+<ClassNode>
+<ClassHeader stereotype=&#x22;interface&#x22;>Animal</ClassHeader>
+<ClassAttributes items={[&#x22;+name: string&#x22;, &#x22;-age: int&#x22;, &#x22;#id: uuid&#x22;]} />
+<ClassMethods items={[&#x22;+eat(): void&#x22;, &#x22;+sleep(): void&#x22;, &#x22;-digest(): void&#x22;]} />
+</ClassNode>`"
+>
+  <ClassNode>
+    <ClassHeader stereotype="interface">
+      Animal
+    </ClassHeader>
+
+    <ClassAttributes items="[&#x22;+name: string&#x22;, &#x22;-age: int&#x22;, &#x22;#id: uuid&#x22;]" />
+
+    <ClassMethods items="[&#x22;+eat(): void&#x22;, &#x22;+sleep(): void&#x22;, &#x22;-digest(): void&#x22;]" />
+  </ClassNode>
+</DiagramPreview>
+
+Data-driven [#data-driven]
+
+<DiagramPreview
+  title="ClassNode — data prop"
+  code="`<ClassNode data={{
+name: &#x22;UserService&#x22;,
+stereotype: &#x22;service&#x22;,
+attributes: [&#x22;-db: Database&#x22;, &#x22;-cache: Redis&#x22;],
+methods: [&#x22;+getUser(id): User&#x22;, &#x22;+createUser(data): User&#x22;, &#x22;-validate(): bool&#x22;],
+}} />`"
+>
+  <ClassNode
+    data="{
+  name: &#x22;UserService&#x22;,
+  stereotype: &#x22;service&#x22;,
+  attributes: [&#x22;-db: Database&#x22;, &#x22;-cache: Redis&#x22;],
+  methods: [&#x22;+getUser(id): User&#x22;, &#x22;+createUser(data): User&#x22;, &#x22;-validate(): bool&#x22;],
+}"
+  />
+</DiagramPreview>
+
+Visibility Indicators [#visibility-indicators]
+
+UML visibility symbols are color-coded:
+
+| Symbol | Visibility | Color |
+| ------ | ---------- | ----- |
+| `+`    | public     | Green |
+| `-`    | private    | Red   |
+| `#`    | protected  | Amber |
+| `~`    | package    | Blue  |
+
+Interactive States [#interactive-states]
+
+<DiagramPreview
+  title="Highlighted & dimmed"
+  code="`<div className=&#x22;flex gap-4&#x22;>
+<ClassNode data={{ name: &#x22;Normal&#x22;, attributes: [&#x22;+id: int&#x22;] }} />
+<ClassNode highlighted data={{ name: &#x22;Highlighted&#x22;, attributes: [&#x22;+id: int&#x22;] }} />
+<ClassNode dimmed data={{ name: &#x22;Dimmed&#x22;, attributes: [&#x22;+id: int&#x22;] }} />
+</div>`"
+>
+  <div className="flex gap-4">
+    <ClassNode data="{ name: &#x22;Normal&#x22;, attributes: [&#x22;+id: int&#x22;] }" />
+
+    <ClassNode data="{ name: &#x22;Highlighted&#x22;, attributes: [&#x22;+id: int&#x22;] }" />
+
+    <ClassNode data="{ name: &#x22;Dimmed&#x22;, attributes: [&#x22;+id: int&#x22;] }" />
+  </div>
+</DiagramPreview>
+
+With Mermaid [#with-mermaid]
+
+<DiagramPreview
+  title="ClassDiagram from Mermaid syntax"
+  code="`import { ClassDiagram } from '@diax/ui-react/mermaid';
+
+<ClassDiagram chart={\`
+classDiagram
+class Animal {
+  +String name
+  +eat() void
+}
+class Dog {
+  +bark() void
+}
+Animal <|-- Dog
+\`} centered density=&#x22;spacious&#x22; />`"
+>
+  <ClassDiagram
+    chart="`classDiagram
+class Animal {
+  +String name
+  +eat() void
+}
+class Dog {
+  +bark() void
+}
+Animal <|-- Dog`"
+    density="spacious"
+  />
+</DiagramPreview>
+
+Props [#props]
+
+ClassNode [#classnode]
+
+| Prop          | Type                                           | Description      |
+| ------------- | ---------------------------------------------- | ---------------- |
+| `data`        | `{ name, stereotype?, attributes?, methods? }` | Data-driven mode |
+| `highlighted` | `boolean`                                      | Accent ring      |
+| `dimmed`      | `boolean`                                      | Reduced opacity  |
+
+ClassHeader [#classheader]
+
+| Prop         | Type     | Description                                    |
+| ------------ | -------- | ---------------------------------------------- |
+| `stereotype` | `string` | UML stereotype (e.g., "interface", "abstract") |
+
+ClassAttributes / ClassMethods [#classattributes--classmethods]
+
+| Prop    | Type       | Description                                          |
+| ------- | ---------- | ---------------------------------------------------- |
+| `items` | `string[]` | Member strings (prefix with +/-/#/\~ for visibility) |

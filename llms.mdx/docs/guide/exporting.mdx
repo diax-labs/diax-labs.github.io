@@ -1,0 +1,145 @@
+# Export DOM Visuals (/docs/guide/exporting)
+
+
+
+
+
+DiaX nodes are real DOM and its relation layer is SVG. An export is complete only when it captures
+both. Serializing the first `<svg>` produces arrows without the JSX, Tailwind, table, code or UI
+content that made the visual useful.
+
+Choose the destination first [#choose-the-destination-first]
+
+| Destination                            | Recommended output         | Why                                                                      |
+| -------------------------------------- | -------------------------- | ------------------------------------------------------------------------ |
+| Docs, apps and blogs                   | live DOM                   | Keeps accessibility, links, selection, responsive CSS and interaction    |
+| Chat, slides and issue trackers        | PNG                        | Most portable snapshot of the complete composed visual                   |
+| A web-aware design or archive workflow | SVG with `<foreignObject>` | Keeps DOM text and vector edges, but requires a compatible viewer        |
+| Review packet or handout               | browser print / PDF        | Uses page size, margins, font loading and pagination owned by the report |
+
+There is intentionally no Core `export` mode. Page size, brand fonts, remote assets and download
+policy belong to the host workflow, not graph semantics.
+
+Export from the Playground [#export-from-the-playground]
+
+The Playground's Export action is an opt-in product feature:
+
+1. Wait until the preview reports **Live**.
+2. Open **Export**.
+3. Prefer **PNG** when the artifact will leave the browser.
+4. Choose **SVG** only when the destination supports HTML inside SVG `<foreignObject>`.
+
+The MDX preview distinguishes the source revision from the accepted artifact. While a new revision
+is compiling, the previous successful preview remains visible as **Updating**. If compilation fails,
+it becomes **Last good** and the current file diagnostics stay visible beside it. Export is available
+only from **Live**, so an older valid preview cannot be downloaded under the identity of the current
+source revision. Compilation alone does not produce **Live**: the current Sandpack revision must
+commit and paint in the iframe before its private runtime receipt is accepted.
+
+The sandbox waits for fonts and layout, clones the complete preview root, inlines computed
+presentation styles, `<img>` sources and every export-visible CSS `url(...)`, and retains nested
+SVG edge layers. Fragment references such as `url(#marker)` remain local to the artifact. A remote,
+blob or computed-style resource that cannot be embedded fails the export with its context and an
+actionable CORS/vendor-local message; DiaX never silently leaves a mutable URL in a successful SVG.
+PNG output is bounded to 32 megapixels; if that limit is exceeded, lower the export scale instead
+of risking a tab crash. Requests are correlated with the exact iframe and report an actionable
+error when the preview is unavailable, rasterization fails or browser clipboard policy denies
+access.
+
+After a successful export, the dialog creates a separate
+`*.diax-receipt.json` file. It binds the frozen source and presentation settings to the exact PNG
+or SVG bytes with SHA-256, records the painted MDX revision when one exists, and identifies the
+canonical static capture policy. Its `asset-closure` check records discovered, embedded and
+unresolved resource counts. A failed later attempt leaves the previous successful receipt visible;
+failure cannot relabel old bytes as a new artifact. The receipt timestamp is UTC and the review
+status remains `pending` until a person inspects the exported file.
+
+Canonical capture suppresses focus, hover targeting, carets, transitions and animations before the
+browser snapshots computed presentation. This keeps a button that happened to be focused or a card
+that was mid-transition from changing the archival artifact. Authored content, form values and
+theme choices remain part of the export.
+
+The receipt proves byte identity and request correlation. It does not prove that the diagram is
+correct, attractive or accessible in its destination, and it is currently a Playground product
+artifact rather than a Core or framework package interface.
+
+<Callout type="warning">
+  SVG `<foreignObject>` is a web interchange format, not a universal office-document format.
+  Applications that strip embedded HTML will lose node content. Use PNG or PDF for those targets.
+</Callout>
+
+Capture in an application [#capture-in-an-application]
+
+`@diax/react`, Vue, Solid and Svelte do not add a framework export hook. Own one wrapper around the
+complete visual and integrate a DOM-capture tool at that seam:
+
+```tsx
+const visual = document.querySelector<HTMLElement>('[data-report-visual]');
+if (!visual) throw new Error('Missing report visual');
+
+await document.fonts.ready;
+await Promise.all(
+  [...visual.querySelectorAll('img')].map(image =>
+    image.complete ? Promise.resolve() : image.decode(),
+  ),
+);
+
+const { snapdom } = await import('@zumer/snapdom');
+const snapshot = await snapdom(visual, {
+  backgroundColor: '#fff',
+  scale: 2,
+});
+await snapshot.download({ type: 'png', filename: 'architecture.png' });
+```
+
+Keep the capture dependency behind the interaction that needs it. A static Diagram or Connect page
+should not load image-export code during initial rendering.
+
+Print and PDF contract [#print-and-pdf-contract]
+
+Use print CSS to remove interaction affordances and preserve document semantics:
+
+```css
+@media print {
+  [data-report-visual] {
+    break-inside: avoid;
+    color-scheme: light;
+    background: #fff;
+    color: #111;
+    box-shadow: none;
+  }
+
+  [data-report-visual] :is([data-diax-edge-action], .screen-only) {
+    display: none;
+  }
+}
+```
+
+Test the actual destination ratio. A 16:9 slide, article column and A4 page have different line
+lengths. Pin or embed the intended fonts, give remote images usable CORS headers, keep text
+meaningful without color, and verify that tables scroll on screen but fit or deliberately paginate
+on paper.
+
+Evidence boundary [#evidence-boundary]
+
+DiaX's browser contract exports one fixture containing an authored DOM block and an SVG edge layer
+to both SVG and PNG in Chromium, Firefox and WebKit. The Presentation preflight also generates a
+four-page A4 PDF and checks one bounded recipe per page; its rendered macOS Chromium artifact is
+reviewed for clipping, overlap and legibility.
+
+The same browser contract verifies that MDX export responses match the currently painted revision,
+that source and artifact hashes are present, and that the downloadable receipt still reports human
+review as pending. Playwright WebKit is rendering-engine evidence, not macOS Safari evidence.
+
+That evidence does not replace hardware Safari, Windows High Contrast, installed corporate fonts,
+projector output or a physical printer. Those environments remain destination-specific acceptance,
+not claims that can be manufactured by another library option.
+
+Related [#related]
+
+* [Visual Constitution](/docs/guide/visual-constitution)
+* [Agent-first Workflow](/docs/guide/agent-workflow)
+* [Presentation Recipes](/docs/ui-react/presentation-recipes)
+* [React hooks and export boundary](/docs/react/hooks)
+* [Package entry points](/docs/reference/package-entry-points)
+* [Accessibility](/docs/guide/accessibility)

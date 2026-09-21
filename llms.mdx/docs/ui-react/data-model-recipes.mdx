@@ -1,0 +1,156 @@
+# Data Model Recipes (/docs/ui-react/data-model-recipes)
+
+
+
+
+
+One model, four visual questions [#one-model-four-visual-questions]
+
+A database design review is not one giant ER diagram. Readers usually ask four different questions:
+
+1. Which entities own which fields and relationships?
+2. How can a record move between durable states?
+3. How did the schema evolve without losing reversibility?
+4. Does the read strategy stay inside its performance budget?
+
+Each question deserves the native structure that preserves its meaning. These recipes combine
+`EntityNode`, `StateNode` and the isolated Presentation entry; they do not add a `schema` mode or a
+second data-model DSL.
+
+<Callout type="info">
+  These examples were generalized from a real SQLite persistence design. The original document
+  combined ER cards, lifecycle state, migration history, pragmas and query evidence. DiaX keeps
+  those concerns composable instead of flattening them into one universal component.
+</Callout>
+
+Relational schema: entities plus measured cardinality [#relational-schema-entities-plus-measured-cardinality]
+
+<DiagramPreview title="Relational schema map" description="One parent entity, two foreign-key collections and visible cardinality labels" code="relationalSchemaRecipeCode">
+  <RelationalSchemaRecipePreview />
+</DiagramPreview>
+
+Use `EntityNode` when the table shape and field vocabulary matter. Keep PK, FK and UK visible as
+text; color only accelerates scanning. `ConnectionSurface` measures the entity cards after fonts,
+localized field names and application CSS have settled.
+
+This recipe deliberately uses ordinary `nodes` in authored CSS rather than introducing `Table`,
+`Column`, `ForeignKey` or `Cardinality` objects. The data model already has those concepts; DiaX only
+needs stable target IDs and relations.
+
+Constraint contract [#constraint-contract]
+
+Known constraint abbreviations now ship with self-contained package styling and accessible names:
+
+| Visible text | Accessible name | Default semantic tone |
+| ------------ | --------------- | --------------------- |
+| `PK`         | Primary key     | warning               |
+| `FK`         | Foreign key     | information           |
+| `UK`         | Unique key      | accent                |
+
+The package stylesheet uses `data-diax-ui-part="constraint"`; consumers do not need Tailwind's
+amber, blue or dark-mode utility classes for these badges. Unknown constraint strings remain
+visible and receive the neutral treatment.
+
+Record lifecycle: main path first [#record-lifecycle-main-path-first]
+
+<DiagramPreview title="Record lifecycle" description="Four durable states connected separately from exception and rollback policy" code="recordLifecycleRecipeCode">
+  <RecordLifecycleRecipePreview />
+</DiagramPreview>
+
+Use `StateNode` for durable states, not for every action. The main transitions belong in the
+centralized relation list. Exceptional rules such as “any state → ignored” are often easier to read
+as a definition list below the graph than as four duplicate feedback edges.
+
+This distinction keeps dense state machines reviewable:
+
+* a state answers “what can be true now?”;
+* an edge label answers “what transition happened?”;
+* an exception note answers “what policy applies across several states?”
+
+Do not encode these three jobs in one overloaded state component.
+
+Migration ledger: chronology is document structure [#migration-ledger-chronology-is-document-structure]
+
+<DiagramPreview title="Schema migration ledger" description="A durable store beside three ordered, reversible migration stages" code="migrationLedgerRecipeCode">
+  <MigrationLedgerRecipePreview />
+</DiagramPreview>
+
+The current database is a `DataStoreNode`. Version history is an `<ol>` containing `StageNode`
+records. Neither needs arrows to communicate its primary meaning, so the recipe does not load
+Connect.
+
+Keep migration rules visible beside the version that depends on them:
+
+* make DDL idempotent;
+* check the existing schema before `ALTER`;
+* introduce nullable data before enforcing it;
+* advance the stored version only after the migration succeeds.
+
+A public `MigrationTimeline` would mostly rename `<ol>` and forward Stage props. Deleting it would
+remove little complexity, so it remains a recipe.
+
+Query budget: evidence is not topology [#query-budget-evidence-is-not-topology]
+
+<DiagramPreview title="Query budget" description="Metric summaries plus a native scaling table—no graph runtime required" code="queryBudgetRecipeCode">
+  <QueryBudgetRecipePreview />
+</DiagramPreview>
+
+The question is quantitative, not relational. `MetricNode` makes the headline result reusable;
+`table`, `caption`, column scopes and row scopes preserve the comparison. The internal scroll region
+is keyboard focusable on narrow screens, while the page itself remains overflow-free.
+
+This is an important DiaX design rule: a rich visual explanation may contain sections that do not
+need DiaX. Composition is a feature. Loading a graph runtime for every table, KPI or annotation
+would weaken both DX and tree-shaking.
+
+Import boundaries [#import-boundaries]
+
+Choose entries per role instead of importing the entire visual vocabulary:
+
+```tsx contract
+import { EntityNode, StateNode } from '@diax/ui-react';
+import {
+  DataStoreNode,
+  DiagramFrame,
+  MetricNode,
+  StageNode,
+} from '@diax/ui-react/presentation';
+import { ConnectionSurface, connectionTarget } from '@diax/react/connect';
+```
+
+* ER and state shapes stay in the small `@diax/ui-react` root.
+* Report roles stay in the independent `/presentation` leaf.
+* Connect is needed only by the relational and lifecycle recipes.
+* Mermaid parsing remains isolated in `/mermaid` and is not loaded here.
+
+AI authoring prompt [#ai-authoring-prompt]
+
+Give an agent the visual question and the ownership rule:
+
+```text
+Create a React visual explanation for a SQLite-backed record model.
+
+Use EntityNode for tables and fields, StateNode for durable lifecycle states,
+StageNode inside an ordered list for schema versions, and MetricNode plus a native
+table for query evidence. Use ConnectionSurface only for foreign-key and state-transition
+relations. Keep constraint abbreviations, transition labels and migration guarantees visible.
+
+Do not invent SchemaDiagram, lifecycle mode, coordinates, ports or SVG table shapes.
+The result must preserve reading order at 320 px and remain meaningful when edges are hidden.
+```
+
+For untrusted model output, validate a data contract first and map known entity, state, stage and
+metric types to these trusted React renderers. Do not execute model-produced JSX at runtime.
+
+Graduation decisions [#graduation-decisions]
+
+| Candidate                         | Decision                  | Reason                                                               |
+| --------------------------------- | ------------------------- | -------------------------------------------------------------------- |
+| `EntityNode` constraint semantics | Deepen existing primitive | Accessibility and theme behavior otherwise repeat in every ER caller |
+| `SchemaDiagram`                   | Reject                    | Topology already belongs to Diagram or Connect                       |
+| `Lifecycle` mode                  | Reject                    | States and relations already express the model                       |
+| `MigrationTimeline`               | Keep as recipe            | Native ordered lists and StageNode contain the useful semantics      |
+| `QueryBudget` component           | Keep as recipe            | Copy, dimensions and thresholds are application-owned evidence       |
+
+The useful public interface stays small while the recipe catalog becomes richer. That is the
+intended direction for `@diax/ui-react`: reusable semantic roles, abundant copy-owned compositions.

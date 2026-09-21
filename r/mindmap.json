@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mindmap",
+  "type": "registry:block",
+  "title": "Platform Mindmap",
+  "description": "Center-outward radial layout for topic exploration",
+  "dependencies": ["@diax/react"],
+  "files": [
+    {
+      "path": "components/diagrams/mindmap/mindmap.tsx",
+      "type": "registry:component",
+      "content": "\"use client\";\nimport { Mindmap } from \"@diax/react\";\n\nexport default function PlatformMindmap() {\n  return (\n    <Mindmap\n      nodes={[\n        { id: \"core\", content: \"Platform\" },\n        { id: \"fe\", content: \"Frontend\" },\n        { id: \"be\", content: \"Backend\" },\n        { id: \"infra\", content: \"Infrastructure\" },\n        { id: \"fe-react\", content: \"React\" },\n        { id: \"fe-vue\", content: \"Vue\" },\n        { id: \"be-api\", content: \"API\" },\n        { id: \"be-db\", content: \"Database\" },\n        { id: \"infra-ci\", content: \"CI/CD\" },\n        { id: \"infra-k8s\", content: \"Kubernetes\" },\n      ]}\n      relations={[\n        \"core->fe\",\n        \"core->be\",\n        \"core->infra\",\n        \"fe->fe-react\",\n        \"fe->fe-vue\",\n        \"be->be-api\",\n        \"be->be-db\",\n        \"infra->infra-ci\",\n        \"infra->infra-k8s\",\n      ]}\n      density=\"comfortable\"\n    />\n  );\n}\n"
+    }
+  ]
+}

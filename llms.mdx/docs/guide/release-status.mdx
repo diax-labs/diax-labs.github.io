@@ -1,0 +1,155 @@
+# Release Status (/docs/guide/release-status)
+
+
+
+
+
+Current verdict [#current-verdict]
+
+DiaX is an **unpublished Alpha workspace preview**. The technical foundation is ready for an Alpha
+release candidate, but the product is not yet ready for a Beta or production-support promise.
+
+| Question                                  | Current answer                                                                         |
+| ----------------------------------------- | -------------------------------------------------------------------------------------- |
+| Can I evaluate the real implementation?   | Yes — clone this repository and run its docs, examples and contracts                   |
+| Are the packages available on npm?        | No                                                                                     |
+| Is there a stable `latest` release?       | No                                                                                     |
+| Is production use recommended?            | No                                                                                     |
+| Are shadcn registry and v0 actions ready? | No — packages and a public registry URL must ship first                                |
+| Is the interface frozen for 1.0?          | No — the candidate surfaces below are still pre-1.0                                    |
+| What is the intended first channel?       | `alpha`, with npm provenance after the release gate passes                             |
+| What identity is bound today?             | `development` toward `0.1.0`; no release commit, Git tag or artifact digest is claimed |
+
+<Callout type="warn">
+  Do not treat an import shown in a code example as evidence that the package is already available
+  from npm. Every installation panel intentionally shows the repository workflow until the first
+  Alpha is published.
+</Callout>
+
+Evaluate the workspace today [#evaluate-the-workspace-today]
+
+Use Node.js `20.19+` or `22.12+` and pnpm `10+`:
+
+```bash
+git clone https://github.com/diax-labs/diax.git
+cd diax
+pnpm install
+pnpm build
+pnpm docs:dev
+```
+
+Open the local URL printed by the docs process. Start with one task rather than the package list:
+
+* [Diagram](/docs/react) when nodes and relations are data and DiaX should own placement;
+* [Connect DOM](/docs/react/connect) when JSX, Tailwind or semantic HTML already owns placement;
+* [Mermaid Import](/docs/guide/mermaid) when a supported Mermaid document is the source;
+* [Markdown & MDX](/docs/guide/mdx-guide) when a build should transform supported fences and report invalid source;
+* [AI & Agents](/docs/guide/agent-workflow) when generated output must cross validation, preview and delivery seams;
+* [UI Primitives](/docs/ui-react) when you need reusable DOM presentation vocabulary.
+
+The workspace path proves the checked-in implementation and examples. It is not a substitute for a
+published tarball or a production support policy.
+
+Interface confidence [#interface-confidence]
+
+Pre-1.0 does not mean every export has equal status. Choose the shallowest interface that completes
+your task:
+
+| Tier                       | Recommended surface                                                | Commitment today                                          |
+| -------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------- |
+| Most React applications    | `FlowDiagram`, `Mindmap` from `@diax/react`                        | Candidate high-level Diagram interface                    |
+| Authored React layouts     | `ConnectionSurface`, `connectionTarget` from `@diax/react/connect` | Independent, browser-tested Connect interface             |
+| Small static React stories | `DiaxNode`, `DiaxEdge`, `FlowDiagram` from `@diax/react/jsx`       | Alpha authoring syntax over the same definition model     |
+| Custom React renderers     | `useDiagram`, `DiagramCanvas`, `DiagramNode`, `DiagramEdges`       | Advanced composition interface                            |
+| Core consumers             | `computeLayout`, `validateDiagram`, diagnostics and model types    | Candidate Core workflow                                   |
+| Adapter authors            | measurement, namespace, marker and rendering helpers               | Public Alpha compatibility surface                        |
+| Experimental               | Core AST builders and `@diax/layout-elk`                           | May change after deletion tests and real adopter feedback |
+
+Connect and JSX are separate package entries rather than `mode` values on a universal component.
+Mermaid, ELK, UI presets and Notebook are also opt-in. See [Package Entry Points](/docs/reference/package-entry-points)
+for loading, SSR and tree-shaking details.
+
+What Alpha does and does not mean [#what-alpha-does-and-does-not-mean]
+
+**Alpha Go** means the repository has focused evidence for its core algorithms, package artifacts,
+loading boundaries, browser behavior and documented golden paths. It is suitable for evaluation,
+dogfooding and non-critical prototypes.
+
+**Beta No-Go** means the project still needs:
+
+* reviewable vertical-slice commits and one final checkout verification over that exact history;
+* an `alpha` publish, installed-consumer verification and provenance attestation;
+* release notes for the current large working tree;
+* manual docs acceptance at desktop, 320px, keyboard-only, dark mode and 200% zoom;
+* real-user dogfooding against a representative diagram corpus;
+* a verified private vulnerability-reporting channel and explicit support expectations.
+
+Breaking changes may occur before 1.0. They must still be intentional: Changesets, migration notes,
+package entry contracts and release evidence should describe them rather than silently moving the
+interface.
+
+Browser and runtime evidence [#browser-and-runtime-evidence]
+
+The release gate exercises built artifacts in Chromium, Firefox and WebKit where a browser runtime
+is required. It also checks server-safe Core paths, Next.js Server Component isolation, hydration,
+keyboard and pointer behavior, forced colors, zoom, loading boundaries and selected visual
+baselines.
+
+On 2026-08-15 an isolated 813-file candidate with no `dist`, Turbo cache or framework build output
+exposed and fixed a release-order bug: `pnpm verify` previously entered artifact checks before a
+guaranteed full build. The corrected interface now runs the existing production build gate first.
+After a public-registry frozen install, the clean candidate passed the complete gate, including 107
+static documentation pages, 112 passing browser documentation contracts with 26 intentional
+platform skips, and 11 package tarballs containing 212 checked files. A final checkout verification
+is still required after the working tree is split into reviewable commits.
+
+That automation does not replace manual documentation review. The five golden documentation routes
+remain pending for desktop, 320px, keyboard, dark mode and 200% zoom until an interactive browser
+session is available.
+
+Release policy [#release-policy]
+
+The first public packages must use the `alpha` dist-tag, not `latest`. `pnpm verify` is the single
+release interface shared by local development and GitHub Actions. A release is incomplete until all
+of these agree:
+
+1. package versions, dependency ranges and Changesets;
+2. packed ESM, CJS where declared, types, schemas and CSS;
+3. Vite, Webpack, Next.js and Module Federation consumers;
+4. browser contracts and documentation contracts;
+5. Git tag, GitHub Release, npm dist-tag and provenance;
+6. installation instructions shown on this site.
+
+`docs/release-status.json` deliberately separates intent from proof. Development state records the
+intended version and dist-tag but keeps release commit, Git tag, content-tree digest and verification
+commit empty. A prerelease/release identity is accepted only when all four bind to the current clean
+checkout. Changing a shipped input after tagging therefore makes the identity stale instead of
+letting two different payloads present themselves as the same release. Generated Agent Skill
+artifacts carry the same content-tree and source facts, while their verification status remains
+pending until the complete release gate finishes.
+
+The same interface begins with a full-lockfile audit against the public npm registry. High or
+Critical findings fail both CI and release; they are not converted into advisory-only output. The
+current lockfile had no known registry vulnerabilities on 2026-08-15 after its patched transitive
+versions passed package, Storybook, size-budget, and Next production builds. This is point-in-time
+dependency evidence—not a substitute for private vulnerability reporting or application-level
+trust-boundary review.
+
+After the first Alpha is actually published, the shared release manifest will switch every
+installation panel from Workspace Preview to real npm, pnpm, Yarn and Bun commands. shadcn registry
+and v0 actions remain hidden until both the packages and the public registry URL are verified.
+Until then, a registry install command on this site is a regression.
+
+That first real artifact also starts the compatibility corpus. Maintainers will retain the exact
+registry tarballs, the generated Skill artifact and a minimal set of tagged consumer inputs, then
+replay those inputs against later packed candidates. The current unpublished workspace deliberately
+does not invent a `v1` schema or preserve pre-release defects as historical behavior. See the
+[post-Alpha activation checklist](https://github.com/diax-labs/diax/blob/main/docs/owner/2026-08-post-alpha-compatibility-corpus.md).
+
+Related owner evidence [#related-owner-evidence]
+
+* [Roadmap](https://github.com/diax-labs/diax/blob/main/docs/ROADMAP.md)
+* [Release Candidate Interface Freeze](https://github.com/diax-labs/diax/blob/main/docs/decisions/035-release-candidate-interface-freeze.md)
+* [Release Candidate Consolidation](https://github.com/diax-labs/diax/blob/main/docs/owner/2026-07-release-candidate-consolidation.md)
+* [Release Security Gate Recovery](https://github.com/diax-labs/diax/blob/main/docs/owner/2026-07-release-security-gate.md)
+* [Security Policy](https://github.com/diax-labs/diax/blob/main/SECURITY.md)

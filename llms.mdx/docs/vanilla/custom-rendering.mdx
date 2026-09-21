@@ -1,0 +1,106 @@
+# Custom Rendering (/docs/vanilla/custom-rendering)
+
+
+
+Custom Node Rendering [#custom-node-rendering]
+
+Use `renderNode` to customize how nodes look:
+
+```js
+const diagram = createDiagram(container, {
+  nodes: [
+    { id: 'client', content: 'Browser' },
+    { id: 'api', content: 'API Server' },
+    { id: 'db', content: 'Database' },
+  ],
+  relations: [
+    'client->|HTTPS|api',
+    'api->|SQL|db',
+  ],
+  renderNode: (node, el) => {
+    el.innerHTML = `
+      <div style="
+        padding: 8px 16px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.1);
+        background: linear-gradient(to bottom, rgba(94,106,210,0.15), rgba(94,106,210,0.05));
+        color: #EDEDEF;
+        font-family: Inter, system-ui;
+        font-size: 13px;
+      ">
+        ${node.content}
+      </div>
+    `;
+  },
+});
+```
+
+TypeScript Generics & Strong Typing [#typescript-generics--strong-typing]
+
+DiaX Vanilla bindings fully support strict generic payloads. Pass your custom type to `createDiagram<T>` to type-check `node.content`:
+
+```ts
+import { createDiagram } from '@diax/vanilla';
+
+interface ServerData {
+  ip: string;
+  uptime: number;
+}
+
+const diagram = createDiagram<ServerData>(container, {
+  nodes: [
+    { id: 'web1', content: { ip: '10.0.0.1', uptime: 99.9 } },
+  ],
+  relations: [],
+  renderNode: (node, el) => {
+    // node is DiaxNode<ServerData>
+    el.innerHTML = `
+      <div>
+        ${node.content.ip} - ${node.content.uptime}%
+      </div>
+    `;
+  },
+});
+```
+
+Node States [#node-states]
+
+The `renderNode` callback receives a third `state` parameter that reflects the current interaction state:
+
+```js
+renderNode: (node, el, state) => {
+  // state is "highlighted" | "dimmed" | undefined
+}
+```
+
+Accessibility (`aria-flowto`) [#accessibility-aria-flowto]
+
+DiaX Vanilla gives every node wrapper a stable DOM `id` and injects valid `aria-flowto` references
+from parsed relations. Support varies across assistive technologies, so this is supplemental metadata
+rather than a guaranteed screen-reader navigation command. Keep node content semantic, place the
+diagram in a named region and provide a non-spatial summary when the relationships are essential.
+
+The `renderNode` callback can use its third `state` parameter for visual emphasis without changing
+the wrapper's semantics:
+
+```js
+renderNode: (node, el, state) => {
+  el.textContent = node.content;
+  if (state === 'highlighted') {
+    el.style.boxShadow = '0 0 0 2px rgba(94,106,210,0.6)';
+    el.style.opacity = '1';
+  } else if (state === 'dimmed') {
+    el.style.boxShadow = 'none';
+    el.style.opacity = '0.25';
+  } else {
+    el.style.boxShadow = 'none';
+    el.style.opacity = '1';
+  }
+}
+```
+
+| State           | When              | Suggested style  |
+| --------------- | ----------------- | ---------------- |
+| `undefined`     | Default           | Normal           |
+| `"highlighted"` | On hover path     | Ring/glow effect |
+| `"dimmed"`      | Not on hover path | Reduced opacity  |

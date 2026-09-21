@@ -1,0 +1,436 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T192c,"use client";
+
+import { FlowDiagram } from "@diax/react";
+import {
+  ArtifactNode,
+  DecisionNode,
+  DiagramFrame,
+  StageNode,
+} from "@diax/ui-react/presentation";
+import type { DiaxNode, DiaxRelation } from "diax";
+import type { KeyboardEvent, ReactNode } from "react";
+
+const nodeClass =
+  "w-[190px] max-w-[190px] [--diax-node-radius:2px] [&_[data-diax-ui-part=eyebrow]]:text-[12px] [&_[data-diax-ui-part=meta-label]]:text-[12px] [&_[data-diax-ui-part=badge]]:text-[12px] [&_[data-diax-ui-part=footer]]:text-[12px] [&_[data-diax-ui-part=artifact-manifest]_dt]:text-[12px] [&_[data-diax-ui-part=artifact-manifest]_dd]:text-[12px]";
+
+const nodes = [
+  {
+    id: "draft",
+    content: (
+      <StageNode
+        className={nodeClass}
+        step="State 01"
+        title="Candidate draft"
+        status="active"
+        statusLabel="mutable"
+        owner="Release owner"
+        description="Version, changelog and provenance are assembled as one candidate."
+      />
+    ),
+  },
+  {
+    id: "qualified",
+    content: (
+      <DecisionNode
+        className={nodeClass}
+        title="Qualification review"
+        status="proposed"
+        statusLabel="evidence gate"
+        outcome="Advance or reject"
+        criteria={["Packed consumer passes", "Three-browser receipt", "Known risk recorded"]}
+        owner="Maintainer review"
+      />
+    ),
+  },
+  {
+    id: "released",
+    content: (
+      <ArtifactNode
+        className={nodeClass}
+        name="Published alpha"
+        kind="Immutable artifact"
+        version="0.1.0-next.0"
+        source="Qualified candidate"
+        status="published"
+        statusLabel="available"
+        description="Consumers resolve the same packed files that passed qualification."
+      />
+    ),
+  },
+  {
+    id: "rejected",
+    content: (
+      <DecisionNode
+        className={nodeClass}
+        title="Candidate rejected"
+        status="rejected"
+        statusLabel="repair required"
+        outcome="Return to draft"
+        rationale="A failed gate keeps its complete evidence instead of publishing a partial artifact."
+        owner="Release owner"
+      />
+    ),
+  },
+  {
+    id: "retired",
+    content: (
+      <StageNode
+        className={nodeClass}
+        step="Terminal"
+        title="Artifact retired"
+        status="complete"
+        statusLabel="superseded"
+        owner="Registry policy"
+        description="A replacement or expiry closes the release lifecycle."
+      />
+    ),
+  },
+] satisfies readonly DiaxNode<ReactNode>[];
+
+const relations = [
+  transition("draft-qualified", "draft", "qualified", "submit evidence"),
+  transition("qualified-released", "qualified", "released", "all gates pass", "#315d88"),
+  transition("qualified-rejected", "qualified", "rejected", "gate fails", "#a94f43"),
+  transition("rejected-draft", "rejected", "draft", "repair candidate", "#a96320", true),
+  transition("released-qualified", "released", "qualified", "rollback incident", "#a94f43", true),
+  transition("released-retired", "released", "retired", "superseded", "#47715d"),
+] satisfies readonly DiaxRelation<ReactNode>[];
+
+export default function ReleaseLifecycle() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="release-lifecycle"
+      eyebrow="Release lifecycle · Automatic topology"
+      title="A release is a state machine, not a timeline"
+      description="Qualification owns advancement. Rejection and rollback remain first-class transitions instead of footnotes."
+      caption="DiaX plans the state ranks, measured labels and feedback gutters; no transition contains a bend point or channel coordinate."
+      className="w-full max-w-[1120px] [--diax-accent:#315d88] [--diax-frame-bg:#f1f4f5] [--diax-frame-radius:2px] [--diax-frame-shadow:none] [--diax-node-bg:#fbfcfc] [--diax-node-border:#aebbc0] [--diax-node-shadow:none] [--diax-node-text:#172126] [--diax-ui-radius:2px]"
+    >
+      <LifecycleLegend />
+
+      <section
+        aria-label="Scrollable release candidate lifecycle"
+        className="mt-4 overflow-x-auto border border-[#bac5c9] bg-[#f8fafb] p-4 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#315d88]"
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard users need a focus stop for the intentionally wide lifecycle map.
+        tabIndex={0}
+        onKeyDown={scrollOnArrow}
+      >
+        <FlowDiagram
+          nodes={nodes}
+          relations={relations}
+          direction="horizontal"
+          density="spacious"
+          centered
+          highlightOnHover
+          className="min-w-[980px]"
+          renderEdgeLabel={(label) => <TransitionLabel>{label}</TransitionLabel>}
+        />
+      </section>
+    </DiagramFrame>
+  );
+}
+
+function transition(
+  id: string,
+  from: string,
+  to: string,
+  label: string,
+  color = "#596b73",
+  dashed = false,
+): DiaxRelation<ReactNode> {
+  return {
+    id,
+    from,
+    to,
+    label,
+    color,
+    style: dashed ? "dashed" : "solid",
+    targetMarker: "arrow",
+    gap: 7,
+  };
+}
+
+function TransitionLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-[#aebbc0] bg-[#fbfcfc] px-1.5 py-0.5 font-mono text-[11px] font-semibold text-[#40525a]">
+      {children}
+    </span>
+  );
+}
+
+function LifecycleLegend() {
+  return (
+    <ul
+      aria-label="Lifecycle relation legend"
+      className="m-0 grid list-none border-y border-[#bac5c9] p-0 text-[11px] text-[#526169] sm:grid-cols-3"
+    >
+      <LegendItem label="Advance with evidence" color="#315d88" />
+      <LegendItem label="Reject or rollback" color="#a94f43" dashed />
+      <LegendItem label="Terminal transition" color="#47715d" />
+    </ul>
+  );
+}
+
+function LegendItem({ label, color, dashed = false }: { label: string; color: string; dashed?: boolean }) {
+  return (
+    <li className="flex items-center gap-2 px-3 py-2 sm:border-l sm:first:border-l-0">
+      <span
+        aria-hidden="true"
+        className={`w-8 border-t-2 ${dashed ? "border-dashed" : ""}`}
+        style={{ borderColor: color }}
+      />
+      {label}
+    </li>
+  );
+}
+
+function scrollOnArrow(event: KeyboardEvent<HTMLElement>) {
+  if (event.target !== event.currentTarget) return;
+  const direction = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+  if (direction === 0) return;
+  event.preventDefault();
+  event.currentTarget.scrollBy({ left: direction * Math.max(120, event.currentTarget.clientWidth * 0.7) });
+}
+19:X
+1e:X
+1e:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"diagram","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Release lifecycle"}],["$","h1",null,{"children":"Release Candidate Lifecycle"}],["$","p",null,{"children":"An automatic state topology separates qualification, rejection, publication, rollback and retirement without manual feedback channels."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M12 3v18","key":"108xh3"}],["path",{"d":"M3 12h18","key":"1i2n21"}],["rect",{"x":"3","y":"3","width":"18","height":"18","rx":"2","key":"h1oib"}]],"className":"lucide-grid2x2 lucide-grid-2x2","aria-hidden":"true"}]," ","Diagram"]}],["$","li",null,{"children":"advanced"}],[["$","li","diagram",{"children":"diagram"}],["$","li","feedback",{"children":"feedback"}],["$","li","lifecycle",{"children":"lifecycle"}],["$","li","release",{"children":"release"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6","$L7","$L8","$L9","$La","$Lb"]}]}],["$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14","$L15","$L16"],"$L17"]}],"isPartial":"$@18","staleTime":"$19","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$19","varyParams":null},{"rsc":"$L1c","isPartial":"$@1d","staleTime":"$19","varyParams":"$1e"}],"isUpgradeableISRFallback":false,"a":"$@1f","rootVaryParams":null,"needsRuntimeRequest":"$@20"}
+21:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+22:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+23:I[247776,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+24:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+29:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+2a:"$Sreact.suspense"
+2c:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+2d:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+2e:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+2f:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"Rank assignment, node placement, edge routing and label clearance."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"Node content, styling, interaction and application semantics."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"5 semantic states · 6 stable transitions · 2 feedback routes · 0 manual geometry"}]]}]]}]]}]
+7:["$","section",null,{"className":"showcase-module__5fFjmW__scenarioGuidance","aria-labelledby":"release-lifecycle-scenario-question","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Question-First Recipe"}],["$","h2",null,{"id":"release-lifecycle-scenario-question","children":"Which release-candidate transitions are valid, including rollback?"}],["$","p",null,{"children":"Use Diagram because state topology owns placement. Keep transition IDs stable and let DiaX plan feedback gutters, ports and labels without authored channels."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioDecisionGrid","children":[["$","section",null,{"aria-labelledby":"release-lifecycle-use-when","children":[["$","h3",null,{"id":"release-lifecycle-use-when","children":"Use this shape when"}],["$","ul",null,{"children":[["$","li","Explain the valid states of a release candidate and the evidence required to advance",{"children":"Explain the valid states of a release candidate and the evidence required to advance"}],["$","li","Show rejection, repair, rollback and retirement without pretending they form one chronology",{"children":"Show rejection, repair, rollback and retirement without pretending they form one chronology"}]]}]]}],["$","section",null,{"aria-labelledby":"release-lifecycle-avoid-when","children":[["$","h3",null,{"id":"release-lifecycle-avoid-when","children":"Choose another shape when"}],["$","p",null,{"children":"Avoid a lifecycle graph when the reader only needs dated rollout milestones or a linear implementation checklist."}]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioFacts","children":[["$","h3",null,{"children":"Facts the author or agent must know first"}],["$","ol",null,{"children":[["$","li","The incident condition that triggers rollback",{"children":"The incident condition that triggers rollback"}],["$","li","The qualification decision and its required evidence",{"children":"The qualification decision and its required evidence"}],["$","li","The rejection and repair transition",{"children":"The rejection and repair transition"}],["$","li","The state that owns initial candidate preparation",{"children":"The state that owns initial candidate preparation"}],["$","li","The terminal retirement condition",{"children":"The terminal retirement condition"}]]}]]}],["$","details",null,{"className":"showcase-module__5fFjmW__scenarioPrompt","children":[["$","summary",null,{"children":"Copy-ready agent prompts"}],["$","div",null,{"children":[["$","section",null,{"children":[["$","h3",null,{"children":"English"}],["$","p",null,{"children":"Create a DiaX FlowDiagram for a release-candidate lifecycle. Include draft, qualification, release, rejection, repair, rollback and retirement with stable relation IDs and explicit transition labels. Use semantic DOM nodes and do not add coordinates, channels or a lifecycle mode."}]]}],["$","section",null,{"lang":"zh-CN","children":[["$","h3",null,{"children":"中文"}],["$","p",null,{"children":"使用 DiaX FlowDiagram 创建发布候选生命周期。包含草稿、资格审查、发布、拒绝、修复、回滚和退役，使用稳定关系 ID 与明确的转换标签。节点使用语义化 DOM，不要添加坐标、channel 或 lifecycle mode。"}]]}]]}]]}]]}]
+25:T192c,"use client";
+
+import { FlowDiagram } from "@diax/react";
+import {
+  ArtifactNode,
+  DecisionNode,
+  DiagramFrame,
+  StageNode,
+} from "@diax/ui-react/presentation";
+import type { DiaxNode, DiaxRelation } from "diax";
+import type { KeyboardEvent, ReactNode } from "react";
+
+const nodeClass =
+  "w-[190px] max-w-[190px] [--diax-node-radius:2px] [&_[data-diax-ui-part=eyebrow]]:text-[12px] [&_[data-diax-ui-part=meta-label]]:text-[12px] [&_[data-diax-ui-part=badge]]:text-[12px] [&_[data-diax-ui-part=footer]]:text-[12px] [&_[data-diax-ui-part=artifact-manifest]_dt]:text-[12px] [&_[data-diax-ui-part=artifact-manifest]_dd]:text-[12px]";
+
+const nodes = [
+  {
+    id: "draft",
+    content: (
+      <StageNode
+        className={nodeClass}
+        step="State 01"
+        title="Candidate draft"
+        status="active"
+        statusLabel="mutable"
+        owner="Release owner"
+        description="Version, changelog and provenance are assembled as one candidate."
+      />
+    ),
+  },
+  {
+    id: "qualified",
+    content: (
+      <DecisionNode
+        className={nodeClass}
+        title="Qualification review"
+        status="proposed"
+        statusLabel="evidence gate"
+        outcome="Advance or reject"
+        criteria={["Packed consumer passes", "Three-browser receipt", "Known risk recorded"]}
+        owner="Maintainer review"
+      />
+    ),
+  },
+  {
+    id: "released",
+    content: (
+      <ArtifactNode
+        className={nodeClass}
+        name="Published alpha"
+        kind="Immutable artifact"
+        version="0.1.0-next.0"
+        source="Qualified candidate"
+        status="published"
+        statusLabel="available"
+        description="Consumers resolve the same packed files that passed qualification."
+      />
+    ),
+  },
+  {
+    id: "rejected",
+    content: (
+      <DecisionNode
+        className={nodeClass}
+        title="Candidate rejected"
+        status="rejected"
+        statusLabel="repair required"
+        outcome="Return to draft"
+        rationale="A failed gate keeps its complete evidence instead of publishing a partial artifact."
+        owner="Release owner"
+      />
+    ),
+  },
+  {
+    id: "retired",
+    content: (
+      <StageNode
+        className={nodeClass}
+        step="Terminal"
+        title="Artifact retired"
+        status="complete"
+        statusLabel="superseded"
+        owner="Registry policy"
+        description="A replacement or expiry closes the release lifecycle."
+      />
+    ),
+  },
+] satisfies readonly DiaxNode<ReactNode>[];
+
+const relations = [
+  transition("draft-qualified", "draft", "qualified", "submit evidence"),
+  transition("qualified-released", "qualified", "released", "all gates pass", "#315d88"),
+  transition("qualified-rejected", "qualified", "rejected", "gate fails", "#a94f43"),
+  transition("rejected-draft", "rejected", "draft", "repair candidate", "#a96320", true),
+  transition("released-qualified", "released", "qualified", "rollback incident", "#a94f43", true),
+  transition("released-retired", "released", "retired", "superseded", "#47715d"),
+] satisfies readonly DiaxRelation<ReactNode>[];
+
+export default function ReleaseLifecycle() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="release-lifecycle"
+      eyebrow="Release lifecycle · Automatic topology"
+      title="A release is a state machine, not a timeline"
+      description="Qualification owns advancement. Rejection and rollback remain first-class transitions instead of footnotes."
+      caption="DiaX plans the state ranks, measured labels and feedback gutters; no transition contains a bend point or channel coordinate."
+      className="w-full max-w-[1120px] [--diax-accent:#315d88] [--diax-frame-bg:#f1f4f5] [--diax-frame-radius:2px] [--diax-frame-shadow:none] [--diax-node-bg:#fbfcfc] [--diax-node-border:#aebbc0] [--diax-node-shadow:none] [--diax-node-text:#172126] [--diax-ui-radius:2px]"
+    >
+      <LifecycleLegend />
+
+      <section
+        aria-label="Scrollable release candidate lifecycle"
+        className="mt-4 overflow-x-auto border border-[#bac5c9] bg-[#f8fafb] p-4 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#315d88]"
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: keyboard users need a focus stop for the intentionally wide lifecycle map.
+        tabIndex={0}
+        onKeyDown={scrollOnArrow}
+      >
+        <FlowDiagram
+          nodes={nodes}
+          relations={relations}
+          direction="horizontal"
+          density="spacious"
+          centered
+          highlightOnHover
+          className="min-w-[980px]"
+          renderEdgeLabel={(label) => <TransitionLabel>{label}</TransitionLabel>}
+        />
+      </section>
+    </DiagramFrame>
+  );
+}
+
+function transition(
+  id: string,
+  from: string,
+  to: string,
+  label: string,
+  color = "#596b73",
+  dashed = false,
+): DiaxRelation<ReactNode> {
+  return {
+    id,
+    from,
+    to,
+    label,
+    color,
+    style: dashed ? "dashed" : "solid",
+    targetMarker: "arrow",
+    gap: 7,
+  };
+}
+
+function TransitionLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-[#aebbc0] bg-[#fbfcfc] px-1.5 py-0.5 font-mono text-[11px] font-semibold text-[#40525a]">
+      {children}
+    </span>
+  );
+}
+
+function LifecycleLegend() {
+  return (
+    <ul
+      aria-label="Lifecycle relation legend"
+      className="m-0 grid list-none border-y border-[#bac5c9] p-0 text-[11px] text-[#526169] sm:grid-cols-3"
+    >
+      <LegendItem label="Advance with evidence" color="#315d88" />
+      <LegendItem label="Reject or rollback" color="#a94f43" dashed />
+      <LegendItem label="Terminal transition" color="#47715d" />
+    </ul>
+  );
+}
+
+function LegendItem({ label, color, dashed = false }: { label: string; color: string; dashed?: boolean }) {
+  return (
+    <li className="flex items-center gap-2 px-3 py-2 sm:border-l sm:first:border-l-0">
+      <span
+        aria-hidden="true"
+        className={`w-8 border-t-2 ${dashed ? "border-dashed" : ""}`}
+        style={{ borderColor: color }}
+      />
+      {label}
+    </li>
+  );
+}
+
+function scrollOnArrow(event: KeyboardEvent<HTMLElement>) {
+  if (event.target !== event.currentTarget) return;
+  const direction = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+  if (direction === 0) return;
+  event.preventDefault();
+  event.currentTarget.scrollBy({ left: direction * Math.max(120, event.currentTarget.clientWidth * 0.7) });
+}
+8:["$","$L21",null,{"title":"Release Candidate Lifecycle","entryLabel":"Diagram","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"release-lifecycle","children":[["$","$L22",null,{"moduleIds":[276589]}],["$","$L23",null,{}]]}],"code":["$","$L24",null,{"files":[{"path":"components/diagrams/release-lifecycle/release-lifecycle.tsx","content":"$25"}],"slug":"release-lifecycle"}]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__proofRegion","aria-label":"Reproducible evidence","children":["$","details",null,{"className":"showcase-module__5fFjmW__proofDisclosure","data-showcase-proof":"release-lifecycle","data-manual-review":"pending","children":[["$","summary",null,{"children":[["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryTitle","children":[["$","span",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Verification Manifest"}],["$","strong",null,{"children":"Reproducible evidence"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryState","children":[["$","span",null,{"children":"Automated contract"}],["$","span",null,{"children":"Human visual review pending"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofToggle","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__proofBody","children":[["$","p",null,{"className":"showcase-module__5fFjmW__proofBoundary","children":"This receipt binds the committed specimen to its generated registry artifact. It describes a reproducible contract, not the result of the latest CI run or a hardware browser sign-off."}],["$","div",null,{"className":"showcase-module__5fFjmW__proofManifest","children":[["$","section",null,{"aria-labelledby":"release-lifecycle-integrity-title","children":[["$","h3",null,{"id":"release-lifecycle-integrity-title","children":"Integrity"}],["$","dl",null,{"className":"showcase-module__5fFjmW__proofIntegrity","children":[["$","div","source",{"children":[["$","dt",null,{"children":"source"}],["$","dd",null,{"children":[["$","span",null,{"children":"registry/examples/release-lifecycle/release-lifecycle.tsx"}],["$","code",null,{"translate":"no","data-proof-hash":"source","data-sha256":"89ac8669f1e36d09eb16978c1562f647455e1bf87fe48a25d82b5a9c62c16030","title":"89ac8669f1e36d09eb16978c1562f647455e1bf87fe48a25d82b5a9c62c16030","children":["sha256:","89ac8669f1e3...62c16030"]}]]}]]}],["$","div","artifact",{"children":[["$","dt",null,{"children":"artifact"}],["$","dd",null,{"children":[["$","span",null,{"children":"public/r/release-lifecycle.json"}],["$","code",null,{"translate":"no","data-proof-hash":"artifact","data-sha256":"c2f7194425356e285a218cc3334a700b77b6025d724d4136ca1f04f3d1073e74","title":"c2f7194425356e285a218cc3334a700b77b6025d724d4136ca1f04f3d1073e74","children":["sha256:","c2f719442535...d1073e74"]}]]}]]}]]}]]}],["$","section",null,{"aria-labelledby":"release-lifecycle-checks-title","children":[["$","h3",null,{"id":"release-lifecycle-checks-title","children":"Deterministic checks"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofChecks","children":[["$","li","registry-source-contract",{"children":[["$","span",null,{"aria-hidden":"true"}],"Registry source contract"]}],["$","li","artifact-drift-check",{"children":[["$","span",null,{"aria-hidden":"true"}],"Artifact drift check"]}],["$","li","public-entry-boundary",{"children":[["$","span",null,{"aria-hidden":"true"}],"Public entry boundary"]}],["$","li","browser-render",{"children":[["$","span",null,{"aria-hidden":"true"}],"Browser render contract"]}]]}]]}],["$","section",null,{"aria-labelledby":"release-lifecycle-surface-title","children":[["$","h3",null,{"id":"release-lifecycle-surface-title","children":"Exercised surface"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Exact public entries"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofEntries","children":[["$","li","@diax/react",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"@diax/react"}]}],["$","li","@diax/ui-react/presentation",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"@diax/ui-react/presentation"}]}],["$","li","diax",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"diax"}]}]]}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Browser contract targets"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofBrowsers","aria-label":"Browser contract targets","children":[["$","li","chromium",{"data-proof-browser":"chromium","children":"chromium"}],"$L26","$L27"]}]]}],"$L28"]}]]}]]}]}]
+a:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","@diax/ui-react",{"translate":"no","children":"@diax/ui-react"}],["$","li","diax",{"translate":"no","children":"diax"}]]}]]}]
+b:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Diagram"]}],["$","strong",null,{"children":"Build With Diagram"}],["$","span",null,{"children":"Start from nodes and relations, then let DiaX own placement and routing."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","rag-grounding-system",{"children":["$","$L2",null,{"href":"/showcase/rag-grounding-system","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"RAG Grounding System"}],["$","span",null,{"children":"13 rich DOM nodes · 14 relations · 2 nested paths · 0 manual geometry"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","app-handoff-flow",{"children":["$","$L2",null,{"href":"/showcase/app-handoff-flow","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"Native App Handoff"}],["$","span",null,{"children":"7 rich DOM nodes · 6 relations · 4 branch labels · live UI mock"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","ci-pipeline",{"children":["$","$L2",null,{"href":"/showcase/ci-pipeline","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"CI/CD Pipeline"}],["$","span",null,{"children":"4 stages · parallel-ready flow layout"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+c:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+d:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+e:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+f:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+10:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+11:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+12:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+13:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+14:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+15:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+16:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+17:["$","$L29",null,{"children":["$","$2a",null,{"name":"Next.MetadataOutlet","children":"$@2b"}]}]
+1a:["$","$1","h",{"children":[null,["$","$L2c",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L2d",null,{"children":["$","$2a",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Release Candidate Lifecycle — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"An automatic state topology separates qualification, rejection, publication, rollback and retirement without manual feedback channels."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/release-lifecycle/"}],["$","meta","3",{"property":"og:title","content":"Release Candidate Lifecycle — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"An automatic state topology separates qualification, rejection, publication, rollback and retirement without manual feedback channels."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/release-lifecycle/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1c:["$","$1","c",{"children":[null,["$","$L2e",null,{"parallelRouterKey":"children","template":["$","$L2f",null,{}]}]]}]
+20:true
+26:["$","li","firefox",{"data-proof-browser":"firefox","children":"firefox"}]
+27:["$","li","webkit",{"data-proof-browser":"webkit","children":"webkit"}]
+28:["$","section",null,{"aria-labelledby":"release-lifecycle-review-title","children":[["$","h3",null,{"id":"release-lifecycle-review-title","children":"Human review"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofReviewPending","children":[["$","strong",null,{"children":"Pending"}],"Visual quality, assistive technology and physical browser environments still require an identified reviewer."]}]]}]
+2b:null
+19:300
+19:C
+1f:0
+1b:"$undefined"
+1d:"$undefined"
+18:"$undefined"

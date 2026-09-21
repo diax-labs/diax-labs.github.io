@@ -1,0 +1,63 @@
+# Nuxt & Vue SSR (/docs/vue/nuxt)
+
+
+
+Vue SSR behavior [#vue-ssr-behavior]
+
+`@diax/vue` renders a stable node shell during SSR and starts DOM measurement only after mount. Its
+package lifecycle tests execute Vue `renderToString()`, hydrate the result, preserve node identity,
+and then render measured edges.
+
+A Nuxt page can therefore use an ordinary Vue diagram component. The following SFC is a host
+fragment—it is shown in full, but the current docs gate compiles Vue syntax rather than running a
+Nuxt production build:
+
+```vue
+<script setup lang="ts">
+import { FlowDiagram } from '@diax/vue';
+
+const nodes = [
+  { id: 'frontend', content: 'Frontend' },
+  { id: 'api', content: 'API' },
+  { id: 'database', content: 'Database' },
+];
+const relations = ['frontend->api', 'api->database'];
+</script>
+
+<template>
+  <FlowDiagram :nodes="nodes" :relations="relations" />
+</template>
+```
+
+Final SVG paths are not calculated on the server because pixel rectangles do not exist there. They
+appear after hydration without requiring the application to replace the server-rendered node DOM.
+
+When to use `<ClientOnly>` [#when-to-use-clientonly]
+
+Use Nuxt's `<ClientOnly>` or a `.client.vue` component only when application-owned node content
+depends on a browser-only SDK, or when you intentionally do not want server HTML for an optional
+diagram. It is not the default DiaX integration:
+
+```vue
+<template>
+  <!-- Nuxt host fragment: use only for an intentionally browser-only feature. -->
+  <ClientOnly fallback-tag="p" fallback="Loading architecture…">
+    <BrowserOnlyDiagram />
+  </ClientOnly>
+</template>
+```
+
+These Nuxt fragments are deliberately not marked as code contracts. A future Nuxt fixture must
+validate the actual module resolver, server bundle, route render, hydration, and framework version;
+the existing Vue SFC compiler check cannot honestly prove those host responsibilities.
+
+Verify the adapter contract [#verify-the-adapter-contract]
+
+Run the Vue package lifecycle suite for its current SSR→hydration evidence:
+
+```bash
+pnpm --filter @diax/vue test
+```
+
+Until a dedicated Nuxt production fixture exists, describe the package as Vue SSR/hydration
+compatible rather than claiming independently verified Nuxt parity.

@@ -1,0 +1,164 @@
+# Edge Types (/docs/vue/edges)
+
+
+
+Edge Types [#edge-types]
+
+String DSL [#string-dsl]
+
+```vue
+<FlowDiagram
+  :nodes="nodes"
+  :relations="[
+    'a->b',           // Solid arrow
+    'a-->b',          // Dashed arrow
+    'a<->b',          // Bidirectional
+    'a->|label|b',    // With label
+  ]"
+/>
+```
+
+Object Form [#object-form]
+
+```vue
+<FlowDiagram
+  :nodes="nodes"
+  :relations="[
+    { from: 'a', to: 'b', style: 'dashed', color: '#E91E63' },
+    { from: 'b', to: 'c', animate: 'flow', label: 'next' },
+    { from: 'c', to: 'd', bidirectional: true },
+  ]"
+/>
+```
+
+Animation Presets [#animation-presets]
+
+| Preset              | Effect                         |
+| ------------------- | ------------------------------ |
+| `"flow"`            | Flowing dashes along the edge  |
+| `"pulse"`           | Breathing opacity effect       |
+| `"shimmer"`         | Light traveling along the edge |
+| `"reverse-flow"`    | Reverse flowing dashes         |
+| `"reverse-shimmer"` | Reverse shimmer                |
+
+***
+
+Edge Path Types [#edge-path-types]
+
+Control how edges are drawn with the `path-type` prop:
+
+Bezier (default) [#bezier-default]
+
+Smooth cubic bezier curves — the default and most common style:
+
+```vue
+<FlowDiagram
+  :nodes="nodes"
+  :relations="relations"
+  path-type="bezier"
+/>
+```
+
+Straight [#straight]
+
+Direct straight lines between nodes:
+
+```vue
+<FlowDiagram
+  :nodes="nodes"
+  :relations="relations"
+  path-type="straight"
+/>
+```
+
+Orthogonal [#orthogonal]
+
+Right-angle polylines that follow horizontal/vertical paths only:
+
+```vue
+<FlowDiagram
+  :nodes="nodes"
+  :relations="relations"
+  path-type="orthogonal"
+/>
+```
+
+***
+
+Edge Labels [#edge-labels]
+
+The Vue adapter renders string labels from either the DSL or object relation form:
+
+```vue
+<script setup lang="ts">
+import { FlowDiagram } from '@diax/vue';
+
+const nodes = [
+  { id: 'client', content: 'Client' },
+  { id: 'api', content: 'API' },
+  { id: 'db', content: 'Database' },
+];
+
+const relations = [
+  'client->|REST|api',
+  'api->|SQL|db',
+];
+</script>
+
+<template><FlowDiagram :nodes="nodes" :relations="relations" /></template>
+```
+
+Decorate the same serializable label with Vue-native content through the `#edge-label` scoped slot:
+
+```vue contract
+<script setup lang="ts">
+import { FlowDiagram } from '@diax/vue';
+</script>
+
+<template>
+  <FlowDiagram
+    :nodes="[
+      { id: 'client', content: 'Client' },
+      { id: 'api', content: 'API' },
+    ]"
+    :relations="['client->|HTTPS|api']"
+  >
+    <template #edge-label="{ label }">
+      <strong class="protocol-badge">🔒 {{ label }}</strong>
+    </template>
+  </FlowDiagram>
+</template>
+```
+
+The slot receives `{ label }`. Keep framework objects out of the relation definition so the same
+topology remains valid for JSON, workers and other adapters.
+
+Group Labels [#group-labels]
+
+Keep group definitions semantic and decorate their labels through `#group-label`. The scoped slot
+receives the original `group` plus its non-null `label`; derived boundary coordinates remain
+internal to DiaX.
+
+```vue contract
+<script setup lang="ts">
+import { FlowDiagram } from '@diax/vue';
+</script>
+
+<template>
+  <FlowDiagram
+    :nodes="[
+      { id: 'browser', content: 'Browser' },
+      { id: 'api', content: 'API' },
+    ]"
+    :relations="['browser->api']"
+    :groups="[{ id: 'backend', label: 'Backend', nodeIds: ['api'] }]"
+  >
+    <template #group-label="{ group, label }">
+      <strong class="boundary-label" :data-group="group.id">◫ {{ label }}</strong>
+    </template>
+  </FlowDiagram>
+</template>
+```
+
+Group labels are presentation inside a non-interactive boundary surface. Use them for headings,
+badges and icons, not buttons or form controls.

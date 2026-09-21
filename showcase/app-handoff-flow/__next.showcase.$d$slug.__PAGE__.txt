@@ -1,0 +1,481 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T1cf9,"use client";
+
+import { FlowDiagram } from "@diax/react";
+import { DiagramFrame, NodeCard } from "@diax/ui-react/presentation";
+import { ArrowUpRight, Check, Monitor, Smartphone, X } from "lucide-react";
+
+const nodes = [
+  {
+    id: "entry",
+    content: (
+      <FlowStep
+        eyebrow="Entry"
+        title="Article opened"
+        description="A web page can offer a native continuation without replacing its content."
+        tone="info"
+      />
+    ),
+  },
+  {
+    id: "mobile",
+    content: (
+      <FlowStep
+        eyebrow="Decision 01"
+        title="Mobile browser?"
+        description="Use a capability signal, not a screen-size guess."
+        tone="accent"
+      />
+    ),
+  },
+  {
+    id: "inside-app",
+    content: (
+      <FlowStep
+        eyebrow="Decision 02"
+        title="Already in the native app?"
+        description="Avoid presenting a handoff action that cannot add value."
+        tone="accent"
+      />
+    ),
+  },
+  {
+    id: "prepare",
+    content: (
+      <FlowStep
+        eyebrow="Transform"
+        title="Build a deterministic link"
+        description="Combine a versioned schema with the current canonical URL."
+        tone="warning"
+      />
+    ),
+  },
+  {
+    id: "sheet",
+    content: (
+      <FlowStep
+        eyebrow="Presentation"
+        title="Show the handoff sheet"
+        description="Keep the web page readable until the user explicitly continues."
+        tone="success"
+      />
+    ),
+  },
+  {
+    id: "stay-web",
+    content: (
+      <FlowStep
+        eyebrow="Terminal"
+        title="Keep the web experience"
+        description="No dead-end prompt on desktop."
+        tone="neutral"
+      />
+    ),
+  },
+  {
+    id: "stay-native",
+    content: (
+      <FlowStep
+        eyebrow="Terminal"
+        title="Continue in the current app"
+        description="The native context already owns the journey."
+        tone="neutral"
+      />
+    ),
+  },
+];
+
+const relations = [
+  "entry->mobile",
+  "mobile->|No|stay-web",
+  "mobile->|Yes|inside-app",
+  "inside-app->|Yes|stay-native",
+  "inside-app->|No|prepare",
+  "prepare->sheet",
+];
+
+export default function AppHandoffFlow() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="app-handoff-flow"
+      eyebrow="Product decision flow · Automatic layout"
+      title="Native app handoff"
+      description="Let DiaX arrange the decision topology, then compose the result with a real application surface."
+      icon={<Smartphone aria-hidden="true" />}
+      caption="The flow remains deterministic and accessible. The sheet is ordinary DOM that product teams can restyle or replace."
+      className="w-full max-w-[1120px] [--diax-frame-bg:#eef2f4] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#fff] [--diax-node-border:#c9d2d8] [--diax-node-shadow:none] [--diax-node-text:#17212a] [--diax-ui-radius:3px]"
+    >
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <section
+          className="min-w-0 border border-slate-300 bg-[#f7f9fa] p-3"
+          aria-label="Native app handoff decisions"
+        >
+          <FlowDiagram
+            nodes={nodes}
+            relations={relations}
+            direction="vertical"
+            density="compact"
+            centered
+            stagger
+          />
+        </section>
+
+        <aside
+          className="border border-slate-300 bg-white p-3"
+          aria-label="Rendered mobile handoff sheet"
+        >
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <span className="font-mono text-[9px] font-bold uppercase tracking-[0.1em] text-slate-500">
+              Live DOM mock
+            </span>
+            <span className="font-mono text-[9px] text-slate-400">390 × 844</span>
+          </div>
+          <div className="mx-auto mt-4 max-w-[250px] border-[5px] border-slate-900 bg-slate-100 p-1.5 [border-radius:22px]">
+            <div className="relative min-h-[430px] overflow-hidden bg-[#e8edf0] [border-radius:14px]">
+              <div className="flex h-7 items-center justify-between bg-white px-3 font-mono text-[8px] text-slate-500">
+                <span>9:41</span>
+                <span>5G · 84%</span>
+              </div>
+              <div className="p-3">
+                <div className="h-2 w-16 bg-slate-300" />
+                <div className="mt-3 h-4 w-4/5 bg-slate-700" />
+                <div className="mt-2 h-2 w-full bg-slate-300" />
+                <div className="mt-1 h-2 w-3/4 bg-slate-300" />
+                <div className="mt-5 aspect-[4/3] border border-slate-300 bg-slate-200" />
+              </div>
+              <div className="absolute inset-0 bg-slate-950/35" />
+              <section
+                data-app-handoff-sheet
+                className="absolute inset-x-0 bottom-0 border-t-[3px] border-[#e8613c] bg-white p-4 text-slate-900"
+                aria-label="Open in native app prompt"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-[#e8613c]">
+                      Continue the story
+                    </p>
+                    <h2 className="m-0 mt-1 text-sm font-semibold">Open in the native app</h2>
+                  </div>
+                  <X aria-hidden="true" className="size-4 text-slate-400" />
+                </div>
+                <p className="m-0 mt-2 text-[10px] leading-relaxed text-slate-500">
+                  Resume at the same article with saved progress and comments.
+                </p>
+                <div className="mt-4 flex items-center justify-between gap-3 border-t border-slate-200 pt-3">
+                  <span className="flex items-center gap-1 text-[9px] text-slate-500">
+                    <Check aria-hidden="true" className="size-3 text-emerald-600" /> Same
+                    destination
+                  </span>
+                  <span className="inline-flex items-center gap-1 bg-[#e8613c] px-3 py-2 text-[10px] font-bold text-white">
+                    Open App <ArrowUpRight aria-hidden="true" className="size-3" />
+                  </span>
+                </div>
+              </section>
+            </div>
+          </div>
+          <dl className="m-0 mt-4 grid grid-cols-2 border-y border-slate-300 text-center">
+            <MockMetric label="Branch labels" value="4" />
+            <MockMetric label="Canvas dependency" value="0" />
+          </dl>
+        </aside>
+      </div>
+    </DiagramFrame>
+  );
+}
+
+function FlowStep({
+  eyebrow,
+  title,
+  description,
+  tone,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  tone: "neutral" | "accent" | "info" | "success" | "warning";
+}) {
+  return (
+    <NodeCard
+      title={title}
+      eyebrow={eyebrow}
+      description={description}
+      tone={tone}
+      size="compact"
+      icon={tone === "neutral" ? <Monitor aria-hidden="true" /> : undefined}
+      className="max-w-[190px]"
+    />
+  );
+}
+
+function MockMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="border-l border-slate-300 px-2 py-2 first:border-l-0">
+      <dt className="text-[7px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+        {label}
+      </dt>
+      <dd className="m-0 mt-1 font-mono text-base font-bold text-slate-900">{value}</dd>
+    </div>
+  );
+}
+17:X
+1c:X
+1c:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"diagram","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Product decision flow"}],["$","h1",null,{"children":"Native App Handoff"}],["$","p",null,{"children":"A labeled automatic decision flow composed beside a realistic mobile handoff sheet built from ordinary React DOM."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M12 3v18","key":"108xh3"}],["path",{"d":"M3 12h18","key":"1i2n21"}],["rect",{"x":"3","y":"3","width":"18","height":"18","rx":"2","key":"h1oib"}]],"className":"lucide-grid2x2 lucide-grid-2x2","aria-hidden":"true"}]," ","Diagram"]}],["$","li",null,{"children":"intermediate"}],[["$","li","composition",{"children":"composition"}],["$","li","decision",{"children":"decision"}],["$","li","diagram",{"children":"diagram"}],["$","li","mobile",{"children":"mobile"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6",null,"$L7",null,"$L8","$L9"]}]}],["$La","$Lb","$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14"],"$L15"]}],"isPartial":"$@16","staleTime":"$17","varyParams":null},{"rsc":"$L18","isPartial":"$@19","staleTime":"$17","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$17","varyParams":"$1c"}],"isUpgradeableISRFallback":false,"a":"$@1d","rootVaryParams":null,"needsRuntimeRequest":"$@1e"}
+1f:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+20:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+21:I[359648,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+22:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+24:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+25:"$Sreact.suspense"
+27:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+28:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+29:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+2a:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"Rank assignment, node placement, edge routing and label clearance."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"Node content, styling, interaction and application semantics."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"7 rich DOM nodes · 6 relations · 4 branch labels · live UI mock"}]]}]]}]]}]
+23:T1cf9,"use client";
+
+import { FlowDiagram } from "@diax/react";
+import { DiagramFrame, NodeCard } from "@diax/ui-react/presentation";
+import { ArrowUpRight, Check, Monitor, Smartphone, X } from "lucide-react";
+
+const nodes = [
+  {
+    id: "entry",
+    content: (
+      <FlowStep
+        eyebrow="Entry"
+        title="Article opened"
+        description="A web page can offer a native continuation without replacing its content."
+        tone="info"
+      />
+    ),
+  },
+  {
+    id: "mobile",
+    content: (
+      <FlowStep
+        eyebrow="Decision 01"
+        title="Mobile browser?"
+        description="Use a capability signal, not a screen-size guess."
+        tone="accent"
+      />
+    ),
+  },
+  {
+    id: "inside-app",
+    content: (
+      <FlowStep
+        eyebrow="Decision 02"
+        title="Already in the native app?"
+        description="Avoid presenting a handoff action that cannot add value."
+        tone="accent"
+      />
+    ),
+  },
+  {
+    id: "prepare",
+    content: (
+      <FlowStep
+        eyebrow="Transform"
+        title="Build a deterministic link"
+        description="Combine a versioned schema with the current canonical URL."
+        tone="warning"
+      />
+    ),
+  },
+  {
+    id: "sheet",
+    content: (
+      <FlowStep
+        eyebrow="Presentation"
+        title="Show the handoff sheet"
+        description="Keep the web page readable until the user explicitly continues."
+        tone="success"
+      />
+    ),
+  },
+  {
+    id: "stay-web",
+    content: (
+      <FlowStep
+        eyebrow="Terminal"
+        title="Keep the web experience"
+        description="No dead-end prompt on desktop."
+        tone="neutral"
+      />
+    ),
+  },
+  {
+    id: "stay-native",
+    content: (
+      <FlowStep
+        eyebrow="Terminal"
+        title="Continue in the current app"
+        description="The native context already owns the journey."
+        tone="neutral"
+      />
+    ),
+  },
+];
+
+const relations = [
+  "entry->mobile",
+  "mobile->|No|stay-web",
+  "mobile->|Yes|inside-app",
+  "inside-app->|Yes|stay-native",
+  "inside-app->|No|prepare",
+  "prepare->sheet",
+];
+
+export default function AppHandoffFlow() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="app-handoff-flow"
+      eyebrow="Product decision flow · Automatic layout"
+      title="Native app handoff"
+      description="Let DiaX arrange the decision topology, then compose the result with a real application surface."
+      icon={<Smartphone aria-hidden="true" />}
+      caption="The flow remains deterministic and accessible. The sheet is ordinary DOM that product teams can restyle or replace."
+      className="w-full max-w-[1120px] [--diax-frame-bg:#eef2f4] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#fff] [--diax-node-border:#c9d2d8] [--diax-node-shadow:none] [--diax-node-text:#17212a] [--diax-ui-radius:3px]"
+    >
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <section
+          className="min-w-0 border border-slate-300 bg-[#f7f9fa] p-3"
+          aria-label="Native app handoff decisions"
+        >
+          <FlowDiagram
+            nodes={nodes}
+            relations={relations}
+            direction="vertical"
+            density="compact"
+            centered
+            stagger
+          />
+        </section>
+
+        <aside
+          className="border border-slate-300 bg-white p-3"
+          aria-label="Rendered mobile handoff sheet"
+        >
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <span className="font-mono text-[9px] font-bold uppercase tracking-[0.1em] text-slate-500">
+              Live DOM mock
+            </span>
+            <span className="font-mono text-[9px] text-slate-400">390 × 844</span>
+          </div>
+          <div className="mx-auto mt-4 max-w-[250px] border-[5px] border-slate-900 bg-slate-100 p-1.5 [border-radius:22px]">
+            <div className="relative min-h-[430px] overflow-hidden bg-[#e8edf0] [border-radius:14px]">
+              <div className="flex h-7 items-center justify-between bg-white px-3 font-mono text-[8px] text-slate-500">
+                <span>9:41</span>
+                <span>5G · 84%</span>
+              </div>
+              <div className="p-3">
+                <div className="h-2 w-16 bg-slate-300" />
+                <div className="mt-3 h-4 w-4/5 bg-slate-700" />
+                <div className="mt-2 h-2 w-full bg-slate-300" />
+                <div className="mt-1 h-2 w-3/4 bg-slate-300" />
+                <div className="mt-5 aspect-[4/3] border border-slate-300 bg-slate-200" />
+              </div>
+              <div className="absolute inset-0 bg-slate-950/35" />
+              <section
+                data-app-handoff-sheet
+                className="absolute inset-x-0 bottom-0 border-t-[3px] border-[#e8613c] bg-white p-4 text-slate-900"
+                aria-label="Open in native app prompt"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-[#e8613c]">
+                      Continue the story
+                    </p>
+                    <h2 className="m-0 mt-1 text-sm font-semibold">Open in the native app</h2>
+                  </div>
+                  <X aria-hidden="true" className="size-4 text-slate-400" />
+                </div>
+                <p className="m-0 mt-2 text-[10px] leading-relaxed text-slate-500">
+                  Resume at the same article with saved progress and comments.
+                </p>
+                <div className="mt-4 flex items-center justify-between gap-3 border-t border-slate-200 pt-3">
+                  <span className="flex items-center gap-1 text-[9px] text-slate-500">
+                    <Check aria-hidden="true" className="size-3 text-emerald-600" /> Same
+                    destination
+                  </span>
+                  <span className="inline-flex items-center gap-1 bg-[#e8613c] px-3 py-2 text-[10px] font-bold text-white">
+                    Open App <ArrowUpRight aria-hidden="true" className="size-3" />
+                  </span>
+                </div>
+              </section>
+            </div>
+          </div>
+          <dl className="m-0 mt-4 grid grid-cols-2 border-y border-slate-300 text-center">
+            <MockMetric label="Branch labels" value="4" />
+            <MockMetric label="Canvas dependency" value="0" />
+          </dl>
+        </aside>
+      </div>
+    </DiagramFrame>
+  );
+}
+
+function FlowStep({
+  eyebrow,
+  title,
+  description,
+  tone,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  tone: "neutral" | "accent" | "info" | "success" | "warning";
+}) {
+  return (
+    <NodeCard
+      title={title}
+      eyebrow={eyebrow}
+      description={description}
+      tone={tone}
+      size="compact"
+      icon={tone === "neutral" ? <Monitor aria-hidden="true" /> : undefined}
+      className="max-w-[190px]"
+    />
+  );
+}
+
+function MockMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="border-l border-slate-300 px-2 py-2 first:border-l-0">
+      <dt className="text-[7px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+        {label}
+      </dt>
+      <dd className="m-0 mt-1 font-mono text-base font-bold text-slate-900">{value}</dd>
+    </div>
+  );
+}
+7:["$","$L1f",null,{"title":"Native App Handoff","entryLabel":"Diagram","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"app-handoff-flow","children":[["$","$L20",null,{"moduleIds":[839897]}],["$","$L21",null,{}]]}],"code":["$","$L22",null,{"files":[{"path":"components/diagrams/app-handoff-flow/app-handoff-flow.tsx","content":"$23"}],"slug":"app-handoff-flow"}]}]
+8:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","@diax/ui-react",{"translate":"no","children":"@diax/ui-react"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Diagram"]}],["$","strong",null,{"children":"Build With Diagram"}],["$","span",null,{"children":"Start from nodes and relations, then let DiaX own placement and routing."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","rag-grounding-system",{"children":["$","$L2",null,{"href":"/showcase/rag-grounding-system","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"RAG Grounding System"}],["$","span",null,{"children":"13 rich DOM nodes · 14 relations · 2 nested paths · 0 manual geometry"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","release-lifecycle",{"children":["$","$L2",null,{"href":"/showcase/release-lifecycle","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"Release Candidate Lifecycle"}],["$","span",null,{"children":"5 semantic states · 6 stable transitions · 2 feedback routes · 0 manual geometry"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","ci-pipeline",{"children":["$","$L2",null,{"href":"/showcase/ci-pipeline","children":[["$","span",null,{"children":[["$","small",null,{"children":"Diagram"}],["$","strong",null,{"children":"CI/CD Pipeline"}],["$","span",null,{"children":"4 stages · parallel-ready flow layout"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+a:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+b:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+c:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+d:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+e:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+f:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+10:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+11:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+12:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+13:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+14:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+15:["$","$L24",null,{"children":["$","$25",null,{"name":"Next.MetadataOutlet","children":"$@26"}]}]
+18:["$","$1","h",{"children":[null,["$","$L27",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L28",null,{"children":["$","$25",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Native App Handoff — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"A labeled automatic decision flow composed beside a realistic mobile handoff sheet built from ordinary React DOM."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/app-handoff-flow/"}],["$","meta","3",{"property":"og:title","content":"Native App Handoff — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"A labeled automatic decision flow composed beside a realistic mobile handoff sheet built from ordinary React DOM."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/app-handoff-flow/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1a:["$","$1","c",{"children":[null,["$","$L29",null,{"parallelRouterKey":"children","template":["$","$L2a",null,{}]}]]}]
+1e:true
+26:null
+17:300
+17:C
+1d:0
+19:"$undefined"
+1b:"$undefined"
+16:"$undefined"

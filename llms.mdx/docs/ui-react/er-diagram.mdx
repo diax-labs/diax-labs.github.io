@@ -1,0 +1,118 @@
+# EntityNode (/docs/ui-react/er-diagram)
+
+
+
+
+
+Overview [#overview]
+
+`EntityNode` renders ER diagram entities in a table-style layout with header and attribute rows.
+PK/FK/UK constraint badges include visible abbreviations, accessible names and self-contained
+package styling. They do not depend on Tailwind color utilities or a host `.dark` selector.
+
+Compound Composition [#compound-composition]
+
+<DiagramPreview
+  title="EntityNode — compound composition"
+  code="`import { EntityNode, EntityHeader, EntityAttributes, EntityAttribute } from '@diax/ui-react';
+
+<EntityNode>
+<EntityHeader>CUSTOMER</EntityHeader>
+<EntityAttributes>
+  <EntityAttribute constraint=&#x22;PK&#x22; name=&#x22;id&#x22; type=&#x22;int&#x22; />
+  <EntityAttribute constraint=&#x22;FK&#x22; name=&#x22;order_id&#x22; type=&#x22;int&#x22; />
+  <EntityAttribute name=&#x22;name&#x22; type=&#x22;varchar(255)&#x22; />
+  <EntityAttribute name=&#x22;email&#x22; type=&#x22;varchar(255)&#x22; />
+</EntityAttributes>
+</EntityNode>`"
+>
+  <EntityNode>
+    <EntityHeader>
+      CUSTOMER
+    </EntityHeader>
+
+    <EntityAttributes>
+      <EntityAttribute constraint="PK" name="id" type="int" />
+
+      <EntityAttribute constraint="FK" name="order_id" type="int" />
+
+      <EntityAttribute name="name" type="varchar(255)" />
+
+      <EntityAttribute name="email" type="varchar(255)" />
+    </EntityAttributes>
+  </EntityNode>
+</DiagramPreview>
+
+Data-driven [#data-driven]
+
+<DiagramPreview
+  title="EntityNode — data prop"
+  code="`<EntityNode data={{
+name: &#x22;ORDER&#x22;,
+attributes: [
+  { name: &#x22;id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;PK&#x22; },
+  { name: &#x22;customer_id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;FK&#x22; },
+  { name: &#x22;total&#x22;, type: &#x22;decimal(10,2)&#x22; },
+  { name: &#x22;status&#x22;, type: &#x22;varchar(20)&#x22; },
+  { name: &#x22;sku&#x22;, type: &#x22;varchar(50)&#x22;, constraint: &#x22;UK&#x22; },
+],
+}} />`"
+>
+  <EntityNode
+    data="{
+  name: &#x22;ORDER&#x22;,
+  attributes: [
+    { name: &#x22;id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;PK&#x22; },
+    { name: &#x22;customer_id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;FK&#x22; },
+    { name: &#x22;total&#x22;, type: &#x22;decimal(10,2)&#x22; },
+    { name: &#x22;status&#x22;, type: &#x22;varchar(20)&#x22; },
+    { name: &#x22;sku&#x22;, type: &#x22;varchar(50)&#x22;, constraint: &#x22;UK&#x22; },
+  ],
+}"
+  />
+</DiagramPreview>
+
+Constraint Badges [#constraint-badges]
+
+| Constraint | Color  | Meaning     |
+| ---------- | ------ | ----------- |
+| `PK`       | Amber  | Primary Key |
+| `FK`       | Blue   | Foreign Key |
+| `UK`       | Purple | Unique Key  |
+
+Known abbreviations expose `Primary key`, `Foreign key` and `Unique key` to assistive technology.
+Custom constraint strings remain visible and receive the neutral token. The badges also use
+`data-diax-ui-part="constraint"` and `data-constraint`, so application themes can restyle them
+without replacing the component structure.
+
+For a complete parent/child schema, lifecycle and migration example, see
+[Data Model Recipes](/docs/ui-react/data-model-recipes).
+
+Interactive States [#interactive-states]
+
+<DiagramPreview
+  title="Highlighted & dimmed"
+  code="`<div className=&#x22;flex gap-4&#x22;>
+<EntityNode data={{ name: &#x22;NORMAL&#x22;, attributes: [{ name: &#x22;id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;PK&#x22; }] }} />
+<EntityNode highlighted data={{ name: &#x22;HIGHLIGHTED&#x22;, attributes: [{ name: &#x22;id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;PK&#x22; }] }} />
+<EntityNode dimmed data={{ name: &#x22;DIMMED&#x22;, attributes: [{ name: &#x22;id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;PK&#x22; }] }} />
+</div>`"
+>
+  <div className="flex gap-4">
+    <EntityNode data="{ name: &#x22;NORMAL&#x22;, attributes: [{ name: &#x22;id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;PK&#x22; }] }" />
+
+    <EntityNode data="{ name: &#x22;HIGHLIGHTED&#x22;, attributes: [{ name: &#x22;id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;PK&#x22; }] }" />
+
+    <EntityNode data="{ name: &#x22;DIMMED&#x22;, attributes: [{ name: &#x22;id&#x22;, type: &#x22;int&#x22;, constraint: &#x22;PK&#x22; }] }" />
+  </div>
+</DiagramPreview>
+
+Props [#props]
+
+EntityAttribute [#entityattribute]
+
+| Prop         | Type                             | Description      |
+| ------------ | -------------------------------- | ---------------- |
+| `name`       | `string`                         | Attribute name   |
+| `type`       | `string`                         | Data type        |
+| `constraint` | `"PK" \| "FK" \| "UK" \| string` | Constraint badge |

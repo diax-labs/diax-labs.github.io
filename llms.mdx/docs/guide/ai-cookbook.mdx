@@ -1,0 +1,224 @@
+# AI Cookbook (/docs/guide/ai-cookbook)
+
+
+
+Classify the visual before generating code [#classify-the-visual-before-generating-code]
+
+The most important AI decision is not color or arrow style. It is who owns layout.
+
+| User intent                       | Generate                    | Why                                                       |
+| --------------------------------- | --------------------------- | --------------------------------------------------------- |
+| System architecture or call graph | Diagram JSON                | Topology should determine placement                       |
+| Organization tree or mind map     | Diagram JSON                | Hierarchy is the visual structure                         |
+| Existing Mermaid content          | Mermaid source, then import | Preserve portable text input                              |
+| Decision with evidence cards      | Reviewed Connect JSX        | Report composition should remain authored DOM             |
+| KPI cards with causal arrows      | Reviewed Connect JSX        | Metrics need responsive CSS and semantic HTML             |
+| Before / After comparison         | Reviewed Connect JSX        | Columns and annotations own the story                     |
+| Promotion timeline or roadmap     | Reviewed Connect JSX        | Time, prose and milestones need deliberate composition    |
+| Reusable application graph        | Diagram data + `nodeTypes`  | Data remains serializable; presentation stays allowlisted |
+
+Use JSON at an untrusted runtime boundary. Generate JSX only in a trusted repository workflow where
+the result is reviewed like application code.
+
+This page supplies question-first recipes. Use the
+[Agent-first Workflow](/docs/guide/agent-workflow) to carry the selected recipe through validation,
+the exact built preview, final-use-size review and truthful export or sharing.
+
+<ScenarioCorpus />
+
+Prompt: choose the interface first [#prompt-choose-the-interface-first]
+
+Give an agent this policy before asking for implementation:
+
+```text
+Classify the requested visual before writing code:
+
+1. If topology should decide placement, output a DiaX Diagram Definition as JSON.
+2. If JSX/CSS should decide placement, output reviewed React code using
+   @diax/react/connect with centralized relations.
+3. Do not invent a mode prop or mix Diagram nodes with Connect targets.
+4. Keep every semantic ID stable, short, and unique.
+5. Prefer object relations in generated output.
+6. Explain the selected layout owner in one sentence, then output the artifact.
+```
+
+Recipe: system architecture [#recipe-system-architecture]
+
+Generate a serializable Diagram Definition. Keep framework content and styling out of the model:
+
+```json
+{
+  "nodes": [
+    { "id": "web", "content": "Web App", "type": "client" },
+    { "id": "gateway", "content": "API Gateway", "type": "service" },
+    { "id": "orders", "content": "Order Service", "type": "service" },
+    { "id": "db", "content": "PostgreSQL", "type": "database" }
+  ],
+  "relations": [
+    { "from": "web", "to": "gateway", "label": "HTTPS" },
+    { "from": "gateway", "to": "orders", "label": "gRPC" },
+    { "from": "orders", "to": "db", "label": "SQL" }
+  ]
+}
+```
+
+The application validates the JSON and owns the visual allowlist:
+
+```tsx contract
+import { FlowDiagram } from '@diax/react';
+
+const nodeTypes = {
+  client: ({ content }: { content: React.ReactNode }) => <article>{content}</article>,
+  service: ({ content }: { content: React.ReactNode }) => <section>{content}</section>,
+  database: ({ content }: { content: React.ReactNode }) => <code>{content}</code>,
+};
+
+export function Architecture({ nodes, relations }: {
+  nodes: Array<{ id: string; content: string; type: keyof typeof nodeTypes }>;
+  relations: Array<{ from: string; to: string; label?: string }>;
+}) {
+  return <FlowDiagram nodes={nodes} relations={relations} nodeTypes={nodeTypes} />;
+}
+```
+
+Recipe: grounded RAG architecture [#recipe-grounded-rag-architecture]
+
+Treat retrieval as an architecture question, not as a new DiaX mode. Start from two independently
+owned paths:
+
+* the **online question path** authorizes intent, checks a policy-aware cache, retrieves and reranks
+  evidence, then preserves citation identity in the answer;
+* the **versioned knowledge path** chunks reviewed sources, records revisions and access metadata,
+  then updates the durable index consumed by retrieval.
+
+Use ordinary Diagram nodes and relations because the topology should determine placement. Semantic
+groups can name the two paths and their shared parent system; `SystemNode`, `DataStoreNode` and
+`EvidenceNode` remain replaceable DOM presentation. A cache return or reranker feedback relation is
+an ordinary stable edge, not a hand-authored bend point.
+
+Before generating the artifact, require the authorization boundary, cache key, index revision,
+retrieval contract and citation identity as verified facts. Do not invent `RagDiagram`, retriever
+node types in Core, coordinates or a vendor-logo registry.
+
+At narrow reading widths, keep node metadata, group titles and relation labels at their intended
+size and make the wide canvas explicitly horizontally scrollable. Do not scale thirteen rich nodes
+down until the topology fits 320px: that produces a recognizable thumbnail, not a readable system
+review.
+
+[Study the complete automatic RAG specimen →](/showcase/rag-grounding-system)
+
+Recipe: decision and evidence [#recipe-decision-and-evidence]
+
+The author controls a responsive report grid; DiaX only connects the semantic cards:
+
+```tsx contract
+import { ConnectionSurface, connectionTarget } from '@diax/react/connect';
+
+const relations = [
+  { from: 'problem', to: 'evidence', label: 'measured by' },
+  { from: 'evidence', to: 'decision', label: 'supports' },
+];
+
+export function DecisionStory() {
+  return (
+    <ConnectionSurface relations={relations} className="grid gap-16 lg:grid-cols-3">
+      <article {...connectionTarget('problem')}><h2>Problem</h2><p>Checkout latency</p></article>
+      <article {...connectionTarget('evidence')}><h2>Evidence</h2><strong>-38%</strong></article>
+      <article {...connectionTarget('decision')}><h2>Decision</h2><p>Expand rollout</p></article>
+    </ConnectionSurface>
+  );
+}
+```
+
+Keep relation data near the surface. Do not hide outgoing arrows inside individual cards.
+
+Recipe: promotion timeline [#recipe-promotion-timeline]
+
+Use CSS for the timeline and Connect for cross-milestone causality:
+
+```tsx contract
+import { ConnectionSurface, connectionTarget } from '@diax/react/connect';
+
+const milestones = [
+  { id: 'baseline', quarter: 'Q1', title: 'Established baseline' },
+  { id: 'platform', quarter: 'Q2', title: 'Shipped platform' },
+  { id: 'impact', quarter: 'Q3', title: 'Scaled impact' },
+];
+
+export function PromotionTimeline() {
+  return (
+    <ConnectionSurface
+      relations={[
+        { from: 'baseline', to: 'platform' },
+        { from: 'platform', to: 'impact', label: 'enabled' },
+      ]}
+      className="grid gap-12 md:grid-cols-3"
+    >
+      {milestones.map(item => (
+        <article key={item.id} {...connectionTarget(item.id)}>
+          <small>{item.quarter}</small><h2>{item.title}</h2>
+        </article>
+      ))}
+    </ConnectionSurface>
+  );
+}
+```
+
+This is the right place for an array-to-DOM map: the array describes authored cards, while the
+centralized relations describe connections. It is not the noisy `DiaxNode` / `DiaxEdge` marker loop.
+
+Recipe: Mermaid enhancement [#recipe-mermaid-enhancement]
+
+Keep Mermaid when portable text is valuable. Import the supported topology, then apply DiaX DOM
+renderers or migrate selected nodes into richer presentation primitives. Do not claim that DiaX can
+import Mermaid `sequenceDiagram`, Gantt or timeline syntax. A React sequence-style protocol is a
+separate Connect recipe built from measured message rows and an ordered transcript.
+
+[See supported Mermaid families →](/docs/guide/mermaid)
+
+[See the DOM-native sequence recipe →](/docs/react/connect#sequence-style-protocols-without-a-sequence-mode)
+
+Recipe: repository-grounded architecture evidence [#recipe-repository-grounded-architecture-evidence]
+
+For source-code architecture reviews, citations are authored facts—not inferred graph metadata.
+Resolve and verify them in an agent or build workflow before rendering:
+
+```ts
+const repositoryEvidence = {
+  repository: 'https://github.com/tt-a1i/archify',
+  revision: '3e0f4d8382c500c286fe5d5d29ec28597ed58c7c',
+  sources: [
+    {
+      path: 'archify/SKILL.md',
+      line: 15,
+      endLine: 37,
+      label: 'Bounded authoring contract',
+    },
+  ],
+};
+```
+
+The authoring step must verify the public HTTPS repository, full 40-character commit, blob, and
+line range before producing a stable link. Missing evidence fails closed. After that check, pass the
+trusted link into `EvidenceNode` and use Connect only for a declared relation such as “supports this
+decision.” DiaX Core and framework adapters do not need Git, filesystem, GitHub, or network access.
+
+Do not turn file proximity or dependency reachability into an unverified runtime-impact claim.
+
+[Inspect the complete repository-evidence specimen →](/showcase/repository-evidence-map)
+
+Repeatability checklist [#repeatability-checklist]
+
+* Stable IDs survive prompt retries and content edits.
+* Object relations make repair paths explicit.
+* Generated JSON has product-specific size and type limits.
+* JSX generation happens only in a reviewed code workflow.
+* One surface has exactly one layout owner.
+* The result uses semantic HTML before decorative wrappers.
+* Long text, empty content, mobile width and dark mode are part of acceptance.
+* Export is deterministic; screenshots are outputs, not the source of truth.
+
+<Callout type="info">
+  The goal is not to make AI draw pixels more creatively. It is to give AI a constrained,
+  inspectable web-native language whose output can be repaired and reproduced.
+</Callout>

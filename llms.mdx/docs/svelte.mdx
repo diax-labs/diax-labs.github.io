@@ -1,0 +1,90 @@
+# Svelte Guide (/docs/svelte)
+
+
+
+<InstallTabs packages="[&#x22;@diax/svelte&#x22;]" description="Svelte bindings (peer dependency: svelte >= 4)" />
+
+Progressive API [#progressive-api]
+
+DiaX Svelte provides three progressive levels of control, matching the core engine's architecture:
+
+| Layer | API                                      | Best for                                      |
+| ----- | ---------------------------------------- | --------------------------------------------- |
+| 1     | `<FlowDiagram>` / `<Mindmap>` components | Quick usage, AI output, prototyping           |
+| 2     | Component slots (`let:node`)             | Custom node styling with your design system   |
+| 3     | `createDiagramStore()`                   | Full headless control, complex DOM structures |
+
+***
+
+Quick Start [#quick-start]
+
+Use the zero-config `<FlowDiagram>` component for immediate results:
+
+```svelte contract
+<script>
+import { FlowDiagram } from '@diax/svelte';
+
+const nodes = [
+  { id: 'a', content: 'Start' },
+  { id: 'b', content: 'Process' },
+  { id: 'c', content: 'End' }
+];
+
+const relations = ['a->b', 'b->c'];
+</script>
+
+<FlowDiagram {nodes} {relations} />
+```
+
+Density [#density]
+
+| Value           | Description                             |
+| --------------- | --------------------------------------- |
+| `"compact"`     | Tight spacing, good for inline diagrams |
+| `"comfortable"` | Default, balanced spacing               |
+| `"spacious"`    | Wide spacing, good for presentations    |
+
+Direction [#direction]
+
+```svelte
+<FlowDiagram direction="horizontal" {nodes} {relations} />         <!-- Left to right (default) -->
+<FlowDiagram direction="vertical" {nodes} {relations} />            <!-- Top to bottom -->
+<FlowDiagram direction="horizontal-reverse" {nodes} {relations} />  <!-- Right to left -->
+<FlowDiagram direction="vertical-reverse" {nodes} {relations} />    <!-- Bottom to top -->
+```
+
+| Value                  | Description                    |
+| ---------------------- | ------------------------------ |
+| `"horizontal"`         | Left to right (default)        |
+| `"vertical"`           | Top to bottom                  |
+| `"horizontal-reverse"` | Right to left (RTL flows)      |
+| `"vertical-reverse"`   | Bottom to top (upstream flows) |
+
+Mindmap [#mindmap]
+
+```svelte
+<script>
+import { Mindmap } from '@diax/svelte';
+
+const nodes = [
+  { id: 'core', content: 'Platform' },
+  { id: 'fe', content: 'Frontend' },
+  { id: 'be', content: 'Backend' }
+];
+
+const relations = ['core->fe', 'core->be'];
+</script>
+
+<Mindmap {nodes} {relations} />
+```
+
+***
+
+Next Steps [#next-steps]
+
+* \[Custom Rendering] — custom node styling, nodeType, and state handling
+* \[Headless Stores] — full control with `createDiagramStore`
+* [Edge Types](/docs/svelte/edges) — DSL syntax, animations, and customize paths
+* [Advanced](/docs/svelte/advanced) — Stagger animation, DOM ID namespaces, reactive patterns
+* [SvelteKit](/docs/svelte/sveltekit) — Browser checks and SSR guidance
+* [API Reference](/docs/svelte/props) — Store return values and configuration options

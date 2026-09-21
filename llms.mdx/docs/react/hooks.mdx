@@ -1,0 +1,109 @@
+# Headless Hooks (/docs/react/hooks)
+
+
+
+Headless Hooks [#headless-hooks]
+
+For full control, use the `useDiagram` hook directly:
+
+```tsx
+import {
+  useDiagram,
+  DiagramCanvas,
+  DiagramNode,
+  DiagramEdges,
+} from '@diax/react';
+
+function MyDiagram() {
+  const {
+    nodes,
+    edges,
+    layoutMap,
+    containerProps,
+    highlightedNodes,
+    highlightedEdgeIds,
+  } = useDiagram({
+    // [!code highlight]
+    nodes: [
+      { id: 'a', content: 'Start' },
+      { id: 'b', content: 'End' },
+    ],
+    relations: ['a->b'],
+    highlightOnHover: true,
+  });
+
+  return (
+    <DiagramCanvas {...containerProps}>
+      {nodes.map((node) => (
+        <DiagramNode key={node.id} {...node.bindProps}>
+          {' '}
+          // [!code highlight]
+          {/* You own the rendering completely */}
+          <div className="bg-blue-500 rounded-lg p-4 text-white">
+            {node.data.content}
+          </div>
+        </DiagramNode>
+      ))}
+      <DiagramEdges
+        edges={edges}
+        layoutMap={layoutMap}
+        highlightedNodes={highlightedNodes}
+        highlightedEdgeIds={highlightedEdgeIds}
+      />
+    </DiagramCanvas>
+  );
+}
+```
+
+Advanced Composition & Reactivity [#advanced-composition--reactivity]
+
+When bypassing the provided rendering layers entirely, spreading `node.bindProps` is essential. It guarantees your nodes opt into DiaX's built-in behavior:
+
+1. **Grid Placement**: `data-diax-node`, `data-diax-col`, `data-diax-row` styles that tell CSS Grid where to put the item based on the core engine's layout solver.
+2. **Accessibility metadata**: Binds the target DOM `id` and computes valid `aria-flowto` references. The attribute is a relationship hint; assistive technology still follows DOM order and authored semantics.
+3. **Interactivity**: Binds `onMouseEnter` and `onMouseLeave` callbacks enabling the `highlightOnHover` capabilities out of the box dynamically across connected components.
+
+Theme state [#theme-state]
+
+Theme selection is ordinary React state. Pass the selected value to the high-level diagram and let
+that module own theme resolution and CSS injection:
+
+```tsx
+import { useState } from 'react';
+import { FlowDiagram, type ThemeInput } from '@diax/react';
+
+function App() {
+  const [theme, setTheme] = useState<ThemeInput>('linear');
+
+  return (
+    <div className="p-8">
+      <button onClick={() => setTheme(theme === 'light' ? 'linear' : 'light')}>
+        Toggle Theme
+      </button>
+
+      <FlowDiagram theme={theme} nodes={...} relations={...} />
+    </div>
+  );
+}
+```
+
+Direct theme authors can import `themes`, `themeToCSS`, or `themeToStyle` from `diax/themes` without
+adding a second React state abstraction.
+
+Independent payload types [#independent-payload-types]
+
+`useDiagram<NodeContent, EdgeLabel, GroupLabel>()` preserves separate domain types for bound nodes,
+parsed edge labels, and semantic groups. Inference is preferred; pass explicit arguments only for
+an empty definition or a renderer whose callback context cannot infer them. String shorthand keeps
+the parsed edge-label type as `EdgeLabel | string`.
+
+Image Export [#image-export]
+
+`@diax/react` does not currently export a `useExport` hook. DiaX diagrams combine ordinary DOM
+nodes and an SVG edge layer, so serializing only the SVG cannot preserve the complete diagram.
+
+For now, wrap the diagram in an element you own and integrate a DOM-capture library at the
+application boundary. Pin fonts, background colors and asset loading in that integration and test
+the resulting image in the browsers you support. The Playground now verifies complete DOM + SVG
+PNG/SVG export as an opt-in product workflow, but that implementation is not a stable framework
+interface. See [Export DOM Visuals](/docs/guide/exporting).

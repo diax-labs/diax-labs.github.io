@@ -1,0 +1,203 @@
+# Authoring Model (/docs/reference/authoring-model)
+
+
+
+**Audience:** most users, AI pipelines, and adapter authors.\
+&#x2A;*Runtime:** server-safe; no DOM dependency.\
+&#x2A;*Import:** `diax`.
+
+Nodes and relations [#nodes-and-relations]
+
+```ts
+interface DiaxNode<Content = unknown> {
+  id: string;
+  content: Content;
+  type?: string;
+  position?: { col?: number; row?: number };
+}
+
+type DiaxRelation<Label = unknown> = string | DiaxEdge<Label>;
+```
+
+Independent payload types [#independent-payload-types]
+
+Node content, object edge labels, and group labels are independent payload channels. Most users do
+not write generic arguments: TypeScript infers them from the three input arrays. Custom headless
+renderers can make the separation explicit in the order
+`<NodeContent, EdgeLabel, GroupLabel>`:
+
+```ts contract
+import { computeLayout } from 'diax';
+
+interface NodePayload { title: string }
+interface EdgePayload { protocol: string }
+interface GroupPayload { badge: string }
+
+const layout = computeLayout<NodePayload, EdgePayload, GroupPayload>({
+  nodes: [
+    { id: 'browser', content: { title: 'Browser' } },
+    { id: 'api', content: { title: 'API' } },
+  ],
+  relations: [{ from: 'browser', to: 'api', label: { protocol: 'HTTPS' } }],
+  groups: [{ id: 'backend', label: { badge: 'Internal' }, nodeIds: ['api'] }],
+});
+
+layout.nodeBindings[0].data.content.title;
+layout.parsedEdges[0].label;
+layout.groupBindings[0].data.label?.badge;
+```
+
+String relation shorthand can always create a string label, so parsed edge labels are typed as
+`EdgePayload | string | undefined`. AI and JSON workflows normally use serializable values and can
+continue to rely on inference.
+
+`position` is an optional rank/order hint, not a pixel coordinate or a way to author internal
+routing bends. `col` and `row` must be integers from 0 through 255. This generous safety bound
+prevents accidental million-rank dummy chains while leaving ordinary reports and architecture
+diagrams unconstrained in practice.
+
+Object relations are the canonical format for generated or dynamic content:
+
+```ts contract
+import type { DiaxNode, DiaxRelation } from 'diax';
+
+const nodes: DiaxNode<string>[] = [
+  { id: 'claim', content: 'Conversion improved' },
+  { id: 'evidence', content: 'A/B test: +12%' },
+];
+
+const relations: DiaxRelation<string>[] = [
+  {
+    from: 'claim',
+    to: 'evidence',
+    label: 'supported by',
+    pathType: 'orthogonal',
+    targetMarker: 'arrow',
+  },
+];
+```
+
+String relations are concise authoring sugar for trusted, static definitions:
+
+```ts
+'a->b'
+'a-->|label|b'
+'a<->b'
+```
+
+Use `parseRelation()` or `parseRelations()` to normalize either form into
+`ParsedRelation`. Prefer objects in agent output because fields and repair paths remain explicit.
+
+Semantic groups [#semantic-groups]
+
+Use one optional group list when a Diagram needs nested system or subgraph boundaries:
+
+```ts contract
+import type { DiaxGroup } from 'diax';
+
+const groups: DiaxGroup<string>[] = [
+  { id: 'system', label: 'System', nodeIds: ['browser'] },
+  {
+    id: 'backend',
+    label: 'Backend services',
+    nodeIds: ['api', 'db'],
+    parentId: 'system',
+  },
+];
+```
+
+`nodeIds` contains direct members. `parentId` nests one group inside another; parent bounds include
+all descendant nodes automatically. Do not calculate group rectangles or add synthetic nodes.
+Cross-group relations remain ordinary relations.
+
+All official Diagram adapters render these boundaries from the same Core binding; Mermaid flowchart
+subgraphs lower to the same model. Built-in flow packing and ELK preserve compound containment.
+Group-aware ports and collapse behavior remain experimental follow-up work.
+
+Rich edge fields [#rich-edge-fields]
+
+`DiaxEdge` includes:
+
+* `from`, `to`, `label`, `style`, `color`, and `bidirectional`
+* `sourceAnchor`, `targetAnchor`, `pathType`, `curvature`, and `gap`
+* `sourceMarker`, `targetMarker`, `strokeWidth`, and `strokeDasharray`
+* `events`, `ariaLabel`, `hitSlop`, `className`, and `animate`
+
+The same relation vocabulary is shared by Core, Diagram, Connect, and JSX authoring. Do not create
+a second application-specific edge shape unless you are intentionally translating a domain model.
+
+Runtime validation [#runtime-validation]
+
+`validateDiagram(nodes, relations)` returns structured diagnostics and never requires parsing
+human-readable error text:
+
+```ts contract
+import { validateDiagram } from 'diax';
+
+const diagnostics = validateDiagram(
+  [{ id: 'source', content: 'Source' }],
+  [{ from: 'source', to: 'missing' }],
+);
+
+for (const diagnostic of diagnostics) {
+  console.log(diagnostic.code, diagnostic.path, diagnostic.hint);
+}
+```
+
+Every `DiaxDiagnostic` has a stable `code`, `severity`, and `message`, plus optional `path`,
+`location`, and repair `hint`.
+
+| Code                           | Meaning                                                             |
+| ------------------------------ | ------------------------------------------------------------------- |
+| `MIXED_MODE`                   | Data props and JSX definition children were mixed                   |
+| `UNSUPPORTED_DEFINITION_CHILD` | JSX definition input contained an unsupported child                 |
+| `INVALID_NODE_ID`              | A node ID is empty or invalid                                       |
+| `INVALID_NODE_POSITION`        | A grid hint is fractional, negative, or exceeds the safe rank bound |
+| `DUPLICATE_NODE_ID`            | More than one node uses the same ID                                 |
+| `DUPLICATE_GROUP_ID`           | More than one group uses the same ID                                |
+| `GROUP_ID_COLLISION`           | A group ID collides with a node ID                                  |
+| `UNKNOWN_GROUP_NODE`           | A group references a missing node                                   |
+| `UNKNOWN_PARENT_GROUP`         | A group references a missing parent                                 |
+| `DUPLICATE_GROUP_MEMBERSHIP`   | A node is assigned to two direct groups                             |
+| `CYCLIC_GROUP`                 | Parent references form a cycle                                      |
+| `MALFORMED_RELATION`           | A relation cannot be parsed                                         |
+| `ORPHAN_RELATION`              | An endpoint does not exist in the surface                           |
+| `SELF_LOOP`                    | A node points to itself; currently a warning                        |
+| `UNSUPPORTED_CROSS_SURFACE`    | A relation crosses an unsupported measurement boundary              |
+
+`computeLayout()` throws `DiaxValidationError` for error-severity diagnostics and keeps the
+original list on `error.diagnostics`.
+
+Type-safe builder [#type-safe-builder]
+
+`defineDiagram(nodes)` constrains relation endpoints to literal node IDs:
+
+```ts contract
+import { defineDiagram } from 'diax';
+
+const checkout = defineDiagram([
+  { id: 'cart' as const, content: 'Cart' },
+  { id: 'payment' as const, content: 'Payment' },
+] as const)
+  .relation('cart', 'payment', { label: 'checkout' })
+  .build();
+```
+
+The builder is optional compile-time sugar. Arrays remain the serialization boundary and the
+recommended AI output.
+
+AST conversion [#ast-conversion]
+
+`createAST(nodes, relations, options?)` parses relations into a normalized
+`DiaxAST<NodeContent, EdgeLabel, GroupLabel>`.
+`createASTFromEdges(nodes, edges, options?)` accepts edges that are already parsed. Adapter options
+may retain `direction`, `layout`, `centered`, and `groups` without introducing another model.
+
+AST is an interchange value for adapters such as Mermaid. It is not a second required authoring
+mode, and framework users do not need to construct it before rendering.
+
+Related [#related]
+
+* [Core Interface](/docs/reference/core-interface)
+* [AI validation and repair](/docs/guide/ai-integration)
+* [React JSX authoring](/docs/react/jsx-composition)

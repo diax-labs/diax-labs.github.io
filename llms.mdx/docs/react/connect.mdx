@@ -1,0 +1,263 @@
+# Connect Authored DOM (/docs/react/connect)
+
+
+
+
+
+Keep your layout, add connections [#keep-your-layout-add-connections]
+
+Use Connect when the page already has the right layout and DiaX should only draw relationships. Your
+grid, flexbox, responsive breakpoints and semantic elements remain ordinary application DOM.
+
+| Use Diagram when…                                         | Use Connect when…                                                   |
+| --------------------------------------------------------- | ------------------------------------------------------------------- |
+| You have nodes and relations and want automatic placement | You already have a report, article, dashboard or application layout |
+| DiaX should own grid placement                            | Your CSS should remain the layout authority                         |
+| One graph model drives the whole surface                  | Connections annotate selected elements inside richer content        |
+
+Connect is a separate React entry so Diagram-only consumers do not evaluate its measurement runtime:
+
+```tsx
+import { ConnectionSurface, connectionTarget } from '@diax/react/connect';
+```
+
+<Callout type="info">
+  Connect is currently available for React. Vue, Svelte, Solid and Vanilla adapters continue to
+  support automatic Diagram layout but do not yet expose this authored-DOM surface.
+</Callout>
+
+Quick start [#quick-start]
+
+```tsx title="decision-report.tsx" contract
+'use client';
+
+import type { DiaxRelation } from '@diax/react';
+import { ConnectionSurface, connectionTarget } from '@diax/react/connect';
+
+const relations = [
+  {
+    from: 'brief',
+    to: 'decision',
+    label: 'approved',
+    sourceAnchor: 'right',
+    targetAnchor: 'left',
+    pathType: 'orthogonal',
+  },
+] satisfies DiaxRelation[];
+
+export function DecisionReport() {
+  return (
+    <ConnectionSurface
+      relations={relations}
+      className="grid gap-16 md:grid-cols-2"
+    >
+      <section {...connectionTarget('brief')} className="rounded-2xl border p-6">
+        <p className="text-sm text-slate-500">AI brief</p>
+        <h2 className="text-xl font-semibold">Adopt the new checkout</h2>
+      </section>
+
+      <article
+        {...connectionTarget('decision')}
+        className="rounded-2xl bg-emerald-50 p-6"
+      >
+        <p className="text-sm text-emerald-700">Decision</p>
+        <strong>Approved for staged rollout</strong>
+      </article>
+    </ConnectionSurface>
+  );
+}
+```
+
+`connectionTarget(id)` returns a small attribute object. Spread it onto the exact element whose border
+box should become the connection endpoint. A custom component must forward that object to one real
+DOM element rather than swallowing it.
+
+Inspect Runnable Connect Studies [#inspect-runnable-connect-studies]
+
+These studies keep layout in semantic JSX and CSS while Connect measures only the marked endpoints.
+Open a study to inspect its ownership contract, live DOM, generated registry artifact and source.
+
+<ShowcaseStudies
+  slugs="[
+  'dom-system-architecture',
+  'incident-response-workflow',
+  'snapshot-fan-in',
+  'agent-review-sequence',
+]"
+/>
+
+Sequence-style protocols without a Sequence mode [#sequence-style-protocols-without-a-sequence-mode]
+
+A chronological protocol is a good Connect composition when the application owns participant
+columns and message order. Give every message row one tiny endpoint under its sender and one under
+its receiver, then connect those measured elements with a stable relation ID:
+
+```tsx title="message-row.tsx"
+const message = { id: 'm03-review', from: 'verifier', to: 'agent' };
+
+<div className="grid grid-cols-3" data-message={message.id}>
+  {participants.map(participant => {
+    const endpoint = participant.id === message.from || participant.id === message.to;
+    return (
+      <div key={participant.id} className="relative min-h-16">
+        {endpoint ? (
+          <span
+            {...connectionTarget(`${message.id}-${participant.id}`)}
+            aria-hidden="true"
+          />
+        ) : null}
+      </div>
+    );
+  })}
+</div>
+```
+
+The corresponding relation connects `${message.id}-${message.from}` to
+`${message.id}-${message.to}` with `pathType: 'straight'`. The row owns chronology; Connect only owns
+the exact line between its endpoints. This avoids public `y`, `messageAt`, lifeline-port or channel
+coordinates and remains stable when typography changes.
+
+At narrow widths, do not shrink a four- or five-participant trace until its text is illegible. Make
+an ordered semantic transcript the primary presentation, as the
+[Agent Review Sequence](/showcase/agent-review-sequence) does. The desktop trace and compact
+transcript express the same messages; CSS chooses the readable representation.
+
+Topology stays centralized [#topology-stays-centralized]
+
+Keep relations next to the surface rather than hiding them inside target components. This makes the
+story reviewable by people, TypeScript and AI tooling:
+
+```tsx
+const relations = [
+  { from: 'claim', to: 'evidence', label: 'because' },
+  { from: 'evidence', to: 'decision', style: 'dashed' },
+];
+
+<ConnectionSurface relations={relations}>
+  <p {...connectionTarget('claim')}>Conversion improved after the rollout.</p>
+  <MetricCard {...connectionTarget('evidence')} value="+23%" />
+  <aside {...connectionTarget('decision')}>Expand to the remaining regions.</aside>
+</ConnectionSurface>;
+```
+
+The same rich relation model used by Diagram is available here, including labels, markers, anchors,
+path types, animation, stroke styling, hit slop and edge events. Prefer object-form relations when an
+AI or external system generates the topology; explicit fields are easier to validate and repair.
+
+When several automatic relations share one inferred node side, Connect spreads their attachment
+points deterministically toward their opposite nodes instead of stacking every line at the side
+midpoint. Give dynamic or parallel relations stable `id` values so their slots survive relation
+reordering. An explicit `sourceAnchor` or `targetAnchor` remains authoritative and keeps that endpoint
+at the selected side midpoint; there is no port-index, channel or bend-point option to maintain.
+
+Surface contract [#surface-contract]
+
+`ConnectionSurface` [#connectionsurface]
+
+| Prop            | Type                                     | Default    | Purpose                                                          |
+| --------------- | ---------------------------------------- | ---------- | ---------------------------------------------------------------- |
+| `relations`     | `readonly DiaxRelation<ReactNode>[]`     | required   | Centralized topology for targets in this surface                 |
+| `children`      | `ReactNode`                              | required   | Application-owned semantic DOM                                   |
+| `pathType`      | `'bezier' \| 'straight' \| 'orthogonal'` | `'bezier'` | Surface fallback; an individual relation may override it         |
+| `onDiagnostics` | `(diagnostics) => void`                  | —          | Receive structured validation results after targets are measured |
+
+The component also accepts normal `div` props such as `className`, `style`, event handlers and a
+forwarded `ref`. Connect supplies zero-specificity `position: relative` and `isolation: isolate`
+defaults so the SVG layers have a stable containing block and local stacking context. Any host class
+or inline style can replace those defaults. Visible relation paint sits behind authored DOM, while a
+separate transparent interaction layer keeps actionable edges clickable and keyboard focusable. You
+should not need edge-layer `z-index` selectors or a `z-10` class on every target.
+
+This paint ownership does not wrap, clone or reposition children, so direct-child Grid and Flex
+semantics remain unchanged. Opaque authored content naturally covers a route. Transparent content
+reveals it. If application CSS replaces the surface's `position` or `isolation`, the application also
+owns the resulting containing-block and stacking behavior.
+
+`connectionTarget(id)` [#connectiontargetid]
+
+```ts
+function connectionTarget(id: string): {
+  readonly 'data-diax-node': string;
+};
+```
+
+IDs must be stable, non-empty and unique inside the nearest surface. Relations use those local IDs;
+namespaced cross-surface references such as `report::claim` are intentionally rejected.
+
+Measurement and responsive layout [#measurement-and-responsive-layout]
+
+Connect performs an initial measurement and observes target size, DOM mutations, CSS transitions and
+animations. Responsive reflow, images, web fonts and content changes therefore update edge geometry
+without a public `refresh()` method.
+
+An intentionally hidden responsive branch is treated as temporarily unmeasurable and emits no edge
+geometry for that observer frame. When the branch becomes laid out, normal observation resumes and
+finite paths are produced automatically.
+
+```tsx
+<ConnectionSurface
+  relations={relations}
+  className="grid gap-20 lg:grid-cols-[1fr_18rem]"
+>
+  <main {...connectionTarget('story')}>{children}</main>
+  <aside {...connectionTarget('context')} className="lg:sticky lg:top-24">
+    Supporting context
+  </aside>
+</ConnectionSurface>
+```
+
+The observer runs a frame loop only while authored CSS motion is active and performs a final
+measurement when motion ends. Prefer transform and opacity for visual motion, respect
+`prefers-reduced-motion`, and avoid continuously animating large numbers of targets without a user
+benefit.
+
+Diagnostics [#diagnostics]
+
+Invalid relations are omitted from the rendered edge layer and reported as structured diagnostics:
+
+```tsx
+<ConnectionSurface
+  relations={relations}
+  onDiagnostics={(diagnostics) => {
+    for (const diagnostic of diagnostics) {
+      console.warn(diagnostic.code, diagnostic.path, diagnostic.hint);
+    }
+  }}
+>
+  {content}
+</ConnectionSurface>
+```
+
+| Code                        | Meaning                                                  |
+| --------------------------- | -------------------------------------------------------- |
+| `INVALID_NODE_ID`           | A target ID is empty or only whitespace                  |
+| `DUPLICATE_NODE_ID`         | Two targets in the same surface use one ID               |
+| `MALFORMED_RELATION`        | A relation cannot be parsed                              |
+| `ORPHAN_RELATION`           | A relation endpoint does not exist in this surface       |
+| `SELF_LOOP`                 | A target connects to itself; rendered with a warning     |
+| `UNSUPPORTED_CROSS_SURFACE` | A relation attempts to cross surface or portal ownership |
+
+Diagnostics are data, not console-only warnings. Show them in an authoring UI or feed them back into
+an AI repair loop when relations are generated.
+
+Ownership boundaries [#ownership-boundaries]
+
+* The nearest `ConnectionSurface` owns each target. Nested surfaces are isolated.
+* Both endpoints must be descendants of the same surface.
+* Portals and edges between separate surfaces are not supported.
+* Connect does not move, wrap or clone target elements.
+* The SVG paint and interaction layers remain presentation; target content retains its native
+  semantic HTML.
+* Interactive edges need an explicit `ariaLabel` when the fallback endpoint description is not enough.
+
+<Callout type="warn">
+  Do not wrap an entire application in one global surface to simulate cross-page connections. Keep a
+  surface aligned with one understandable visual composition and keep both endpoints inside it.
+</Callout>
+
+Next steps [#next-steps]
+
+* [Edge types and rich relation fields](/docs/guide/edge-types)
+* [Accessibility](/docs/guide/accessibility)
+* [AI-generated topology](/docs/guide/ai-integration)
+* [Automatic Diagram layout](/docs/react)

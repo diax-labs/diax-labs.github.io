@@ -1,0 +1,1141 @@
+1:"$Sreact.fragment"
+2:I[609888,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js"],"MotionGovernor"]
+3:I[430513,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js"],"RootProvider"]
+4:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+5:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+6:I[601265,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js"],"HomeLayout"]
+7:I[935237,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js"],"NavbarMenu"]
+8:I[935237,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js"],"NavbarMenuTrigger"]
+9:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+a:I[935237,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js"],"NavbarMenuContent"]
+14:I[160936,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js"],"default",1]
+:HL["/_next/static/chunks/0n9g82poq-pzp.css","style"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+12:X
+0:{"P":null,"c":["","showcase","snapshot-fan-in",""],"q":"","i":false,"f":[[["",{"children":["showcase",{"children":[["slug","snapshot-fan-in","d",[]],{"children":["__PAGE__",{},"$undefined","$undefined",4608]},"$undefined","$undefined",4608]},"$undefined","$undefined",4608]},"$undefined","$undefined",4624],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/0n9g82poq-pzp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/04c7wzh9sh8pa.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/3h02mb_x4y4ri.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"className":"font-sans","data-diax-motion":"running","children":["$","body",null,{"children":[["$","$L2",null,{}],["$","a",null,{"href":"#main-content","className":"fixed left-3 top-3 z-50 -translate-y-20 rounded-md bg-fd-background px-3 py-2 text-sm font-medium shadow-lg transition-transform focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:ring-fd-ring","children":"Skip to content"}],["$","$L3",null,{"search":{"preload":false},"children":["$","div",null,{"id":"main-content","tabIndex":-1,"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]}]]}],{"children":[["$","$1","c",{"children":[[["$","script","script-0",{"src":"/_next/static/chunks/2ejuixgcyscb1.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/00gow_pkodivt.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/_next/static/chunks/3ls--w1zaxy5h.js","async":true,"nonce":"$undefined"}],["$","script","script-3",{"src":"/_next/static/chunks/2e7x7lkmyq7_c.js","async":true,"nonce":"$undefined"}],["$","script","script-4",{"src":"/_next/static/chunks/0tyuvv_r62tnn.js","async":true,"nonce":"$undefined"}]],["$","$L6",null,{"nav":{"title":["$","div",null,{"className":"flex items-center gap-2","children":[["$","svg",null,{"aria-hidden":"true","className":"h-6 w-6","viewBox":"0 0 24 24","fill":"none","children":[["$","path",null,{"d":"M4 6h16M4 12h16M4 18h16","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"round"}],["$","circle",null,{"cx":"12","cy":"12","r":"3","fill":"currentColor"}]]}],["$","span",null,{"className":"font-bold text-lg","children":"DiaX"}]]}],"transparentMode":"top"},"links":[{"type":"custom","on":"nav","children":["$","$L7",null,{"children":[["$","$L8",null,{"asChild":true,"children":["$","$L9",null,{"href":"/docs","children":"Documentation"}]}],["$","$La",null,{"children":[["$","$L9",null,{"href":"/docs","className":"group relative flex w-full flex-col justify-between overflow-hidden rounded-xl border border-fd-border bg-fd-card p-6 shadow-sm transition-[box-shadow] hover:shadow-lg","children":[["$","div",null,{"className":"absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(94,106,210,0.15),transparent)] opacity-50 transition-opacity group-hover:opacity-100"}],["$","div",null,{"className":"relative z-10 flex flex-col gap-2","children":[["$","div",null,{"className":"flex items-center gap-2","children":[["$","svg",null,{"aria-hidden":"true","className":"h-6 w-6","viewBox":"0 0 24 24","fill":"none","children":[["$","path",null,{"d":"M4 6h16M4 12h16M4 18h16","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"round"}],["$","circle",null,{"cx":"12","cy":"12","r":"3","fill":"currentColor"}]]}],["$","span",null,{"className":"font-bold text-lg","children":"DiaX"}]]}],"$Lb"]}],"$Lc"]}],"$Ld","$Le"]}]]}]},{"type":"menu","text":"Documentation","url":"/docs","on":"menu","items":[{"text":"Getting Started","url":"/docs"},{"text":"Diagram","url":"/docs/react"},{"text":"Connect authored DOM","url":"/docs/react/connect"},{"text":"AI & Agents","url":"/docs/guide/ai-integration"},{"text":"Mermaid Import","url":"/docs/guide/mermaid"},{"text":"UI Primitives","url":"/docs/ui-react"},{"text":"API Reference","url":"/docs/reference"},{"text":"Examples","url":"/showcase"}]},{"text":"Playground","url":"/playground","active":"nested-url"},{"text":"Showcase","url":"/showcase","active":"nested-url"}],"githubUrl":"https://github.com/diax-labs/diax","children":"$Lf"}]]}],{"children":["$L10",{"children":["$L11",{},null,false,null]},null,false,"$12"]},null,false,null]},null,false,null],"$L13",false]],"m":"$undefined","G":["$14",["$L15"]],"S":true,"h":null,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"25HwY_SA_6Nzt-j_Xd13d"}
+16:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+1c:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+1d:"$Sreact.suspense"
+1f:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+21:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+b:["$","h3",null,{"className":"text-xl font-bold tracking-tight mt-2","children":["The DOM-native",["$","br",null,{}],"Visual Runtime"]}]
+c:["$","div",null,{"className":"relative z-10 mt-12","children":[["$","div",null,{"className":"font-semibold text-lg text-[#5E6AD2]","children":"Getting Started"}],["$","p",null,{"className":"mt-1 text-sm text-fd-muted-foreground leading-relaxed","children":"Choose automatic layout, authored-DOM connections, or Mermaid import."}]]}]
+d:["$","div",null,{"className":"grid grid-cols-1 lg:grid-cols-2 gap-3 w-full","children":[["$","$L9","/docs/react",{"href":"/docs/react","className":"flex flex-col rounded-xl border border-fd-border/50 bg-fd-card/50 p-4 transition-colors hover:bg-fd-accent w-full","children":[["$","div",null,{"className":"flex h-8 w-8 items-center justify-center rounded-md bg-[#5E6AD2]/10 mb-3 text-[#5E6AD2]","children":["$","$L16",null,{"ref":"$undefined","iconNode":[["path",{"d":"m18 16 4-4-4-4","key":"1inbqp"}],["path",{"d":"m6 8-4 4 4 4","key":"15zrgr"}],["path",{"d":"m14.5 4-5 16","key":"e7oirm"}]],"className":"lucide-code-xml h-4 w-4","aria-hidden":"true"}]}],["$","span",null,{"className":"font-semibold text-sm","children":"Diagram"}],["$","span",null,{"className":"mt-1 text-xs text-fd-muted-foreground line-clamp-2","children":"Let topology drive automatic placement."}]]}],["$","$L9","/docs/react/connect",{"href":"/docs/react/connect","className":"flex flex-col rounded-xl border border-fd-border/50 bg-fd-card/50 p-4 transition-colors hover:bg-fd-accent w-full","children":[["$","div",null,{"className":"flex h-8 w-8 items-center justify-center rounded-md bg-[#5E6AD2]/10 mb-3 text-[#5E6AD2]","children":["$","$L16",null,{"ref":"$undefined","iconNode":[["path",{"d":"m16 3 4 4-4 4","key":"1x1c3m"}],["path",{"d":"M20 7H4","key":"zbl0bi"}],["path",{"d":"m8 21-4-4 4-4","key":"h9nckh"}],["path",{"d":"M4 17h16","key":"g4d7ey"}]],"className":"lucide-arrow-right-left h-4 w-4","aria-hidden":"true"}]}],["$","span",null,{"className":"font-semibold text-sm","children":"Connect DOM"}],["$","span",null,{"className":"mt-1 text-xs text-fd-muted-foreground line-clamp-2","children":"Draw relations over your existing JSX and CSS."}]]}],["$","$L9","/docs/guide/ai-integration",{"href":"/docs/guide/ai-integration","className":"flex flex-col rounded-xl border border-fd-border/50 bg-fd-card/50 p-4 transition-colors hover:bg-fd-accent w-full","children":[["$","div",null,{"className":"flex h-8 w-8 items-center justify-center rounded-md bg-[#5E6AD2]/10 mb-3 text-[#5E6AD2]","children":["$","$L16",null,{"ref":"$undefined","iconNode":[["path",{"d":"M12 8V4H8","key":"hb8ula"}],["rect",{"width":"16","height":"12","x":"4","y":"8","rx":"2","key":"enze0r"}],["path",{"d":"M2 14h2","key":"vft8re"}],["path",{"d":"M20 14h2","key":"4cs60a"}],["path",{"d":"M15 13v2","key":"1xurst"}],["path",{"d":"M9 13v2","key":"rq6x2g"}]],"className":"lucide-bot h-4 w-4","aria-hidden":"true"}]}],["$","span",null,{"className":"font-semibold text-sm","children":"AI & Agents"}],["$","span",null,{"className":"mt-1 text-xs text-fd-muted-foreground line-clamp-2","children":"Generate, validate, repair, and render."}]]}],["$","$L9","/docs/guide/mermaid",{"href":"/docs/guide/mermaid","className":"flex flex-col rounded-xl border border-fd-border/50 bg-fd-card/50 p-4 transition-colors hover:bg-fd-accent w-full","children":[["$","div",null,{"className":"flex h-8 w-8 items-center justify-center rounded-md bg-[#5E6AD2]/10 mb-3 text-[#5E6AD2]","children":["$","$L16",null,{"ref":"$undefined","iconNode":"$d:props:children:1:props:children:0:props:children:props:iconNode","className":"lucide-arrow-right-left h-4 w-4","aria-hidden":"true"}]}],["$","span",null,{"className":"font-semibold text-sm","children":"Mermaid Import"}],["$","span",null,{"className":"mt-1 text-xs text-fd-muted-foreground line-clamp-2","children":"Enhance supported text diagrams with DOM."}]]}]]}]
+17:Ta81,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" style="width: 100%; height: 100%; display: block;"><path fill="#ff3e00" d="M85.95 13.23C76.66-.06 58.31-3.998 45.043 4.45l-23.3 14.846a26.7 26.7 0 0 0-10.532 12.546 26.8 26.8 0 0 0-1.546 5.32 28.1 28.1 0 0 0-.123 9.269 28 28 0 0 0 2.893 8.808 27 27 0 0 0-2.505 4.79 26.6 26.6 0 0 0-1.488 5.197 28.44 28.44 0 0 0 2.05 16.633 28.4 28.4 0 0 0 2.819 4.911c9.29 13.29 27.64 17.23 40.907 8.78l23.298-14.782a26.8 26.8 0 0 0 12.078-17.865 28.13 28.13 0 0 0-2.777-18.07 27 27 0 0 0 3.385-7.351 27 27 0 0 0 .618-2.634 28.6 28.6 0 0 0-.262-11.264 28.5 28.5 0 0 0-4.607-10.28"/><path fill="#fff" d="M42.766 88.055a18.51 18.51 0 0 1-16.005-3.292 18.5 18.5 0 0 1-3.864-4.076 17.1 17.1 0 0 1-3.185-9.56 17 17 0 0 1 .372-3.937q.058-.274.129-.541.068-.27.148-.538.079-.266.167-.529l.44-1.34 1.196.893a30 30 0 0 0 4.352 2.644q1.141.57 2.327 1.038 1.185.47 2.407.838l.893.259-.08.893a5.24 5.24 0 0 0 .509 2.655q.198.412.464.783a5.58 5.58 0 0 0 4.303 2.387 5.5 5.5 0 0 0 1.682-.172 5 5 0 0 0 .738-.258 5 5 0 0 0 .691-.366L63.714 60.99a4.8 4.8 0 0 0 1.439-1.394 4.8 4.8 0 0 0 .75-1.856q.089-.508.076-1.025a5.1 5.1 0 0 0-.456-1.991 5 5 0 0 0-.514-.888 5.6 5.6 0 0 0-2.644-2.047 5.6 5.6 0 0 0-3.342-.168 5 5 0 0 0-1.09.429q-.173.091-.338.197l-8.934 5.672q-.547.345-1.118.65-.573.304-1.165.565-.594.26-1.206.474-.611.215-1.236.382a18.5 18.5 0 0 1-11.072-.567 18.5 18.5 0 0 1-8.762-6.792 17 17 0 0 1-1.687-2.955 17.07 17.07 0 0 1-1.216-9.997 16.07 16.07 0 0 1 7.263-10.773l23.335-14.844q.544-.345 1.112-.65.57-.305 1.159-.565a16 16 0 0 1 1.198-.474q.607-.216 1.23-.384a18.5 18.5 0 0 1 5.587-.57 18.53 18.53 0 0 1 10.41 3.862 18.6 18.6 0 0 1 3.863 4.077 17.1 17.1 0 0 1 2.775 6.18c.25 1.11.39 2.242.415 3.378a17 17 0 0 1-.26 3.394q-.052.275-.114.549-.06.273-.13.544-.068.273-.147.541-.076.27-.163.536l-.446 1.34-1.189-.893a30 30 0 0 0-4.363-2.666 30.5 30.5 0 0 0-4.749-1.89l-.894-.258.082-.893a5.25 5.25 0 0 0-.949-3.467 5.5 5.5 0 0 0-1.166-1.202 5.55 5.55 0 0 0-5.156-.836 6 6 0 0 0-.366.144 5 5 0 0 0-.691.367l-23.307 14.82q-.428.268-.79.62-.361.352-.646.77a4.9 4.9 0 0 0-.753 1.851 5.3 5.3 0 0 0-.075 1.026c.02.688.175 1.366.456 1.995q.213.47.513.891c.322.461.712.872 1.158 1.215.445.346.94.622 1.467.818a5.6 5.6 0 0 0 3.315.182 6 6 0 0 0 .374-.117q.184-.065.364-.143t.352-.17a5 5 0 0 0 .339-.196l8.934-5.662q.547-.351 1.12-.657a16.4 16.4 0 0 1 3.615-1.424 18.5 18.5 0 0 1 5.587-.574 18.47 18.47 0 0 1 10.41 3.86 18.5 18.5 0 0 1 3.863 4.073 17.2 17.2 0 0 1 2.773 6.182 17.1 17.1 0 0 1 .157 6.77 16.1 16.1 0 0 1-4.637 8.711 16 16 0 0 1-2.626 2.062L47.499 85.973q-.549.348-1.12.654t-1.168.566q-.594.262-1.207.478-.611.216-1.238.383"/></svg>e:["$","div",null,{"className":"flex flex-col lg:border-l border-fd-border/50 lg:pl-6 py-2 w-full","children":[["$","h4",null,{"className":"mb-3 text-xs font-semibold uppercase tracking-wider text-fd-muted-foreground","children":"Frameworks"}],["$","div",null,{"className":"flex flex-col gap-1.5 w-full","children":[["$","$L9","React",{"href":"/docs/react","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 100 100\" style=\"width: 100%; height: 100%; display: block;\"><g clip-path=\"url(#_S_1_-a)\"><path fill=\"#61dafb\" d=\"M50.307 58.816a8.816 8.816 0 1 0 0-17.632 8.816 8.816 0 0 0 0 17.632\"/><path stroke=\"#61dafb\" stroke-width=\"5\" d=\"M50.307 68.063c26.126 0 47.306-8.087 47.306-18.063s-21.18-18.062-47.306-18.062C24.18 31.938 3 40.024 3 50s21.18 18.063 47.307 18.063Z\"/><path stroke=\"#61dafb\" stroke-width=\"5\" d=\"M34.664 59.031C47.727 81.658 65.321 95.957 73.96 90.97c8.64-4.988 5.053-27.374-8.01-50C52.885 18.342 35.291 4.043 26.652 9.03s-5.052 27.374 8.011 50Z\"/><path stroke=\"#61dafb\" stroke-width=\"5\" d=\"M34.664 40.969c-13.063 22.626-16.65 45.012-8.01 50 8.638 4.988 26.232-9.311 39.295-31.938s16.65-45.012 8.01-50c-8.638-4.988-26.232 9.311-39.295 31.938Z\"/></g><defs><clipPath id=\"_S_1_-a\"><path fill=\"#fff\" d=\"M0 0h100v100H0z\"/></clipPath></defs></svg>"}}]}],["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"React"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"React bindings for DiaX"}]]}]]}],["$","$L9","Vue",{"href":"/docs/vue","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 100 100\" style=\"width: 100%; height: 100%; display: block;\"><path fill=\"#41b883\" d=\"M80 7h20L50 93.25 0 7h38.25L50 27 61.5 7z\"/><path fill=\"#41b883\" d=\"m0 7 50 86.25L100 7H80L50 58.75 19.75 7z\"/><path fill=\"#35495e\" d=\"M19.75 7 50 59 80 7H61.5L50 27 38.25 7z\"/></svg>"}}]}],["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"Vue"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"Vue bindings for DiaX"}]]}]]}],["$","$L9","Svelte",{"href":"/docs/svelte","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"$17"}}]}],"$L18"]}],"$L19","$L1a"]}]]}]
+f:["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]
+10:["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}]
+11:["$","$1","c",{"children":["$L1b",[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true,"nonce":"$undefined"}],["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true,"nonce":"$undefined"}],["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true,"nonce":"$undefined"}],["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true,"nonce":"$undefined"}],["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true,"nonce":"$undefined"}],["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true,"nonce":"$undefined"}],["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true,"nonce":"$undefined"}],["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true,"nonce":"$undefined"}]],["$","$L1c",null,{"children":["$","$1d",null,{"name":"Next.MetadataOutlet","children":"$@1e"}]}]]}]
+13:["$","$1","h",{"children":[null,["$","$L1f",null,{"children":"$L20"}],["$","div",null,{"hidden":true,"children":["$","$L21",null,{"children":["$","$1d",null,{"name":"Next.Metadata","children":"$L22"}]}]}],null]}]
+15:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/0n9g82poq-pzp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+12:C
+18:["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"Svelte"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"Svelte bindings for DiaX"}]]}]
+23:T878,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" style="width: 100%; height: 100%; display: block;"><path fill="#76b3e1" d="M100 22.715S66.667-1.813 40.88 3.847l-1.886.629c-3.774 1.258-6.919 3.145-8.805 5.66l-1.258 1.887-9.434 16.352 16.352 3.145c6.918 4.403 15.723 6.29 23.9 4.403l28.93 5.66z"/><path fill="url(#_S_4_-a)" d="M100 22.715S66.667-1.813 40.88 3.847l-1.886.629c-3.774 1.258-6.919 3.145-8.805 5.66l-1.258 1.887-9.434 16.352 16.352 3.145c6.918 4.403 15.723 6.29 23.9 4.403l28.93 5.66z" opacity=".3"/><path fill="#518ac8" d="m30.189 22.715-2.516.63c-10.692 3.144-13.837 13.207-8.176 22.012 6.29 8.176 19.497 12.578 30.188 9.434L88.68 41.583S55.346 17.055 30.19 22.715"/><path fill="url(#_S_4_-b)" d="m30.189 22.715-2.516.63c-10.692 3.144-13.837 13.207-8.176 22.012 6.29 8.176 19.497 12.578 30.188 9.434L88.68 41.583S55.346 17.055 30.19 22.715" opacity=".3"/><path fill="url(#_S_4_-c)" d="M81.761 51.017a28.3 28.3 0 0 0-30.189-9.434L12.58 54.16 0 76.174l70.44 11.95 12.58-22.642c2.516-4.402 1.887-9.434-1.258-14.465"/><path fill="url(#_S_4_-d)" d="M69.182 73.03a28.3 28.3 0 0 0-30.188-9.434L0 76.174s33.333 25.157 59.12 18.868l1.886-.629c10.692-3.145 14.466-13.207 8.176-21.384"/><defs><linearGradient id="_S_4_-a" x1="14.78" x2="93.082" y1="2.589" y2="40.639" gradientUnits="userSpaceOnUse"><stop offset=".1" stop-color="#76b3e1"/><stop offset=".3" stop-color="#dcf2fd"/><stop offset="1" stop-color="#76b3e1"/></linearGradient><linearGradient id="_S_4_-b" x1="57.736" x2="44.025" y1="21.206" y2="66.866" gradientUnits="userSpaceOnUse"><stop stop-color="#76b3e1"/><stop offset=".5" stop-color="#4377bb"/><stop offset="1" stop-color="#1f3b77"/></linearGradient><linearGradient id="_S_4_-c" x1="9.057" x2="88.239" y1="41.08" y2="94.916" gradientUnits="userSpaceOnUse"><stop stop-color="#315aa9"/><stop offset=".5" stop-color="#518ac8"/><stop offset="1" stop-color="#315aa9"/></linearGradient><linearGradient id="_S_4_-d" x1="44.78" x2="12.83" y1="47.558" y2="164.728" gradientUnits="userSpaceOnUse"><stop stop-color="#4377bb"/><stop offset=".5" stop-color="#1a336b"/><stop offset="1" stop-color="#1a336b"/></linearGradient></defs></svg>19:["$","$L9","SolidJS",{"href":"/docs/solid","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"$23"}}]}],["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"SolidJS"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"SolidJS bindings for DiaX"}]]}]]}]
+1a:["$","$L9","Vanilla JS",{"href":"/docs/vanilla","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 100 100\" style=\"width: 100%; height: 100%; display: block;\"><g clip-path=\"url(#_S_5_-a)\"><path fill=\"#f7df1e\" d=\"M100 0H0v100h100z\"/><path fill=\"#000\" d=\"M67.175 78.125c2.014 3.29 4.634 5.707 9.27 5.707 3.893 0 6.38-1.946 6.38-4.635 0-3.222-2.555-4.364-6.84-6.238l-2.35-1.008c-6.781-2.89-11.286-6.508-11.286-14.159 0-7.047 5.37-12.413 13.762-12.413 5.975 0 10.27 2.08 13.365 7.524l-7.317 4.699c-1.612-2.89-3.35-4.027-6.048-4.027-2.752 0-4.497 1.746-4.497 4.027 0 2.819 1.746 3.96 5.778 5.706l2.35 1.006c7.983 3.424 12.491 6.915 12.491 14.762 0 8.46-6.646 13.096-15.571 13.096-8.727 0-14.365-4.16-17.124-9.61zm-33.196.815c1.477 2.619 2.82 4.833 6.048 4.833 3.087 0 5.035-1.208 5.035-5.905V45.916h9.397v32.08c0 9.73-5.705 14.158-14.032 14.158-7.524 0-11.881-3.894-14.097-8.583z\"/></g><defs><clipPath id=\"_S_5_-a\"><path fill=\"#fff\" d=\"M0 0h100v100H0z\"/></clipPath></defs></svg>"}}]}],["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"Vanilla JS"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"Vanilla JS bindings for DiaX"}]]}]]}]
+24:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+25:T47db,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import type { DiaxRelation } from "diax";
+import {
+  Activity,
+  Braces,
+  Database,
+  FileType2,
+  Gauge,
+  GitBranch,
+  LayoutDashboard,
+  PackageSearch,
+  PieChart,
+  ShieldAlert,
+  ShieldCheck,
+  Webhook,
+} from "lucide-react";
+import type { KeyboardEvent, ReactNode } from "react";
+
+const targets = {
+  snapshot: "snapshot-function",
+  sync: "project-sync",
+  table: "snapshot-table",
+  dashboard: "output-dashboard",
+  statistics: "output-statistics",
+  webhook: "output-webhook",
+} as const;
+
+const sources = [
+  {
+    id: "source-sonar",
+    moduleId: "module-sonar",
+    name: "SonarQube",
+    module: "SonarModule",
+    table: "sonar_security_quality_metrics",
+    tone: "blue",
+    icon: ShieldCheck,
+  },
+  {
+    id: "source-oxlint",
+    moduleId: "module-oxlint",
+    name: "Oxlint",
+    module: "OxlintModule",
+    table: "oxlint_report",
+    tone: "green",
+    icon: Braces,
+  },
+  {
+    id: "source-sca",
+    moduleId: "module-sca",
+    name: "SCA",
+    module: "ScaService",
+    table: "security_sca",
+    tone: "orange",
+    icon: PackageSearch,
+  },
+  {
+    id: "source-malware",
+    moduleId: "module-malware",
+    name: "Malware Scan",
+    module: "MaliceService",
+    table: "security_scan",
+    tone: "red",
+    icon: ShieldAlert,
+  },
+  {
+    id: "source-types",
+    moduleId: "module-types",
+    name: "Type Coverage",
+    module: "TCModule",
+    table: "type_coverage_report",
+    tone: "violet",
+    icon: FileType2,
+  },
+] as const;
+
+type Tone = (typeof sources)[number]["tone"];
+
+const toneClasses: Record<Tone, { border: string; icon: string; label: string; field: string }> = {
+  blue: {
+    border: "border-sky-400/35",
+    icon: "text-sky-300",
+    label: "border-sky-300/30 bg-sky-400/10 text-sky-200",
+    field: "border-sky-400/25 bg-sky-400/5 text-sky-200",
+  },
+  green: {
+    border: "border-emerald-400/35",
+    icon: "text-emerald-300",
+    label: "border-emerald-300/30 bg-emerald-400/10 text-emerald-200",
+    field: "border-emerald-400/25 bg-emerald-400/5 text-emerald-200",
+  },
+  orange: {
+    border: "border-orange-400/35",
+    icon: "text-orange-300",
+    label: "border-orange-300/30 bg-orange-400/10 text-orange-200",
+    field: "border-orange-400/25 bg-orange-400/5 text-orange-200",
+  },
+  red: {
+    border: "border-rose-400/35",
+    icon: "text-rose-300",
+    label: "border-rose-300/30 bg-rose-400/10 text-rose-200",
+    field: "border-rose-400/25 bg-rose-400/5 text-rose-200",
+  },
+  violet: {
+    border: "border-violet-400/35",
+    icon: "text-violet-300",
+    label: "border-violet-300/30 bg-violet-400/10 text-violet-200",
+    field: "border-violet-400/25 bg-violet-400/5 text-violet-200",
+  },
+};
+
+const edgeColors: Record<Tone, string> = {
+  blue: "#38bdf8",
+  green: "#34d399",
+  orange: "#fb923c",
+  red: "#fb7185",
+  violet: "#a78bfa",
+};
+
+const relations: readonly DiaxRelation<ReactNode>[] = [
+  ...sources.map((source) => ({
+    id: `${source.id}-ingest`,
+    from: source.id,
+    to: source.moduleId,
+    label: <IngestLabel tone={source.tone} />,
+    color: edgeColors[source.tone],
+    targetMarker: "arrow" as const,
+    gap: 5,
+  })),
+  ...sources.map((source) =>
+    edge(`${source.moduleId}-snapshot`, source.moduleId, targets.snapshot, "#64748b"),
+  ),
+  edge("snapshot-write", targets.snapshot, targets.table, "#38bdf8", {
+    label: <FlowLabel>durable write</FlowLabel>,
+  }),
+  edge("sync-write", targets.sync, targets.table, "#a78bfa"),
+  edge("table-dashboard", targets.table, targets.dashboard, "#38bdf8"),
+  edge("table-statistics", targets.table, targets.statistics, "#34d399"),
+  edge("table-webhook", targets.table, targets.webhook, "#fb923c", {
+    label: <FlowLabel>async event</FlowLabel>,
+    style: "dashed",
+  }),
+];
+
+function edge(
+  id: string,
+  from: string,
+  to: string,
+  color: string,
+  options: Partial<Exclude<DiaxRelation<ReactNode>, string>> = {},
+): DiaxRelation<ReactNode> {
+  return { id, from, to, color, targetMarker: "arrow", gap: 5, ...options };
+}
+
+const snapshotFields = [
+  { label: "Sonar", fields: "bugs · vulnerabilities · hotspots", tone: "blue" },
+  { label: "Oxlint", fields: "errors · warnings", tone: "green" },
+  { label: "SCA", fields: "critical · high · medium · low", tone: "orange" },
+  { label: "Malware", fields: "issue_count", tone: "red" },
+  { label: "TypeCov", fields: "percent · correct · total", tone: "violet" },
+] as const;
+
+const outputs = [
+  {
+    id: targets.dashboard,
+    title: "Dashboard",
+    detail: "Paginated reads · 0 report joins",
+    icon: LayoutDashboard,
+  },
+  {
+    id: targets.statistics,
+    title: "Statistics",
+    detail: "COUNT · GROUP BY · distributions",
+    icon: PieChart,
+  },
+  {
+    id: targets.webhook,
+    title: "Webhook",
+    detail: "Alerts · weekly reports",
+    icon: Webhook,
+  },
+] as const;
+
+const endpointClass =
+  "relative min-w-0 border border-slate-700 bg-[#14212b] shadow-[0_12px_28px_rgb(0_0_0_/_0.24)]";
+
+export default function SnapshotFanIn() {
+  return (
+    <figure
+      data-showcase-corpus="snapshot-fan-in"
+      className="w-full max-w-[1120px] overflow-hidden rounded-xl border border-slate-800 bg-[#070d12] p-3 text-slate-100 shadow-[0_24px_70px_rgb(0_0_0_/_0.3)] sm:p-6"
+    >
+      <figcaption className="mb-5 flex flex-col justify-between gap-3 border-b border-slate-800 pb-4 sm:flex-row sm:items-end">
+        <div>
+          <p className="m-0 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-[#41a6b9]">
+            Dense fan-in · Authored DOM
+          </p>
+          <h2 className="m-0 mt-1 text-xl font-semibold tracking-[-0.035em] sm:text-3xl">
+            T+0 quality snapshot pipeline
+          </h2>
+          <p className="m-0 mt-1 text-[10px] leading-relaxed text-slate-400 sm:text-xs">
+            5 independent reports converge into one read model, then fan out to 3 products.
+          </p>
+        </div>
+        <dl className="m-0 flex gap-4 font-mono text-[8px] text-slate-400">
+          <Stat label="Targets" value="16" />
+          <Stat label="Relations" value="15" />
+          <Stat label="Manual anchors" value="0" />
+        </dl>
+      </figcaption>
+
+      <RelationLegend />
+
+      <div className="my-4 grid gap-2 sm:grid-cols-2">
+        <Comparison
+          state="Before"
+          title="Read-time report joins"
+          query="5 subqueries + 5 joins"
+          detail="Long dependency chain and slow pagination"
+          tone="bad"
+        />
+        <Comparison
+          state="After"
+          title="Write-time snapshot refresh"
+          query="0 subqueries + 0 report joins"
+          detail="One deterministic row for every project and branch"
+          tone="good"
+        />
+      </div>
+
+      <section
+        data-diax-reading-canvas
+        className="overflow-x-auto rounded-lg border border-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#41a6b9]"
+        aria-label="Scrollable quality snapshot architecture"
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: this overflow region remains keyboard-scrollable across browsers.
+        tabIndex={0}
+        onKeyDown={scrollTopologyOnArrow}
+      >
+        <ConnectionSurface
+          relations={relations}
+          aria-label="Quality snapshot fan-in relationships"
+          className="min-w-[1040px] overflow-hidden bg-[#0b141b] p-6 pb-14 [background-image:linear-gradient(rgb(65_166_185_/_0.04)_1px,transparent_1px),linear-gradient(90deg,rgb(65_166_185_/_0.04)_1px,transparent_1px)] [background-size:24px_24px]"
+        >
+          <section aria-labelledby="report-intake-title">
+            <StageHeading
+              number="01"
+              id="report-intake-title"
+              title="Report intake"
+              detail="Every scanner keeps its own payload and write lifecycle"
+            />
+            <div className="mt-4 grid grid-cols-5 gap-3">
+              {sources.map((source) => (
+                <div key={source.id} className="grid grid-rows-[auto_68px_auto]">
+                  <SourceCard source={source} />
+                  <span aria-hidden="true" />
+                  <ModuleCard source={source} />
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-24" aria-labelledby="refresh-title">
+            <StageHeading
+              number="02"
+              id="refresh-title"
+              title="Deterministic refresh"
+              detail="Report writes and project metadata meet before the read model"
+            />
+            <div className="mx-auto mt-5 grid max-w-[760px] grid-cols-2 gap-5">
+              <article
+                {...connectionTarget(targets.snapshot)}
+                className={`${endpointClass} rounded-lg border-sky-400/35 p-4`}
+              >
+                <Activity aria-hidden="true" className="size-4 text-sky-300" />
+                <h3 className="m-0 mt-2 font-mono text-xs font-semibold text-sky-200">
+                  updateSnapshotForRecord()
+                </h3>
+                <p className="m-0 mt-1 text-[9px] text-slate-400">recordId · reportType</p>
+                <code className="mt-3 block rounded border border-orange-400/25 bg-orange-400/5 p-2 text-[8px] text-orange-200">
+                  branch === project.defaultBranch
+                </code>
+              </article>
+              <article
+                {...connectionTarget(targets.sync)}
+                className={`${endpointClass} rounded-lg border-violet-400/35 p-4`}
+              >
+                <GitBranch aria-hidden="true" className="size-4 text-violet-300" />
+                <h3 className="m-0 mt-2 text-xs font-semibold">CMDB + GitLab Sync</h3>
+                <p className="m-0 mt-1 text-[9px] text-slate-400">Scheduled metadata refresh</p>
+                <code className="mt-3 block rounded border border-violet-400/25 bg-violet-400/5 p-2 text-[8px] text-violet-200">
+                  riskLevel · department · defaultBranch
+                </code>
+              </article>
+            </div>
+          </section>
+
+          <section className="mt-24" aria-labelledby="read-model-title">
+            <StageHeading
+              number="03"
+              id="read-model-title"
+              title="Read model"
+              detail="A denormalized snapshot optimizes the product-facing queries"
+            />
+            <article
+              {...connectionTarget(targets.table)}
+              className={`${endpointClass} mx-auto mt-5 max-w-[820px] rounded-xl border-cyan-400/35 p-4`}
+            >
+              <div className="flex items-start justify-between gap-6">
+                <div>
+                  <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-wider text-cyan-300">
+                    Denormalized wide table
+                  </p>
+                  <h3 className="m-0 mt-1 text-base font-semibold">ProjectQualitySnapshot</h3>
+                </div>
+                <code className="rounded border border-slate-700 bg-slate-950/40 px-2 py-1 text-[8px] text-slate-400">
+                  UNIQUE(projectId, appDirPath, branch)
+                </code>
+              </div>
+              <div className="mt-4 grid grid-cols-5 gap-2">
+                {snapshotFields.map((field) => (
+                  <div
+                    key={field.label}
+                    className={`rounded border p-2 ${toneClasses[field.tone].field}`}
+                  >
+                    <strong className="block text-[9px]">{field.label}</strong>
+                    <span className="mt-1 block text-[7px] leading-relaxed opacity-75">
+                      {field.fields}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </section>
+
+          <section className="mt-24" aria-labelledby="consumers-title">
+            <StageHeading
+              number="04"
+              id="consumers-title"
+              title="Product reads"
+              detail="One snapshot serves interactive pages, aggregates and notifications"
+            />
+            <div className="mx-auto mt-5 grid max-w-[760px] grid-cols-3 gap-4">
+              {outputs.map(({ id, title, detail, icon: Icon }) => (
+                <article
+                  key={id}
+                  {...connectionTarget(id)}
+                  className={`${endpointClass} rounded-lg p-3 text-center`}
+                >
+                  <Icon aria-hidden="true" className="mx-auto size-4 text-[#41a6b9]" />
+                  <h3 className="m-0 mt-2 text-[11px] font-semibold">{title}</h3>
+                  <p className="m-0 mt-1 text-[8px] leading-relaxed text-slate-400">{detail}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        </ConnectionSurface>
+      </section>
+
+      <ul className="m-0 mt-4 grid list-none gap-2 p-0 sm:grid-cols-3">
+        <Guarantee icon={Database} title="Idempotent upsert" detail="Retries keep one clean row" />
+        <Guarantee
+          icon={GitBranch}
+          title="Default branch only"
+          detail="Feature work stays isolated"
+        />
+        <Guarantee
+          icon={Gauge}
+          title="Last successful scan"
+          detail="Failures retain known-good data"
+        />
+      </ul>
+    </figure>
+  );
+}
+
+function scrollTopologyOnArrow(event: KeyboardEvent<HTMLElement>) {
+  if (event.target !== event.currentTarget) return;
+  const direction = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+  if (direction === 0) return;
+  event.preventDefault();
+  event.currentTarget.scrollBy({
+    behavior: "auto",
+    left: direction * Math.max(96, Math.round(event.currentTarget.clientWidth * 0.75)),
+  });
+}
+
+function IngestLabel({ tone }: { tone: Tone }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 font-mono text-[7px] font-bold ${toneClasses[tone].label}`}
+    >
+      <Webhook aria-hidden="true" className="size-2.5" />
+      POST
+    </span>
+  );
+}
+
+function FlowLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-600 bg-[#0b141b] px-1.5 py-0.5 font-mono text-[8px] font-bold text-slate-200">
+      {children}
+    </span>
+  );
+}
+
+function RelationLegend() {
+  const items = [
+    { label: "Report ingress", color: "#41a6b9", dashed: false },
+    { label: "Projection or read", color: "#94a3b8", dashed: false },
+    { label: "Durable snapshot write", color: "#38bdf8", dashed: false },
+    { label: "Asynchronous event", color: "#fb923c", dashed: true },
+  ];
+  return (
+    <ul
+      aria-label="Data flow relation legend"
+      className="m-0 grid list-none border-y border-slate-700 p-0 text-[8px] text-slate-400 sm:grid-cols-4"
+    >
+      {items.map((item) => (
+        <li
+          key={item.label}
+          className="flex items-center gap-2 px-3 py-2 sm:border-l sm:first:border-l-0"
+        >
+          <span
+            aria-hidden="true"
+            className={`w-7 border-t-2 ${item.dashed ? "border-dashed" : ""}`}
+            style={{ borderColor: item.color }}
+          />
+          {item.label}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function SourceCard({ source }: { source: (typeof sources)[number] }) {
+  const Icon = source.icon;
+  return (
+    <article
+      {...connectionTarget(source.id)}
+      className={`${endpointClass} ${toneClasses[source.tone].border} rounded-lg p-3 text-center`}
+    >
+      <Icon aria-hidden="true" className={`mx-auto size-4 ${toneClasses[source.tone].icon}`} />
+      <h3 className="m-0 mt-2 truncate text-[10px] font-semibold">{source.name}</h3>
+      <p className="m-0 mt-1 text-[8px] text-slate-500">Scan complete</p>
+    </article>
+  );
+}
+
+function ModuleCard({ source }: { source: (typeof sources)[number] }) {
+  return (
+    <article
+      {...connectionTarget(source.moduleId)}
+      className={`${endpointClass} rounded-lg p-3 text-center`}
+    >
+      <p className={`m-0 truncate text-[9px] font-semibold ${toneClasses[source.tone].icon}`}>
+        {source.module}
+      </p>
+      <code className="mt-1 block truncate text-[7px] text-slate-500">{source.table}</code>
+    </article>
+  );
+}
+
+function StageHeading({
+  number,
+  id,
+  title,
+  detail,
+}: {
+  number: string;
+  id: string;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <header className="relative z-10 grid grid-cols-[30px_minmax(0,1fr)] items-center gap-3">
+      <span className="grid size-[30px] place-items-center rounded border border-slate-700 bg-[#111c24] font-mono text-[8px] font-bold text-[#41a6b9]">
+        {number}
+      </span>
+      <div>
+        <h2 id={id} className="m-0 text-xs font-semibold">
+          {title}
+        </h2>
+        <p className="m-0 mt-0.5 text-[8px] text-slate-500">{detail}</p>
+      </div>
+    </header>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt>{label}</dt>
+      <dd className="m-0 mt-0.5 text-base font-semibold text-slate-100">{value}</dd>
+    </div>
+  );
+}
+
+function Comparison({
+  state,
+  title,
+  query,
+  detail,
+  tone,
+}: {
+  state: string;
+  title: string;
+  query: string;
+  detail: string;
+  tone: "bad" | "good";
+}) {
+  const toneClass =
+    tone === "bad"
+      ? "border-rose-400/25 bg-rose-400/5 text-rose-200"
+      : "border-emerald-400/25 bg-emerald-400/5 text-emerald-200";
+  return (
+    <article className={`rounded-lg border p-3 ${toneClass}`}>
+      <p className="m-0 font-mono text-[7px] font-bold uppercase tracking-wider opacity-70">
+        {state}
+      </p>
+      <h3 className="m-0 mt-1 text-[11px] font-semibold text-slate-100">{title}</h3>
+      <code className="mt-2 block rounded bg-black/20 p-2 text-[8px]">{query}</code>
+      <p className="m-0 mt-2 text-[8px] opacity-75">{detail}</p>
+    </article>
+  );
+}
+
+function Guarantee({
+  icon: Icon,
+  title,
+  detail,
+}: {
+  icon: typeof Database;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <li className="flex items-center gap-2 rounded border border-slate-800 bg-[#0d151c] p-2.5">
+      <Icon aria-hidden="true" className="size-3.5 shrink-0 text-[#41a6b9]" />
+      <span className="min-w-0">
+        <strong className="block text-[9px]">{title}</strong>
+        <small className="mt-0.5 block truncate text-[7px] text-slate-500">{detail}</small>
+      </span>
+    </li>
+  );
+}
+1b:["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"connect","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L9",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L16",null,{"ref":"$undefined","iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Quality data pipeline"}],["$","h1",null,{"children":"T+0 Snapshot Fan-In"}],["$","p",null,{"children":"Five report pipelines converge into a denormalized DOM read model, then fan out to dashboards, statistics and webhooks."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L16",null,{"ref":"$undefined","iconNode":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1","key":"ezmyqa"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1","key":"e1hn23"}]],"className":"lucide-braces","aria-hidden":"true"}]," ","Connect DOM"]}],["$","li",null,{"children":"advanced"}],[["$","li","architecture",{"children":"architecture"}],["$","li","connect",{"children":"connect"}],["$","li","data-flow",{"children":"data-flow"}],["$","li","data-pipeline",{"children":"data-pipeline"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L24",null,{"sourceCode":"$25"}],null]}]]}],"$L26","$L27","$L28",null,"$L29","$L2a"]}]}]
+2b:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+2c:I[87565,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseReader"]
+2d:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+2f:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+26:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"DOM measurement, target lifecycle and connection geometry."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"JSX, CSS layout, reading order and responsive composition."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"16 DOM targets · 15 relations · 5 rich labels"}]]}]]}]]}]
+27:["$","section",null,{"className":"showcase-module__5fFjmW__scenarioGuidance","aria-labelledby":"snapshot-fan-in-scenario-question","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Question-First Recipe"}],["$","h2",null,{"id":"snapshot-fan-in-scenario-question","children":"How do independent quality inputs become one trusted read model?"}],["$","p",null,{"children":"Use Connect because the staged report, projection and output DOM owns the composition. Label durable writes and asynchronous events in text and retain stable relation IDs across refreshes."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioDecisionGrid","children":[["$","section",null,{"aria-labelledby":"snapshot-fan-in-use-when","children":[["$","h3",null,{"id":"snapshot-fan-in-use-when","children":"Use this shape when"}],["$","ul",null,{"children":[["$","li","Explain several independently written reports converging into one queryable snapshot",{"children":"Explain several independently written reports converging into one queryable snapshot"}],["$","li","Show how a stable read model fans out to dashboards, statistics and asynchronous delivery",{"children":"Show how a stable read model fans out to dashboards, statistics and asynchronous delivery"}]]}]]}],["$","section",null,{"aria-labelledby":"snapshot-fan-in-avoid-when","children":[["$","h3",null,{"id":"snapshot-fan-in-avoid-when","children":"Choose another shape when"}],["$","p",null,{"children":"Avoid this dense authored surface when the topology is small enough for automatic Diagram layout or when no persistent read model exists."}]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioFacts","children":[["$","h3",null,{"children":"Facts the author or agent must know first"}],["$","ol",null,{"children":[["$","li","The downstream reads and asynchronous events",{"children":"The downstream reads and asynchronous events"}],["$","li","The exact durable snapshot fields",{"children":"The exact durable snapshot fields"}],["$","li","The identity used to join project and branch data",{"children":"The identity used to join project and branch data"}],["$","li","The independent source payloads and their write owners",{"children":"The independent source payloads and their write owners"}],["$","li","The refresh and retry policy",{"children":"The refresh and retry policy"}]]}]]}],["$","details",null,{"className":"showcase-module__5fFjmW__scenarioPrompt","children":[["$","summary",null,{"children":"Copy-ready agent prompts"}],["$","div",null,{"children":[["$","section",null,{"children":[["$","h3",null,{"children":"English"}],["$","p",null,{"children":"Create a dense data-flow explanation with @diax/react/connect. Preserve source payload ownership, stable relation IDs, durable-write labels, asynchronous-event text, a visible relation legend and an intentionally scrollable reading canvas. Do not add manual ports or channels."}]]}],["$","section",null,{"lang":"zh-CN","children":[["$","h3",null,{"children":"中文"}],["$","p",null,{"children":"使用 @diax/react/connect 创建密集数据流说明。保留源数据所有权、稳定关系 ID、持久化写入标签、异步事件文字、可见关系图例和有意设计的可滚动阅读画布。不要添加手工 port 或 channel。"}]]}]]}]]}]]}]
+30:T47db,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import type { DiaxRelation } from "diax";
+import {
+  Activity,
+  Braces,
+  Database,
+  FileType2,
+  Gauge,
+  GitBranch,
+  LayoutDashboard,
+  PackageSearch,
+  PieChart,
+  ShieldAlert,
+  ShieldCheck,
+  Webhook,
+} from "lucide-react";
+import type { KeyboardEvent, ReactNode } from "react";
+
+const targets = {
+  snapshot: "snapshot-function",
+  sync: "project-sync",
+  table: "snapshot-table",
+  dashboard: "output-dashboard",
+  statistics: "output-statistics",
+  webhook: "output-webhook",
+} as const;
+
+const sources = [
+  {
+    id: "source-sonar",
+    moduleId: "module-sonar",
+    name: "SonarQube",
+    module: "SonarModule",
+    table: "sonar_security_quality_metrics",
+    tone: "blue",
+    icon: ShieldCheck,
+  },
+  {
+    id: "source-oxlint",
+    moduleId: "module-oxlint",
+    name: "Oxlint",
+    module: "OxlintModule",
+    table: "oxlint_report",
+    tone: "green",
+    icon: Braces,
+  },
+  {
+    id: "source-sca",
+    moduleId: "module-sca",
+    name: "SCA",
+    module: "ScaService",
+    table: "security_sca",
+    tone: "orange",
+    icon: PackageSearch,
+  },
+  {
+    id: "source-malware",
+    moduleId: "module-malware",
+    name: "Malware Scan",
+    module: "MaliceService",
+    table: "security_scan",
+    tone: "red",
+    icon: ShieldAlert,
+  },
+  {
+    id: "source-types",
+    moduleId: "module-types",
+    name: "Type Coverage",
+    module: "TCModule",
+    table: "type_coverage_report",
+    tone: "violet",
+    icon: FileType2,
+  },
+] as const;
+
+type Tone = (typeof sources)[number]["tone"];
+
+const toneClasses: Record<Tone, { border: string; icon: string; label: string; field: string }> = {
+  blue: {
+    border: "border-sky-400/35",
+    icon: "text-sky-300",
+    label: "border-sky-300/30 bg-sky-400/10 text-sky-200",
+    field: "border-sky-400/25 bg-sky-400/5 text-sky-200",
+  },
+  green: {
+    border: "border-emerald-400/35",
+    icon: "text-emerald-300",
+    label: "border-emerald-300/30 bg-emerald-400/10 text-emerald-200",
+    field: "border-emerald-400/25 bg-emerald-400/5 text-emerald-200",
+  },
+  orange: {
+    border: "border-orange-400/35",
+    icon: "text-orange-300",
+    label: "border-orange-300/30 bg-orange-400/10 text-orange-200",
+    field: "border-orange-400/25 bg-orange-400/5 text-orange-200",
+  },
+  red: {
+    border: "border-rose-400/35",
+    icon: "text-rose-300",
+    label: "border-rose-300/30 bg-rose-400/10 text-rose-200",
+    field: "border-rose-400/25 bg-rose-400/5 text-rose-200",
+  },
+  violet: {
+    border: "border-violet-400/35",
+    icon: "text-violet-300",
+    label: "border-violet-300/30 bg-violet-400/10 text-violet-200",
+    field: "border-violet-400/25 bg-violet-400/5 text-violet-200",
+  },
+};
+
+const edgeColors: Record<Tone, string> = {
+  blue: "#38bdf8",
+  green: "#34d399",
+  orange: "#fb923c",
+  red: "#fb7185",
+  violet: "#a78bfa",
+};
+
+const relations: readonly DiaxRelation<ReactNode>[] = [
+  ...sources.map((source) => ({
+    id: `${source.id}-ingest`,
+    from: source.id,
+    to: source.moduleId,
+    label: <IngestLabel tone={source.tone} />,
+    color: edgeColors[source.tone],
+    targetMarker: "arrow" as const,
+    gap: 5,
+  })),
+  ...sources.map((source) =>
+    edge(`${source.moduleId}-snapshot`, source.moduleId, targets.snapshot, "#64748b"),
+  ),
+  edge("snapshot-write", targets.snapshot, targets.table, "#38bdf8", {
+    label: <FlowLabel>durable write</FlowLabel>,
+  }),
+  edge("sync-write", targets.sync, targets.table, "#a78bfa"),
+  edge("table-dashboard", targets.table, targets.dashboard, "#38bdf8"),
+  edge("table-statistics", targets.table, targets.statistics, "#34d399"),
+  edge("table-webhook", targets.table, targets.webhook, "#fb923c", {
+    label: <FlowLabel>async event</FlowLabel>,
+    style: "dashed",
+  }),
+];
+
+function edge(
+  id: string,
+  from: string,
+  to: string,
+  color: string,
+  options: Partial<Exclude<DiaxRelation<ReactNode>, string>> = {},
+): DiaxRelation<ReactNode> {
+  return { id, from, to, color, targetMarker: "arrow", gap: 5, ...options };
+}
+
+const snapshotFields = [
+  { label: "Sonar", fields: "bugs · vulnerabilities · hotspots", tone: "blue" },
+  { label: "Oxlint", fields: "errors · warnings", tone: "green" },
+  { label: "SCA", fields: "critical · high · medium · low", tone: "orange" },
+  { label: "Malware", fields: "issue_count", tone: "red" },
+  { label: "TypeCov", fields: "percent · correct · total", tone: "violet" },
+] as const;
+
+const outputs = [
+  {
+    id: targets.dashboard,
+    title: "Dashboard",
+    detail: "Paginated reads · 0 report joins",
+    icon: LayoutDashboard,
+  },
+  {
+    id: targets.statistics,
+    title: "Statistics",
+    detail: "COUNT · GROUP BY · distributions",
+    icon: PieChart,
+  },
+  {
+    id: targets.webhook,
+    title: "Webhook",
+    detail: "Alerts · weekly reports",
+    icon: Webhook,
+  },
+] as const;
+
+const endpointClass =
+  "relative min-w-0 border border-slate-700 bg-[#14212b] shadow-[0_12px_28px_rgb(0_0_0_/_0.24)]";
+
+export default function SnapshotFanIn() {
+  return (
+    <figure
+      data-showcase-corpus="snapshot-fan-in"
+      className="w-full max-w-[1120px] overflow-hidden rounded-xl border border-slate-800 bg-[#070d12] p-3 text-slate-100 shadow-[0_24px_70px_rgb(0_0_0_/_0.3)] sm:p-6"
+    >
+      <figcaption className="mb-5 flex flex-col justify-between gap-3 border-b border-slate-800 pb-4 sm:flex-row sm:items-end">
+        <div>
+          <p className="m-0 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-[#41a6b9]">
+            Dense fan-in · Authored DOM
+          </p>
+          <h2 className="m-0 mt-1 text-xl font-semibold tracking-[-0.035em] sm:text-3xl">
+            T+0 quality snapshot pipeline
+          </h2>
+          <p className="m-0 mt-1 text-[10px] leading-relaxed text-slate-400 sm:text-xs">
+            5 independent reports converge into one read model, then fan out to 3 products.
+          </p>
+        </div>
+        <dl className="m-0 flex gap-4 font-mono text-[8px] text-slate-400">
+          <Stat label="Targets" value="16" />
+          <Stat label="Relations" value="15" />
+          <Stat label="Manual anchors" value="0" />
+        </dl>
+      </figcaption>
+
+      <RelationLegend />
+
+      <div className="my-4 grid gap-2 sm:grid-cols-2">
+        <Comparison
+          state="Before"
+          title="Read-time report joins"
+          query="5 subqueries + 5 joins"
+          detail="Long dependency chain and slow pagination"
+          tone="bad"
+        />
+        <Comparison
+          state="After"
+          title="Write-time snapshot refresh"
+          query="0 subqueries + 0 report joins"
+          detail="One deterministic row for every project and branch"
+          tone="good"
+        />
+      </div>
+
+      <section
+        data-diax-reading-canvas
+        className="overflow-x-auto rounded-lg border border-slate-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#41a6b9]"
+        aria-label="Scrollable quality snapshot architecture"
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: this overflow region remains keyboard-scrollable across browsers.
+        tabIndex={0}
+        onKeyDown={scrollTopologyOnArrow}
+      >
+        <ConnectionSurface
+          relations={relations}
+          aria-label="Quality snapshot fan-in relationships"
+          className="min-w-[1040px] overflow-hidden bg-[#0b141b] p-6 pb-14 [background-image:linear-gradient(rgb(65_166_185_/_0.04)_1px,transparent_1px),linear-gradient(90deg,rgb(65_166_185_/_0.04)_1px,transparent_1px)] [background-size:24px_24px]"
+        >
+          <section aria-labelledby="report-intake-title">
+            <StageHeading
+              number="01"
+              id="report-intake-title"
+              title="Report intake"
+              detail="Every scanner keeps its own payload and write lifecycle"
+            />
+            <div className="mt-4 grid grid-cols-5 gap-3">
+              {sources.map((source) => (
+                <div key={source.id} className="grid grid-rows-[auto_68px_auto]">
+                  <SourceCard source={source} />
+                  <span aria-hidden="true" />
+                  <ModuleCard source={source} />
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-24" aria-labelledby="refresh-title">
+            <StageHeading
+              number="02"
+              id="refresh-title"
+              title="Deterministic refresh"
+              detail="Report writes and project metadata meet before the read model"
+            />
+            <div className="mx-auto mt-5 grid max-w-[760px] grid-cols-2 gap-5">
+              <article
+                {...connectionTarget(targets.snapshot)}
+                className={`${endpointClass} rounded-lg border-sky-400/35 p-4`}
+              >
+                <Activity aria-hidden="true" className="size-4 text-sky-300" />
+                <h3 className="m-0 mt-2 font-mono text-xs font-semibold text-sky-200">
+                  updateSnapshotForRecord()
+                </h3>
+                <p className="m-0 mt-1 text-[9px] text-slate-400">recordId · reportType</p>
+                <code className="mt-3 block rounded border border-orange-400/25 bg-orange-400/5 p-2 text-[8px] text-orange-200">
+                  branch === project.defaultBranch
+                </code>
+              </article>
+              <article
+                {...connectionTarget(targets.sync)}
+                className={`${endpointClass} rounded-lg border-violet-400/35 p-4`}
+              >
+                <GitBranch aria-hidden="true" className="size-4 text-violet-300" />
+                <h3 className="m-0 mt-2 text-xs font-semibold">CMDB + GitLab Sync</h3>
+                <p className="m-0 mt-1 text-[9px] text-slate-400">Scheduled metadata refresh</p>
+                <code className="mt-3 block rounded border border-violet-400/25 bg-violet-400/5 p-2 text-[8px] text-violet-200">
+                  riskLevel · department · defaultBranch
+                </code>
+              </article>
+            </div>
+          </section>
+
+          <section className="mt-24" aria-labelledby="read-model-title">
+            <StageHeading
+              number="03"
+              id="read-model-title"
+              title="Read model"
+              detail="A denormalized snapshot optimizes the product-facing queries"
+            />
+            <article
+              {...connectionTarget(targets.table)}
+              className={`${endpointClass} mx-auto mt-5 max-w-[820px] rounded-xl border-cyan-400/35 p-4`}
+            >
+              <div className="flex items-start justify-between gap-6">
+                <div>
+                  <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-wider text-cyan-300">
+                    Denormalized wide table
+                  </p>
+                  <h3 className="m-0 mt-1 text-base font-semibold">ProjectQualitySnapshot</h3>
+                </div>
+                <code className="rounded border border-slate-700 bg-slate-950/40 px-2 py-1 text-[8px] text-slate-400">
+                  UNIQUE(projectId, appDirPath, branch)
+                </code>
+              </div>
+              <div className="mt-4 grid grid-cols-5 gap-2">
+                {snapshotFields.map((field) => (
+                  <div
+                    key={field.label}
+                    className={`rounded border p-2 ${toneClasses[field.tone].field}`}
+                  >
+                    <strong className="block text-[9px]">{field.label}</strong>
+                    <span className="mt-1 block text-[7px] leading-relaxed opacity-75">
+                      {field.fields}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </section>
+
+          <section className="mt-24" aria-labelledby="consumers-title">
+            <StageHeading
+              number="04"
+              id="consumers-title"
+              title="Product reads"
+              detail="One snapshot serves interactive pages, aggregates and notifications"
+            />
+            <div className="mx-auto mt-5 grid max-w-[760px] grid-cols-3 gap-4">
+              {outputs.map(({ id, title, detail, icon: Icon }) => (
+                <article
+                  key={id}
+                  {...connectionTarget(id)}
+                  className={`${endpointClass} rounded-lg p-3 text-center`}
+                >
+                  <Icon aria-hidden="true" className="mx-auto size-4 text-[#41a6b9]" />
+                  <h3 className="m-0 mt-2 text-[11px] font-semibold">{title}</h3>
+                  <p className="m-0 mt-1 text-[8px] leading-relaxed text-slate-400">{detail}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        </ConnectionSurface>
+      </section>
+
+      <ul className="m-0 mt-4 grid list-none gap-2 p-0 sm:grid-cols-3">
+        <Guarantee icon={Database} title="Idempotent upsert" detail="Retries keep one clean row" />
+        <Guarantee
+          icon={GitBranch}
+          title="Default branch only"
+          detail="Feature work stays isolated"
+        />
+        <Guarantee
+          icon={Gauge}
+          title="Last successful scan"
+          detail="Failures retain known-good data"
+        />
+      </ul>
+    </figure>
+  );
+}
+
+function scrollTopologyOnArrow(event: KeyboardEvent<HTMLElement>) {
+  if (event.target !== event.currentTarget) return;
+  const direction = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+  if (direction === 0) return;
+  event.preventDefault();
+  event.currentTarget.scrollBy({
+    behavior: "auto",
+    left: direction * Math.max(96, Math.round(event.currentTarget.clientWidth * 0.75)),
+  });
+}
+
+function IngestLabel({ tone }: { tone: Tone }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded border px-1.5 py-0.5 font-mono text-[7px] font-bold ${toneClasses[tone].label}`}
+    >
+      <Webhook aria-hidden="true" className="size-2.5" />
+      POST
+    </span>
+  );
+}
+
+function FlowLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-600 bg-[#0b141b] px-1.5 py-0.5 font-mono text-[8px] font-bold text-slate-200">
+      {children}
+    </span>
+  );
+}
+
+function RelationLegend() {
+  const items = [
+    { label: "Report ingress", color: "#41a6b9", dashed: false },
+    { label: "Projection or read", color: "#94a3b8", dashed: false },
+    { label: "Durable snapshot write", color: "#38bdf8", dashed: false },
+    { label: "Asynchronous event", color: "#fb923c", dashed: true },
+  ];
+  return (
+    <ul
+      aria-label="Data flow relation legend"
+      className="m-0 grid list-none border-y border-slate-700 p-0 text-[8px] text-slate-400 sm:grid-cols-4"
+    >
+      {items.map((item) => (
+        <li
+          key={item.label}
+          className="flex items-center gap-2 px-3 py-2 sm:border-l sm:first:border-l-0"
+        >
+          <span
+            aria-hidden="true"
+            className={`w-7 border-t-2 ${item.dashed ? "border-dashed" : ""}`}
+            style={{ borderColor: item.color }}
+          />
+          {item.label}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function SourceCard({ source }: { source: (typeof sources)[number] }) {
+  const Icon = source.icon;
+  return (
+    <article
+      {...connectionTarget(source.id)}
+      className={`${endpointClass} ${toneClasses[source.tone].border} rounded-lg p-3 text-center`}
+    >
+      <Icon aria-hidden="true" className={`mx-auto size-4 ${toneClasses[source.tone].icon}`} />
+      <h3 className="m-0 mt-2 truncate text-[10px] font-semibold">{source.name}</h3>
+      <p className="m-0 mt-1 text-[8px] text-slate-500">Scan complete</p>
+    </article>
+  );
+}
+
+function ModuleCard({ source }: { source: (typeof sources)[number] }) {
+  return (
+    <article
+      {...connectionTarget(source.moduleId)}
+      className={`${endpointClass} rounded-lg p-3 text-center`}
+    >
+      <p className={`m-0 truncate text-[9px] font-semibold ${toneClasses[source.tone].icon}`}>
+        {source.module}
+      </p>
+      <code className="mt-1 block truncate text-[7px] text-slate-500">{source.table}</code>
+    </article>
+  );
+}
+
+function StageHeading({
+  number,
+  id,
+  title,
+  detail,
+}: {
+  number: string;
+  id: string;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <header className="relative z-10 grid grid-cols-[30px_minmax(0,1fr)] items-center gap-3">
+      <span className="grid size-[30px] place-items-center rounded border border-slate-700 bg-[#111c24] font-mono text-[8px] font-bold text-[#41a6b9]">
+        {number}
+      </span>
+      <div>
+        <h2 id={id} className="m-0 text-xs font-semibold">
+          {title}
+        </h2>
+        <p className="m-0 mt-0.5 text-[8px] text-slate-500">{detail}</p>
+      </div>
+    </header>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt>{label}</dt>
+      <dd className="m-0 mt-0.5 text-base font-semibold text-slate-100">{value}</dd>
+    </div>
+  );
+}
+
+function Comparison({
+  state,
+  title,
+  query,
+  detail,
+  tone,
+}: {
+  state: string;
+  title: string;
+  query: string;
+  detail: string;
+  tone: "bad" | "good";
+}) {
+  const toneClass =
+    tone === "bad"
+      ? "border-rose-400/25 bg-rose-400/5 text-rose-200"
+      : "border-emerald-400/25 bg-emerald-400/5 text-emerald-200";
+  return (
+    <article className={`rounded-lg border p-3 ${toneClass}`}>
+      <p className="m-0 font-mono text-[7px] font-bold uppercase tracking-wider opacity-70">
+        {state}
+      </p>
+      <h3 className="m-0 mt-1 text-[11px] font-semibold text-slate-100">{title}</h3>
+      <code className="mt-2 block rounded bg-black/20 p-2 text-[8px]">{query}</code>
+      <p className="m-0 mt-2 text-[8px] opacity-75">{detail}</p>
+    </article>
+  );
+}
+
+function Guarantee({
+  icon: Icon,
+  title,
+  detail,
+}: {
+  icon: typeof Database;
+  title: string;
+  detail: string;
+}) {
+  return (
+    <li className="flex items-center gap-2 rounded border border-slate-800 bg-[#0d151c] p-2.5">
+      <Icon aria-hidden="true" className="size-3.5 shrink-0 text-[#41a6b9]" />
+      <span className="min-w-0">
+        <strong className="block text-[9px]">{title}</strong>
+        <small className="mt-0.5 block truncate text-[7px] text-slate-500">{detail}</small>
+      </span>
+    </li>
+  );
+}
+28:["$","$L2b",null,{"title":"T+0 Snapshot Fan-In","entryLabel":"Connect DOM","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"snapshot-fan-in","children":["$","$L2c",null,{"definition":{"steps":[{"id":"independent-intake","title":"Independent report intake","description":"Five scanners keep their payload and write lifecycle before any product-facing projection exists.","nodeIds":["source-sonar","module-sonar","source-oxlint","module-oxlint","source-sca","module-sca","source-malware","module-malware","source-types","module-types"],"edgeIds":["source-sonar-ingest","source-oxlint-ingest","source-sca-ingest","source-malware-ingest","source-types-ingest"],"evidenceIds":[]},{"id":"deterministic-refresh","title":"Deterministic refresh","description":"Report completion and scheduled project metadata converge before the durable read model is updated.","nodeIds":["module-sonar","module-oxlint","module-sca","module-malware","module-types","snapshot-function","project-sync"],"edgeIds":["module-sonar-snapshot","module-oxlint-snapshot","module-sca-snapshot","module-malware-snapshot","module-types-snapshot"],"evidenceIds":[]},{"id":"durable-read-model","title":"Durable read model","description":"A project, application path and branch identity binds scanner facts into one idempotent snapshot row.","nodeIds":["snapshot-function","project-sync","snapshot-table"],"edgeIds":["snapshot-write","sync-write"],"evidenceIds":[]},{"id":"product-fan-out","title":"Product fan-out","description":"The same durable row serves interactive dashboards, aggregate statistics and asynchronous notifications.","nodeIds":["snapshot-table","output-dashboard","output-statistics","output-webhook"],"edgeIds":["table-dashboard","table-statistics","table-webhook"],"evidenceIds":[]}],"evidence":[]},"children":[["$","$L2d",null,{"moduleIds":[580661]}],"$L2e"]}]}],"code":["$","$L2f",null,{"files":[{"path":"components/diagrams/snapshot-fan-in/snapshot-fan-in.tsx","content":"$30"}],"slug":"snapshot-fan-in"}]}]
+29:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","diax",{"translate":"no","children":"diax"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+2a:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L9",null,{"href":"/docs/react/connect","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L16",null,{"ref":"$undefined","iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Connect DOM"]}],["$","strong",null,{"children":"Connect Authored DOM"}],["$","span",null,{"children":"Keep your JSX and CSS layout while DiaX measures and connects exact elements."}]]}],["$","$L16",null,{"ref":"$undefined","iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","dom-system-architecture",{"children":["$","$L9",null,{"href":"/showcase/dom-system-architecture","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"DOM System Architecture"}],["$","span",null,{"children":"9 DOM targets · 7 relations · 0 manual anchors"}]]}],["$","$L16",null,{"ref":"$undefined","iconNode":"$2a:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","html-injection-map",{"children":["$","$L9",null,{"href":"/showcase/html-injection-map","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"HTML Injection Map"}],["$","span",null,{"children":"2 surfaces · 11 DOM targets · 7 relations"}]]}],["$","$L16",null,{"ref":"$undefined","iconNode":"$2a:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","resilient-data-relay",{"children":["$","$L9",null,{"href":"/showcase/resilient-data-relay","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Resilient Data Relay"}],["$","span",null,{"children":"7 unequal-height targets · 6 rich transitions · 0 manual anchors"}]]}],["$","$L16",null,{"ref":"$undefined","iconNode":"$2a:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+31:I[616374,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+2e:["$","$L31",null,{}]
+20:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]
+1e:null
+22:[["$","title","0",{"children":"T+0 Snapshot Fan-In — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"Five report pipelines converge into a denormalized DOM read model, then fan out to dashboards, statistics and webhooks."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/snapshot-fan-in/"}],["$","meta","3",{"property":"og:title","content":"T+0 Snapshot Fan-In — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"Five report pipelines converge into a denormalized DOM read model, then fan out to dashboards, statistics and webhooks."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/snapshot-fan-in/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]

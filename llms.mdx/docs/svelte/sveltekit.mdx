@@ -1,0 +1,74 @@
+# SvelteKit & SSR (/docs/svelte/sveltekit)
+
+
+
+SSR is supported [#ssr-is-supported]
+
+`@diax/svelte` can render through Svelte's server compiler and hydrate through the client runtime.
+The server emits deterministic diagram DOM and an empty edge shell; the client preserves that DOM,
+measures nodes, and fills in pixel edge paths after hydration.
+
+Use the component normally in a SvelteKit route:
+
+```svelte contract
+<script lang="ts">
+  import { FlowDiagram } from '@diax/svelte';
+
+  const nodes = [
+    { id: 'frontend', content: 'Frontend' },
+    { id: 'api', content: 'API' },
+    { id: 'database', content: 'Database' },
+  ];
+  const relations = ['frontend->api', 'api->database'];
+</script>
+
+<svelte:head>
+  <title>Architecture</title>
+</svelte:head>
+
+<main>
+  <h1>Architecture</h1>
+  <FlowDiagram {nodes} {relations} />
+</main>
+```
+
+The repository test suite uses a real Vite SSR compilation, renders the built Svelte component on
+the server, hydrates it in a DOM, verifies stable node identity, and waits for measured edges:
+
+```bash
+pnpm --filter @diax/svelte test
+```
+
+When to disable SSR [#when-to-disable-ssr]
+
+Disable SSR only when application-owned node content depends on a browser-only SDK, or when an
+optional route intentionally has no useful server representation:
+
+```ts title="+page.ts"
+// SvelteKit host fragment: this opts the entire route out of SSR.
+export const ssr = false;
+```
+
+This is not the recommended default for DiaX. It removes server-rendered content and can delay the
+first meaningful view. The fragment is intentionally not a DiaX contract; a SvelteKit route fixture
+would need to verify the chosen framework version, adapters, server bundle, and navigation behavior.
+
+For one browser-only child rather than the whole route, keep the dynamic import and `{#if browser}`
+policy inside an application wrapper. Do not add that complexity merely for DiaX measurement: the
+official adapter already defers browser APIs until mount.
+
+Hydration rules [#hydration-rules]
+
+* Keep initial nodes and relations deterministic across server and client.
+* Do not branch the first topology on `browser`, viewport width, random IDs, or local time.
+* Expect node content and the edge shell in server HTML; expect final paths after client measurement.
+* Keep browser-only application widgets behind their own boundary instead of disabling SSR for the
+  entire diagram.
+* Let adapter updates and observers remeasure content; do not persist DOM rectangles in a store.
+
+Runtime boundary [#runtime-boundary]
+
+The current evidence proves the Svelte adapter's SSR→hydration contract. It does not claim an
+independent production fixture for every SvelteKit deployment adapter. If a deployment fails, check
+that its resolver honors the package's `svelte` export condition and reproduce with the package test
+before adding a client-only workaround.

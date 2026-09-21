@@ -1,0 +1,57 @@
+# Advanced (/docs/react/advanced)
+
+
+
+DOM Namespaces [#dom-namespaces]
+
+Use `namespace` to prevent DOM ID collisions when multiple diagrams render on the same page. Edges between nodes inside each diagram continue to use local IDs:
+
+```tsx
+<div className="flex gap-8">
+  <FlowDiagram
+    namespace="fe"
+    nodes={frontendNodes}
+    relations={['gw->bff']}
+  />
+  <FlowDiagram namespace="be" nodes={backendNodes} relations={['svc->db']} />
+</div>
+```
+
+Node IDs become `namespace::nodeId` in the DOM, while relations inside a diagram keep using local IDs such as `gw->bff`.
+
+<Callout type="warn">
+  Built-in renderers currently measure and draw edges inside one diagram container. A relation such as `bff->be::svc` is preserved as a cross-diagram reference, but it is not drawn across the two containers. Use one diagram for the connected graph, or provide your own shared measurement and SVG overlay.
+</Callout>
+
+***
+
+Node Type Registry (`nodeTypes`) [#node-type-registry-nodetypes]
+
+Define reusable node renderers by type, then reference them in the nodes array:
+
+```tsx
+const nodeTypes = {
+  gateway: (node, state) => (
+    <div className="px-5 py-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300">
+      ⬡ {node.content}
+    </div>
+  ),
+  service: (node, state) => (
+    <div className="px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+      ● {node.content}
+    </div>
+  ),
+};
+
+<FlowDiagram
+  nodes={[
+    { id: 'gw', type: 'gateway', content: 'API Gateway' },
+    { id: 'auth', type: 'service', content: 'Auth Service' },
+    { id: 'user', type: 'service', content: 'User Service' },
+  ]}
+  relations={['gw->auth', 'gw->user']}
+  nodeTypes={nodeTypes}
+/>;
+```
+
+**Resolution order**: `renderNode` > `nodeTypes[node.type]` > default renderer.

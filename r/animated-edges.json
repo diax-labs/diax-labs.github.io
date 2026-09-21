@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "animated-edges",
+  "type": "registry:block",
+  "title": "Animated Edges",
+  "description": "Different animation presets for visual feedback on edge connections",
+  "dependencies": ["@diax/react"],
+  "files": [
+    {
+      "path": "components/diagrams/animated-edges/animated-edges.tsx",
+      "type": "registry:component",
+      "content": "\"use client\";\nimport { FlowDiagram } from \"@diax/react\";\n\nexport default function AnimatedEdges() {\n  return (\n    <FlowDiagram\n      nodes={[\n        { id: \"src\", content: \"Source\" },\n        { id: \"lint\", content: \"Lint\" },\n        { id: \"test\", content: \"Test\" },\n        { id: \"gate\", content: \"Quality Gate\" },\n        { id: \"deploy\", content: \"Deploy\" },\n      ]}\n      relations={[\n        { from: \"src\", to: \"lint\", animate: \"flow\" },\n        { from: \"src\", to: \"test\", animate: \"flow\" },\n        { from: \"lint\", to: \"gate\", animate: \"pulse\", color: \"#4CAF50\" },\n        { from: \"test\", to: \"gate\", animate: \"pulse\", color: \"#4CAF50\" },\n        { from: \"gate\", to: \"deploy\", animate: \"shimmer\", color: \"#5E6AD2\" },\n      ]}\n      centered\n      density=\"spacious\"\n    />\n  );\n}\n"
+    }
+  ]
+}

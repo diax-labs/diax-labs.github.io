@@ -1,0 +1,145 @@
+# Docs
+
+- Start: Choose a DiaX workflow and reach a working result
+  - [Getting Started](/docs/guide): Choose the right DiaX interface and render your first diagram
+  - [Release Status](/docs/guide/release-status): What the current Alpha can prove, how to evaluate it, and what is not promised yet
+
+  - **Workflows**
+  - [Agent-first Workflow](/docs/guide/agent-workflow): Move from a communication question to a validated, built and reviewable DiaX artifact
+  - [AI Integration](/docs/guide/ai-integration): Generate validated diagram data with AI, then add trusted JSX when you need richer presentation
+  - [AI Cookbook](/docs/guide/ai-cookbook): Repeatable Diagram and Connect patterns for architecture, reports, decisions, and presentations
+  - [Mermaid Import](/docs/guide/mermaid): Bring supported Mermaid graph families into real application DOM
+  - [MDX Integration](/docs/guide/mdx-guide): Choose plain JSX composition or build-time Mermaid fences without creating a second diagram model
+  - [Export DOM Visuals](/docs/guide/exporting): Preserve authored HTML, CSS and DiaX edges in PNG, SVG and print workflows
+
+  - **Understand DiaX**
+  - [Philosophy](/docs/guide/philosophy): Why DiaX exists and the principles behind MDX + JSX + Tailwind + DiaX
+  - [Visual Constitution](/docs/guide/visual-constitution): Review DiaX-owned surfaces and examples without imposing a visual skin on host applications
+  - [Comparison](/docs/guide/comparison): How DiaX compares to React Flow, Mermaid, D2, and other diagram tools
+  - [AI Authoring Context](/docs/guide/skills): Give coding agents accurate DiaX vocabulary without inventing an unpublished installer
+
+  - **Core Concepts**
+  - [DSL Syntax](/docs/guide/dsl): Complete reference for DiaX's relation DSL — string shortcuts and typed objects
+  - [Edge Types](/docs/guide/edge-types): Complete guide to edge animations, path types, and custom labels in DiaX
+  - [Themes](/docs/guide/themes): Built-in CSS variable themes for customizing DiaX diagram appearance
+  - [Layout Modes](/docs/guide/layout-modes): FlowDiagram vs Mindmap vs ELK — choose the right layout for your diagram
+
+  - **Advanced Integration**
+  - [ELK Layout](/docs/guide/layout-elk): Experimental asynchronous ELK adapter that preserves a complete LayoutPlan
+
+  - **Architecture**
+  - [Framework Parity Matrix](/docs/guide/feature-parity): Current capabilities and intentional differences across official DiaX adapters
+  - [Accessibility (A11y)](/docs/guide/accessibility): Preserve native DOM semantics and test the relationships around a diagram
+  - [Performance](/docs/guide/performance): Layout computation speeds and framework rendering updates
+
+  - **Help**
+  - [Troubleshooting](/docs/guide/troubleshooting): Common issues and how to fix them
+  - [Migration Guide](/docs/guide/migration): Migrate to DiaX from Mermaid, react-archer, and D2
+  - [FAQ](/docs/guide/faq): Frequently asked questions about DiaX
+- UI Primitives: DOM presentation primitives for common diagram vocabulary
+  - [UI Primitives](/docs/ui-react): DOM presentation primitives for common diagram vocabulary
+  - [Presentation Nodes](/docs/ui-react/presentation-nodes): Semantic DOM components for architecture, artifacts, evidence, decisions, metrics, stages, actors, risks and durable data
+  - [Presentation Recipes](/docs/ui-react/presentation-recipes): Compose report frames, evidence, metrics and authored DOM connections without creating another graph model
+  - [Data Model Recipes](/docs/ui-react/data-model-recipes): Relational schemas, record lifecycles, schema migrations and query evidence composed from existing DiaX DOM primitives
+  - [Product Brief Recipes](/docs/ui-react/product-brief-recipes): Outcome ledgers, capability lenses, reversible change records and friction registers composed without a graph runtime
+  - [FlowNode](/docs/ui-react/flowchart): Multi-shape flow node with 6 variants
+  - [ClassNode](/docs/ui-react/class-diagram): UML three-section class node with compound composition
+  - [StateNode](/docs/ui-react/state-diagram): State diagram node with initial/final variants
+  - [EntityNode](/docs/ui-react/er-diagram): ER diagram entity with table-style attribute rows
+  - [RequirementNode](/docs/ui-react/requirement-diagram): Requirement and design element nodes with type badges
+  - [MindmapNode](/docs/ui-react/mindmap): Depth-aware mindmap nodes with automatic color cycling
+  - [SmartMermaidDiagram](/docs/ui-react/smart-mermaid): Auto-detects mermaid syntax and renders with matching preset nodes
+
+- **Framework Adapters**
+- React Adapter: React bindings for DiaX
+
+  - **Getting Started**
+  - [React Guide](/docs/react): Complete guide to using DiaX with React
+  - [Connect Authored DOM](/docs/react/connect): Draw DiaX relations over existing JSX, Tailwind and semantic HTML without giving up layout ownership
+  - [JSX Authoring](/docs/react/jsx-composition): Use JSX for static visual stories and data definitions for dynamic topology
+  - [Custom Rendering](/docs/react/custom-rendering): Customize node rendering with renderNode, nodeTypes, and node states
+  - [Edge Types](/docs/react/edges): DSL syntax, animations, path types, and custom labels
+
+  - **Advanced**
+  - [Props Reference](/docs/react/props): Complete props reference for FlowDiagram and Mindmap
+  - [Headless Hooks](/docs/react/hooks): Full control with useDiagram hook
+  - [Advanced](/docs/react/advanced): DOM namespaces and node type registry
+  - [Next.js & SSR](/docs/react/ssr): Keep DOM measurement in a Client Component and pass only serializable diagram data across RSC
+
+  - **External**
+  - [Playground](/playground)
+  - [Showcase](/showcase)
+- Vue: Vue bindings for DiaX
+
+  - **Getting Started**
+  - [Vue Guide](/docs/vue): Complete guide to using DiaX with Vue 3
+  - [Props Reference](/docs/vue/props): Complete props, slots, and composable reference
+
+  - **Composition & Styling**
+  - [Custom Rendering](/docs/vue/custom-rendering): Customize node rendering with scoped slots and nodeTypes in Vue
+  - [Edge Types](/docs/vue/edges): DSL syntax, animations, path types, and string edge labels
+
+  - **Advanced**
+  - [Headless Composables](/docs/vue/composables): Full headless control with Vue's useDiagram composable
+  - [Advanced](/docs/vue/advanced): Highlighting, mindmap, namespaces, and template patterns
+  - [Nuxt & Vue SSR](/docs/vue/nuxt): Preserve server-rendered diagram DOM and let Vue measure edge paths after hydration
+- Svelte: Svelte bindings for DiaX
+
+  - **Getting Started**
+  - [Svelte Guide](/docs/svelte): Using DiaX with Svelte components and reactive stores
+  - [API Reference](/docs/svelte/props): Store return values and configuration options
+
+  - **Composition & Styling**
+  - [Custom Rendering](/docs/svelte/custom-rendering): Custom node rendering with Svelte components and slots
+  - [Edge Types](/docs/svelte/edges): Relation syntax, animations, path types, markers, and interaction in Svelte
+
+  - **Advanced**
+  - [Headless Stores](/docs/svelte/stores): Compose a custom Svelte renderer from createDiagramStore and DiagramEdges
+  - [Advanced](/docs/svelte/advanced): DOM ID namespaces and reactive store patterns
+  - [SvelteKit & SSR](/docs/svelte/sveltekit): Render a stable Svelte diagram shell on the server and measure edges after hydration
+- SolidJS: SolidJS bindings for DiaX
+
+  - **Getting Started**
+  - [SolidJS Guide](/docs/solid): Using DiaX with SolidJS — fine-grained reactive signals
+  - [Props Reference](/docs/solid/props): Complete options and return values reference
+
+  - **Composition & Styling**
+  - [Custom Rendering](/docs/solid/custom-rendering): Custom node rendering with renderNode, nodeTypes, and stagger animation
+  - [Edge Types](/docs/solid/edges): DSL syntax, animations, path types, and custom labels
+
+  - **Advanced**
+  - [useDiagram Hook](/docs/solid/hooks): Full headless control with Solid's useDiagram and Accessor signals
+  - [Advanced](/docs/solid/advanced): Mindmap layout and DOM ID namespaces
+  - [SolidStart & SSR](/docs/solid/solidstart): Render a stable diagram shell on the server and measure pixel edges after hydration
+- Vanilla JS: Vanilla JS bindings for DiaX
+
+  - **Getting Started**
+  - [Vanilla JS Guide](/docs/vanilla): Using DiaX without any framework — pure imperative API
+  - [API Reference](/docs/vanilla/props): Configuration options and instance methods
+
+  - **Composition & Styling**
+  - [Custom Rendering](/docs/vanilla/custom-rendering): Custom DOM rendering with renderNode callback and node states
+  - [Edge Types](/docs/vanilla/edges): Edge animations, path types, and hover highlighting
+
+  - **Advanced**
+  - [Lifecycle](/docs/vanilla/lifecycle): Update, destroy, and inspect diagram instances
+  - [Advanced](/docs/vanilla/advanced): DOM ID namespaces and mindmap layout
+  - [SSR & Frameworks](/docs/vanilla/ssr): Using DiaX Vanilla inside an SSR or framework context
+
+- **API**
+- Reference: API Reference for DiaX
+  - [API Reference](/docs/reference): Choose the smallest stable DiaX interface for your job
+
+  - **Recommended**
+  - [Authoring Model](/docs/reference/authoring-model): Nodes, relations, parsing, builders, AST, validation, and diagnostics
+  - [Core Interface](/docs/reference/core-interface): Pure topology computation, highlight state, inputs, outputs, and failures
+
+  - **Adapter & Renderer Primitives**
+  - [Graph & Layout Primitives](/docs/reference/graph-layout): Built-in layout algorithms, traversal maps, registry, and direction helpers
+  - [Edge Rendering Primitives](/docs/reference/edge-rendering): Paths, anchors, markers, render-ready data, interaction, and accessibility
+  - [Measurement](/docs/reference/measurement): DOM ownership, observers, local rectangles, bounds, and namespaces
+  - [Themes & Styles](/docs/reference/themes): Explicit visual entry points, CSS variables, and style injection
+
+  - **Distribution**
+  - [remark-diax](/docs/reference/remark-diax): Build-time Mermaid fence transformation, options, VFile diagnostics, and host policy
+  - [Package Entry Points](/docs/reference/package-entry-points): Import boundaries, intended audiences, SSR behavior, and tree-shaking

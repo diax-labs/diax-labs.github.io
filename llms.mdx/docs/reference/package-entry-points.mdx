@@ -1,0 +1,112 @@
+# Package Entry Points (/docs/reference/package-entry-points)
+
+
+
+**Audience:** application architects, library authors, and deployment owners.
+
+Choose an entry point by responsibility. Do not import a broad product surface and rely on a
+bundler to rediscover boundaries that the package already exposes.
+
+Core [#core]
+
+| Import                     | Contains                                                                                                    | Runtime                                                                    |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `diax`                     | Validation, AST conversion, layout, geometry, measurement helpers                                           | Pure APIs are server-safe; measurement no-ops on SSR                       |
+| `diax/layout-plan`         | Measured layered routing, stable node/group ports, route sections, label tracks, and `LayoutPlan` rendering | Pure and server-safe; opt-in for Diagram/custom renderer jobs              |
+| `diax/diagram-measurement` | Node and group-label DOM measurement lifecycle for automatic Diagram routing                                | Browser-only adapter seam; excluded from pure planners and Connect         |
+| `diax/edge-geometry`       | Direct anchors, stable edge identities, paths, labels, and endpoint geometry                                | Pure and server-safe; excludes graph layout and automatic obstacle routing |
+| `diax/themes`              | Theme values and conversion/injection                                                                       | Conversion is server-safe; injection is browser-only                       |
+| `diax/styles.css`          | Core CSS variables and edge styles                                                                          | CSS asset                                                                  |
+| `diax/schemas/diax.json`   | Serializable DiaX schema                                                                                    | Build/server tooling                                                       |
+
+React [#react]
+
+| Import                | Use it for                                       | Does not include                                     |
+| --------------------- | ------------------------------------------------ | ---------------------------------------------------- |
+| `@diax/react`         | Data-first Diagram components and hooks          | Connect, JSX definition markers, Mermaid, UI presets |
+| `@diax/react/connect` | Relations over already-positioned JSX/CSS        | Automatic node layout, Mermaid, UI presets           |
+| `@diax/react/jsx`     | Static sibling `DiaxNode` / `DiaxEdge` authoring | Connect and Mermaid                                  |
+
+Use exactly one topology source for a surface. A subpath is a semantic contract, not a `mode`
+flag: importing Connect cannot accidentally pull the Diagram authoring adapter into the same
+module graph.
+
+Connect composes `diax/edge-geometry` rather than Diagram's smart router. Custom renderers whose
+host CSS owns node placement should choose the same leaf. Official Diagram adapters compose
+`diax/layout-plan`; custom Diagram renderers choose it explicitly so Core-only consumers and native
+ESM never evaluate the measured planner by accident. Official adapters pair it with
+`diax/diagram-measurement`; server-only planners and Connect consumers do not load that DOM seam.
+
+Optional product layers [#optional-product-layers]
+
+| Import                        | Responsibility                                                                            |
+| ----------------------------- | ----------------------------------------------------------------------------------------- |
+| `@diax/ui-react`              | Styled DOM node primitives and renderer registries                                        |
+| `@diax/ui-react/presentation` | Parser-free semantic roles for reports, architecture and ordinary React DOM               |
+| `@diax/ui-react/mermaid`      | React composition for the supported Mermaid subset                                        |
+| `@diax/ui-react/styles.css`   | Optional primitive styles                                                                 |
+| `@diax/mermaid`               | Mermaid detection, parsing, transformation, and diagnostics                               |
+| `@diax/layout-elk`            | Experimental async ELK `LayoutPlan` adapter                                               |
+| `@diax/notebook`              | Notebook surface                                                                          |
+| `@diax/notebook/playground`   | Full multi-mode Playground product                                                        |
+| `remark-diax`                 | Build-time Remark transformation plus VFile diagnostics for supported diagram code blocks |
+
+`@diax/mermaid` depends on parser infrastructure and should not enter a normal Diagram or Connect
+bundle. `@diax/notebook/playground` is a product boundary, not a component barrel for application
+runtime code.
+
+`remark-diax` leaves an invalid fence readable and reports the importer result through the current
+VFile. Live previews can display those messages without stopping rendering; strict build hosts
+collect the complete report before failing. See the [`remark-diax` Reference](/docs/reference/remark-diax)
+for the message contract and host policy. The package is ESM-only because its importer and Unified
+toolchain are ESM-only; configure it from an ESM build config rather than `require()`.
+
+All DiaX-family peers of `@diax/ui-react` are optional at package-install time. Root and
+`/presentation` consumers need only React; `/mermaid` consumers install `diax`, `@diax/react` and
+`@diax/mermaid` explicitly.
+
+Framework adapters [#framework-adapters]
+
+`@diax/vue`, `@diax/svelte`, `@diax/solid`, and `@diax/vanilla` expose their framework's
+high-level Diagram interface and lower-level bindings. Check
+[Framework Parity](/docs/guide/feature-parity) before assuming a React-only authoring surface exists
+in every adapter.
+
+Tree-shaking checklist [#tree-shaking-checklist]
+
+1. Import from the narrow documented subpath.
+2. Keep Mermaid, UI primitives, ELK, and Notebook out of shared application barrels.
+3. Use `import type` for types.
+4. Load Playground and Mermaid composition with a literal dynamic import at the route or feature
+   boundary.
+5. Import CSS explicitly; do not depend on an unrelated component for global styles.
+6. Test the built consumer artifact or sourcemap, not only the source import statement.
+
+Package metadata marks JavaScript entries side-effect free where appropriate and lists CSS
+explicitly. This supports tree-shaking, but a consumer barrel that eagerly re-exports every DiaX
+package can still defeat the intended product boundary.
+
+Module Federation [#module-federation]
+
+Federated consumers should expose the smallest leaf they need, share `react` and `react-dom` as
+compatible singletons, and keep Core versions aligned across host and remote. Do not federate the
+Playground as a substitute for the React runtime.
+
+Version mismatch, server/client condition selection, and eager shared dependencies can change the
+actual graph. Validate a production host/remote build and interaction smoke test before release.
+
+SSR and React Server Components [#ssr-and-react-server-components]
+
+* Core validation, parsing, and layout can run on the server.
+* Diagram and Connect edge surfaces measure DOM after hydration.
+* `@diax/react/connect` is a client entry.
+* Serializable Diagram definitions may cross an RSC boundary.
+* Do not pass event handlers or unreviewed generated JSX across a serialization boundary.
+* Import Mermaid parsing on the server when possible; keep its parser out of the client graph unless
+  the browser editor needs it.
+
+Related [#related]
+
+* [React SSR](/docs/react/ssr)
+* [Performance](/docs/guide/performance)
+* [AI trust boundary](/docs/guide/ai-integration)

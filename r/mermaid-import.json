@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mermaid-import",
+  "type": "registry:block",
+  "title": "Mermaid Import",
+  "description": "Convert existing Mermaid flowchart syntax to Diax diagrams",
+  "dependencies": ["@diax/mermaid", "@diax/react", "@diax/ui-react", "diax"],
+  "files": [
+    {
+      "path": "components/diagrams/mermaid-import/mermaid-import.tsx",
+      "type": "registry:component",
+      "content": "\"use client\";\nimport { SmartMermaidDiagram } from \"@diax/ui-react/mermaid\";\n\nconst mermaidChart = `\nflowchart LR\n  A[Input] --> B[Process]\n  B --> C[Validate]\n  C --> D[Output]\n  B --> E[Log]\n`;\n\nexport default function MermaidImport() {\n  return <SmartMermaidDiagram chart={mermaidChart} density=\"spacious\" />;\n}\n"
+    }
+  ]
+}

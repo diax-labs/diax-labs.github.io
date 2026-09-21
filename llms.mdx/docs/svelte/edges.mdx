@@ -1,0 +1,147 @@
+# Edge Types (/docs/svelte/edges)
+
+
+
+Keep relations on the Diagram [#keep-relations-on-the-diagram]
+
+The high-level component parses relations, measures the rendered nodes and draws the SVG edge layer.
+You do not compute or render `edgePaths` yourself.
+
+String DSL [#string-dsl]
+
+```svelte
+<script>
+import { FlowDiagram } from '@diax/svelte';
+
+const nodes = [
+  { id: 'a', content: 'Start' },
+  { id: 'b', content: 'Review' },
+  { id: 'c', content: 'Ship' },
+];
+const relations = [
+  'a->b',
+  'b-->|changes|a',
+  'b->|approved|c',
+];
+</script>
+
+<FlowDiagram {nodes} {relations} />
+```
+
+Object relations [#object-relations]
+
+Use objects for styles, markers, events and AI-generated input:
+
+```svelte
+<script>
+import { FlowDiagram } from '@diax/svelte';
+
+const relations = [
+  { from: 'a', to: 'b', style: 'dashed', color: '#E91E63' },
+  { from: 'b', to: 'c', animate: 'flow', label: 'next' },
+  { from: 'c', to: 'd', bidirectional: true, targetMarker: 'diamond' },
+];
+</script>
+
+<FlowDiagram {nodes} {relations} />
+```
+
+Decorate a serializable label with Svelte-native markup through the named slot:
+
+```svelte contract
+<script>
+import { FlowDiagram } from '@diax/svelte';
+
+const nodes = [
+  { id: 'client', content: 'Client' },
+  { id: 'api', content: 'API' },
+];
+const relations = ['client->|HTTPS|api'];
+</script>
+
+<FlowDiagram {nodes} {relations}>
+  <svelte:fragment slot="edge-label" let:label>
+    <strong class="protocol-badge">🔒 {label}</strong>
+  </svelte:fragment>
+</FlowDiagram>
+```
+
+The current Svelte 4-compatible interface uses a named slot. Keep components and snippets out of
+the relation definition; a future Svelte 5-only surface may offer a typed snippet with the same
+semantic `label` value.
+
+Group labels [#group-labels]
+
+The Svelte 4-compatible group presentation seam is another named slot. It receives the original
+semantic `group` and its non-null string `label`, while DiaX retains boundary placement and
+measurement ownership.
+
+```svelte contract
+<script>
+import { FlowDiagram } from '@diax/svelte';
+
+const nodes = [
+  { id: 'browser', content: 'Browser' },
+  { id: 'api', content: 'API' },
+];
+const relations = ['browser->api'];
+const groups = [{ id: 'backend', label: 'Backend', nodeIds: ['api'] }];
+</script>
+
+<FlowDiagram {nodes} {relations} {groups}>
+  <svelte:fragment slot="group-label" let:group let:label>
+    <strong class="boundary-label" data-group={group.id}>◫ {label}</strong>
+  </svelte:fragment>
+</FlowDiagram>
+```
+
+The boundary surface is non-interactive. Keep buttons and inputs in authored node content rather
+than inside a group label.
+
+Animation presets [#animation-presets]
+
+Set `animate` on an object relation. `DiagramEdges` injects the required edge styles when it mounts.
+
+| Preset              | Effect                         |
+| ------------------- | ------------------------------ |
+| `"flow"`            | Flowing dashes                 |
+| `"pulse"`           | Breathing opacity              |
+| `"shimmer"`         | Light traveling along the edge |
+| `"reverse-flow"`    | Reverse flowing dashes         |
+| `"reverse-shimmer"` | Reverse shimmer                |
+
+Animations follow the shared reduced-motion policy from Core.
+
+Path types [#path-types]
+
+Choose one surface fallback with the component prop:
+
+```svelte
+<FlowDiagram {nodes} {relations} pathType="bezier" />
+<FlowDiagram {nodes} {relations} pathType="straight" />
+<FlowDiagram {nodes} {relations} pathType="orthogonal" />
+```
+
+An object relation may override that fallback with its own `pathType`.
+
+Interactive relations [#interactive-relations]
+
+Handlers live on object relations. Add `ariaLabel` whenever endpoint names do not adequately describe
+the action:
+
+```svelte
+<script>
+const relations = [{
+  from: 'review',
+  to: 'details',
+  ariaLabel: 'Open review evidence',
+  events: {
+    onClick: ({ from, to }) => console.log(from, to),
+  },
+}];
+</script>
+
+<FlowDiagram {nodes} {relations} />
+```
+
+See the [shared edge vocabulary](/docs/guide/edge-types) for every object field.

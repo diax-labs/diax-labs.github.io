@@ -1,0 +1,330 @@
+1:"$Sreact.fragment"
+2:I[609888,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js"],"MotionGovernor"]
+3:I[430513,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js"],"RootProvider"]
+4:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+5:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+6:I[601265,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js"],"HomeLayout"]
+7:I[935237,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js"],"NavbarMenu"]
+8:I[935237,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js"],"NavbarMenuTrigger"]
+9:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+a:I[935237,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js"],"NavbarMenuContent"]
+15:I[160936,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js"],"default",1]
+:HL["/_next/static/chunks/0n9g82poq-pzp.css","style"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+13:X
+0:{"P":null,"c":["","showcase","repository-evidence-map",""],"q":"","i":false,"f":[[["",{"children":["showcase",{"children":[["slug","repository-evidence-map","d",[]],{"children":["__PAGE__",{},"$undefined","$undefined",4608]},"$undefined","$undefined",4608]},"$undefined","$undefined",4608]},"$undefined","$undefined",4624],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/0n9g82poq-pzp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/04c7wzh9sh8pa.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/3h02mb_x4y4ri.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"className":"font-sans","data-diax-motion":"running","children":["$","body",null,{"children":[["$","$L2",null,{}],["$","a",null,{"href":"#main-content","className":"fixed left-3 top-3 z-50 -translate-y-20 rounded-md bg-fd-background px-3 py-2 text-sm font-medium shadow-lg transition-transform focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:ring-fd-ring","children":"Skip to content"}],["$","$L3",null,{"search":{"preload":false},"children":["$","div",null,{"id":"main-content","tabIndex":-1,"children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]]}]}]]}],{"children":[["$","$1","c",{"children":[[["$","script","script-0",{"src":"/_next/static/chunks/2ejuixgcyscb1.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/00gow_pkodivt.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/_next/static/chunks/3ls--w1zaxy5h.js","async":true,"nonce":"$undefined"}],["$","script","script-3",{"src":"/_next/static/chunks/2e7x7lkmyq7_c.js","async":true,"nonce":"$undefined"}],["$","script","script-4",{"src":"/_next/static/chunks/0tyuvv_r62tnn.js","async":true,"nonce":"$undefined"}]],["$","$L6",null,{"nav":{"title":["$","div",null,{"className":"flex items-center gap-2","children":[["$","svg",null,{"aria-hidden":"true","className":"h-6 w-6","viewBox":"0 0 24 24","fill":"none","children":[["$","path",null,{"d":"M4 6h16M4 12h16M4 18h16","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"round"}],["$","circle",null,{"cx":"12","cy":"12","r":"3","fill":"currentColor"}]]}],["$","span",null,{"className":"font-bold text-lg","children":"DiaX"}]]}],"transparentMode":"top"},"links":[{"type":"custom","on":"nav","children":["$","$L7",null,{"children":[["$","$L8",null,{"asChild":true,"children":["$","$L9",null,{"href":"/docs","children":"Documentation"}]}],["$","$La",null,{"children":[["$","$L9",null,{"href":"/docs","className":"group relative flex w-full flex-col justify-between overflow-hidden rounded-xl border border-fd-border bg-fd-card p-6 shadow-sm transition-[box-shadow] hover:shadow-lg","children":[["$","div",null,{"className":"absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(94,106,210,0.15),transparent)] opacity-50 transition-opacity group-hover:opacity-100"}],["$","div",null,{"className":"relative z-10 flex flex-col gap-2","children":[["$","div",null,{"className":"flex items-center gap-2","children":[["$","svg",null,{"aria-hidden":"true","className":"h-6 w-6","viewBox":"0 0 24 24","fill":"none","children":[["$","path",null,{"d":"M4 6h16M4 12h16M4 18h16","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"round"}],["$","circle",null,{"cx":"12","cy":"12","r":"3","fill":"currentColor"}]]}],"$Lb"]}],"$Lc"]}],"$Ld"]}],"$Le","$Lf"]}]]}]},{"type":"menu","text":"Documentation","url":"/docs","on":"menu","items":[{"text":"Getting Started","url":"/docs"},{"text":"Diagram","url":"/docs/react"},{"text":"Connect authored DOM","url":"/docs/react/connect"},{"text":"AI & Agents","url":"/docs/guide/ai-integration"},{"text":"Mermaid Import","url":"/docs/guide/mermaid"},{"text":"UI Primitives","url":"/docs/ui-react"},{"text":"API Reference","url":"/docs/reference"},{"text":"Examples","url":"/showcase"}]},{"text":"Playground","url":"/playground","active":"nested-url"},{"text":"Showcase","url":"/showcase","active":"nested-url"}],"githubUrl":"https://github.com/diax-labs/diax","children":"$L10"}]]}],{"children":["$L11",{"children":["$L12",{},null,false,null]},null,false,"$13"]},null,false,null]},null,false,null],"$L14",false]],"m":"$undefined","G":["$15",["$L16"]],"S":true,"h":null,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"25HwY_SA_6Nzt-j_Xd13d"}
+17:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+1d:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+1e:"$Sreact.suspense"
+20:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+22:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+b:["$","span",null,{"className":"font-bold text-lg","children":"DiaX"}]
+c:["$","h3",null,{"className":"text-xl font-bold tracking-tight mt-2","children":["The DOM-native",["$","br",null,{}],"Visual Runtime"]}]
+d:["$","div",null,{"className":"relative z-10 mt-12","children":[["$","div",null,{"className":"font-semibold text-lg text-[#5E6AD2]","children":"Getting Started"}],["$","p",null,{"className":"mt-1 text-sm text-fd-muted-foreground leading-relaxed","children":"Choose automatic layout, authored-DOM connections, or Mermaid import."}]]}]
+e:["$","div",null,{"className":"grid grid-cols-1 lg:grid-cols-2 gap-3 w-full","children":[["$","$L9","/docs/react",{"href":"/docs/react","className":"flex flex-col rounded-xl border border-fd-border/50 bg-fd-card/50 p-4 transition-colors hover:bg-fd-accent w-full","children":[["$","div",null,{"className":"flex h-8 w-8 items-center justify-center rounded-md bg-[#5E6AD2]/10 mb-3 text-[#5E6AD2]","children":["$","$L17",null,{"ref":"$undefined","iconNode":[["path",{"d":"m18 16 4-4-4-4","key":"1inbqp"}],["path",{"d":"m6 8-4 4 4 4","key":"15zrgr"}],["path",{"d":"m14.5 4-5 16","key":"e7oirm"}]],"className":"lucide-code-xml h-4 w-4","aria-hidden":"true"}]}],["$","span",null,{"className":"font-semibold text-sm","children":"Diagram"}],["$","span",null,{"className":"mt-1 text-xs text-fd-muted-foreground line-clamp-2","children":"Let topology drive automatic placement."}]]}],["$","$L9","/docs/react/connect",{"href":"/docs/react/connect","className":"flex flex-col rounded-xl border border-fd-border/50 bg-fd-card/50 p-4 transition-colors hover:bg-fd-accent w-full","children":[["$","div",null,{"className":"flex h-8 w-8 items-center justify-center rounded-md bg-[#5E6AD2]/10 mb-3 text-[#5E6AD2]","children":["$","$L17",null,{"ref":"$undefined","iconNode":[["path",{"d":"m16 3 4 4-4 4","key":"1x1c3m"}],["path",{"d":"M20 7H4","key":"zbl0bi"}],["path",{"d":"m8 21-4-4 4-4","key":"h9nckh"}],["path",{"d":"M4 17h16","key":"g4d7ey"}]],"className":"lucide-arrow-right-left h-4 w-4","aria-hidden":"true"}]}],["$","span",null,{"className":"font-semibold text-sm","children":"Connect DOM"}],["$","span",null,{"className":"mt-1 text-xs text-fd-muted-foreground line-clamp-2","children":"Draw relations over your existing JSX and CSS."}]]}],["$","$L9","/docs/guide/ai-integration",{"href":"/docs/guide/ai-integration","className":"flex flex-col rounded-xl border border-fd-border/50 bg-fd-card/50 p-4 transition-colors hover:bg-fd-accent w-full","children":[["$","div",null,{"className":"flex h-8 w-8 items-center justify-center rounded-md bg-[#5E6AD2]/10 mb-3 text-[#5E6AD2]","children":["$","$L17",null,{"ref":"$undefined","iconNode":[["path",{"d":"M12 8V4H8","key":"hb8ula"}],["rect",{"width":"16","height":"12","x":"4","y":"8","rx":"2","key":"enze0r"}],["path",{"d":"M2 14h2","key":"vft8re"}],["path",{"d":"M20 14h2","key":"4cs60a"}],["path",{"d":"M15 13v2","key":"1xurst"}],["path",{"d":"M9 13v2","key":"rq6x2g"}]],"className":"lucide-bot h-4 w-4","aria-hidden":"true"}]}],["$","span",null,{"className":"font-semibold text-sm","children":"AI & Agents"}],["$","span",null,{"className":"mt-1 text-xs text-fd-muted-foreground line-clamp-2","children":"Generate, validate, repair, and render."}]]}],["$","$L9","/docs/guide/mermaid",{"href":"/docs/guide/mermaid","className":"flex flex-col rounded-xl border border-fd-border/50 bg-fd-card/50 p-4 transition-colors hover:bg-fd-accent w-full","children":[["$","div",null,{"className":"flex h-8 w-8 items-center justify-center rounded-md bg-[#5E6AD2]/10 mb-3 text-[#5E6AD2]","children":["$","$L17",null,{"ref":"$undefined","iconNode":"$e:props:children:1:props:children:0:props:children:props:iconNode","className":"lucide-arrow-right-left h-4 w-4","aria-hidden":"true"}]}],["$","span",null,{"className":"font-semibold text-sm","children":"Mermaid Import"}],["$","span",null,{"className":"mt-1 text-xs text-fd-muted-foreground line-clamp-2","children":"Enhance supported text diagrams with DOM."}]]}]]}]
+18:Ta81,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" style="width: 100%; height: 100%; display: block;"><path fill="#ff3e00" d="M85.95 13.23C76.66-.06 58.31-3.998 45.043 4.45l-23.3 14.846a26.7 26.7 0 0 0-10.532 12.546 26.8 26.8 0 0 0-1.546 5.32 28.1 28.1 0 0 0-.123 9.269 28 28 0 0 0 2.893 8.808 27 27 0 0 0-2.505 4.79 26.6 26.6 0 0 0-1.488 5.197 28.44 28.44 0 0 0 2.05 16.633 28.4 28.4 0 0 0 2.819 4.911c9.29 13.29 27.64 17.23 40.907 8.78l23.298-14.782a26.8 26.8 0 0 0 12.078-17.865 28.13 28.13 0 0 0-2.777-18.07 27 27 0 0 0 3.385-7.351 27 27 0 0 0 .618-2.634 28.6 28.6 0 0 0-.262-11.264 28.5 28.5 0 0 0-4.607-10.28"/><path fill="#fff" d="M42.766 88.055a18.51 18.51 0 0 1-16.005-3.292 18.5 18.5 0 0 1-3.864-4.076 17.1 17.1 0 0 1-3.185-9.56 17 17 0 0 1 .372-3.937q.058-.274.129-.541.068-.27.148-.538.079-.266.167-.529l.44-1.34 1.196.893a30 30 0 0 0 4.352 2.644q1.141.57 2.327 1.038 1.185.47 2.407.838l.893.259-.08.893a5.24 5.24 0 0 0 .509 2.655q.198.412.464.783a5.58 5.58 0 0 0 4.303 2.387 5.5 5.5 0 0 0 1.682-.172 5 5 0 0 0 .738-.258 5 5 0 0 0 .691-.366L63.714 60.99a4.8 4.8 0 0 0 1.439-1.394 4.8 4.8 0 0 0 .75-1.856q.089-.508.076-1.025a5.1 5.1 0 0 0-.456-1.991 5 5 0 0 0-.514-.888 5.6 5.6 0 0 0-2.644-2.047 5.6 5.6 0 0 0-3.342-.168 5 5 0 0 0-1.09.429q-.173.091-.338.197l-8.934 5.672q-.547.345-1.118.65-.573.304-1.165.565-.594.26-1.206.474-.611.215-1.236.382a18.5 18.5 0 0 1-11.072-.567 18.5 18.5 0 0 1-8.762-6.792 17 17 0 0 1-1.687-2.955 17.07 17.07 0 0 1-1.216-9.997 16.07 16.07 0 0 1 7.263-10.773l23.335-14.844q.544-.345 1.112-.65.57-.305 1.159-.565a16 16 0 0 1 1.198-.474q.607-.216 1.23-.384a18.5 18.5 0 0 1 5.587-.57 18.53 18.53 0 0 1 10.41 3.862 18.6 18.6 0 0 1 3.863 4.077 17.1 17.1 0 0 1 2.775 6.18c.25 1.11.39 2.242.415 3.378a17 17 0 0 1-.26 3.394q-.052.275-.114.549-.06.273-.13.544-.068.273-.147.541-.076.27-.163.536l-.446 1.34-1.189-.893a30 30 0 0 0-4.363-2.666 30.5 30.5 0 0 0-4.749-1.89l-.894-.258.082-.893a5.25 5.25 0 0 0-.949-3.467 5.5 5.5 0 0 0-1.166-1.202 5.55 5.55 0 0 0-5.156-.836 6 6 0 0 0-.366.144 5 5 0 0 0-.691.367l-23.307 14.82q-.428.268-.79.62-.361.352-.646.77a4.9 4.9 0 0 0-.753 1.851 5.3 5.3 0 0 0-.075 1.026c.02.688.175 1.366.456 1.995q.213.47.513.891c.322.461.712.872 1.158 1.215.445.346.94.622 1.467.818a5.6 5.6 0 0 0 3.315.182 6 6 0 0 0 .374-.117q.184-.065.364-.143t.352-.17a5 5 0 0 0 .339-.196l8.934-5.662q.547-.351 1.12-.657a16.4 16.4 0 0 1 3.615-1.424 18.5 18.5 0 0 1 5.587-.574 18.47 18.47 0 0 1 10.41 3.86 18.5 18.5 0 0 1 3.863 4.073 17.2 17.2 0 0 1 2.773 6.182 17.1 17.1 0 0 1 .157 6.77 16.1 16.1 0 0 1-4.637 8.711 16 16 0 0 1-2.626 2.062L47.499 85.973q-.549.348-1.12.654t-1.168.566q-.594.262-1.207.478-.611.216-1.238.383"/></svg>f:["$","div",null,{"className":"flex flex-col lg:border-l border-fd-border/50 lg:pl-6 py-2 w-full","children":[["$","h4",null,{"className":"mb-3 text-xs font-semibold uppercase tracking-wider text-fd-muted-foreground","children":"Frameworks"}],["$","div",null,{"className":"flex flex-col gap-1.5 w-full","children":[["$","$L9","React",{"href":"/docs/react","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 100 100\" style=\"width: 100%; height: 100%; display: block;\"><g clip-path=\"url(#_S_1_-a)\"><path fill=\"#61dafb\" d=\"M50.307 58.816a8.816 8.816 0 1 0 0-17.632 8.816 8.816 0 0 0 0 17.632\"/><path stroke=\"#61dafb\" stroke-width=\"5\" d=\"M50.307 68.063c26.126 0 47.306-8.087 47.306-18.063s-21.18-18.062-47.306-18.062C24.18 31.938 3 40.024 3 50s21.18 18.063 47.307 18.063Z\"/><path stroke=\"#61dafb\" stroke-width=\"5\" d=\"M34.664 59.031C47.727 81.658 65.321 95.957 73.96 90.97c8.64-4.988 5.053-27.374-8.01-50C52.885 18.342 35.291 4.043 26.652 9.03s-5.052 27.374 8.011 50Z\"/><path stroke=\"#61dafb\" stroke-width=\"5\" d=\"M34.664 40.969c-13.063 22.626-16.65 45.012-8.01 50 8.638 4.988 26.232-9.311 39.295-31.938s16.65-45.012 8.01-50c-8.638-4.988-26.232 9.311-39.295 31.938Z\"/></g><defs><clipPath id=\"_S_1_-a\"><path fill=\"#fff\" d=\"M0 0h100v100H0z\"/></clipPath></defs></svg>"}}]}],["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"React"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"React bindings for DiaX"}]]}]]}],["$","$L9","Vue",{"href":"/docs/vue","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 100 100\" style=\"width: 100%; height: 100%; display: block;\"><path fill=\"#41b883\" d=\"M80 7h20L50 93.25 0 7h38.25L50 27 61.5 7z\"/><path fill=\"#41b883\" d=\"m0 7 50 86.25L100 7H80L50 58.75 19.75 7z\"/><path fill=\"#35495e\" d=\"M19.75 7 50 59 80 7H61.5L50 27 38.25 7z\"/></svg>"}}]}],["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"Vue"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"Vue bindings for DiaX"}]]}]]}],["$","$L9","Svelte",{"href":"/docs/svelte","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"$18"}}]}],"$L19"]}],"$L1a","$L1b"]}]]}]
+10:["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]
+11:["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}]
+12:["$","$1","c",{"children":["$L1c",[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true,"nonce":"$undefined"}],["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true,"nonce":"$undefined"}],["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true,"nonce":"$undefined"}],["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true,"nonce":"$undefined"}],["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true,"nonce":"$undefined"}],["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true,"nonce":"$undefined"}],["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true,"nonce":"$undefined"}],["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true,"nonce":"$undefined"}]],["$","$L1d",null,{"children":["$","$1e",null,{"name":"Next.MetadataOutlet","children":"$@1f"}]}]]}]
+14:["$","$1","h",{"children":[null,["$","$L20",null,{"children":"$L21"}],["$","div",null,{"hidden":true,"children":["$","$L22",null,{"children":["$","$1e",null,{"name":"Next.Metadata","children":"$L23"}]}]}],null]}]
+16:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/0n9g82poq-pzp.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]
+13:C
+19:["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"Svelte"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"Svelte bindings for DiaX"}]]}]
+24:T878,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" style="width: 100%; height: 100%; display: block;"><path fill="#76b3e1" d="M100 22.715S66.667-1.813 40.88 3.847l-1.886.629c-3.774 1.258-6.919 3.145-8.805 5.66l-1.258 1.887-9.434 16.352 16.352 3.145c6.918 4.403 15.723 6.29 23.9 4.403l28.93 5.66z"/><path fill="url(#_S_4_-a)" d="M100 22.715S66.667-1.813 40.88 3.847l-1.886.629c-3.774 1.258-6.919 3.145-8.805 5.66l-1.258 1.887-9.434 16.352 16.352 3.145c6.918 4.403 15.723 6.29 23.9 4.403l28.93 5.66z" opacity=".3"/><path fill="#518ac8" d="m30.189 22.715-2.516.63c-10.692 3.144-13.837 13.207-8.176 22.012 6.29 8.176 19.497 12.578 30.188 9.434L88.68 41.583S55.346 17.055 30.19 22.715"/><path fill="url(#_S_4_-b)" d="m30.189 22.715-2.516.63c-10.692 3.144-13.837 13.207-8.176 22.012 6.29 8.176 19.497 12.578 30.188 9.434L88.68 41.583S55.346 17.055 30.19 22.715" opacity=".3"/><path fill="url(#_S_4_-c)" d="M81.761 51.017a28.3 28.3 0 0 0-30.189-9.434L12.58 54.16 0 76.174l70.44 11.95 12.58-22.642c2.516-4.402 1.887-9.434-1.258-14.465"/><path fill="url(#_S_4_-d)" d="M69.182 73.03a28.3 28.3 0 0 0-30.188-9.434L0 76.174s33.333 25.157 59.12 18.868l1.886-.629c10.692-3.145 14.466-13.207 8.176-21.384"/><defs><linearGradient id="_S_4_-a" x1="14.78" x2="93.082" y1="2.589" y2="40.639" gradientUnits="userSpaceOnUse"><stop offset=".1" stop-color="#76b3e1"/><stop offset=".3" stop-color="#dcf2fd"/><stop offset="1" stop-color="#76b3e1"/></linearGradient><linearGradient id="_S_4_-b" x1="57.736" x2="44.025" y1="21.206" y2="66.866" gradientUnits="userSpaceOnUse"><stop stop-color="#76b3e1"/><stop offset=".5" stop-color="#4377bb"/><stop offset="1" stop-color="#1f3b77"/></linearGradient><linearGradient id="_S_4_-c" x1="9.057" x2="88.239" y1="41.08" y2="94.916" gradientUnits="userSpaceOnUse"><stop stop-color="#315aa9"/><stop offset=".5" stop-color="#518ac8"/><stop offset="1" stop-color="#315aa9"/></linearGradient><linearGradient id="_S_4_-d" x1="44.78" x2="12.83" y1="47.558" y2="164.728" gradientUnits="userSpaceOnUse"><stop stop-color="#4377bb"/><stop offset=".5" stop-color="#1a336b"/><stop offset="1" stop-color="#1a336b"/></linearGradient></defs></svg>1a:["$","$L9","SolidJS",{"href":"/docs/solid","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"$24"}}]}],["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"SolidJS"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"SolidJS bindings for DiaX"}]]}]]}]
+1b:["$","$L9","Vanilla JS",{"href":"/docs/vanilla","className":"group flex w-full items-center gap-3 rounded-lg p-2.5 hover:bg-fd-accent transition-colors","children":[["$","div",null,{"className":"flex h-6 w-6 shrink-0 items-center justify-center transition-transform group-hover:scale-110","children":["$","span",null,{"className":"h-full w-full","style":{"display":"inline-block","lineHeight":0},"dangerouslySetInnerHTML":{"__html":"<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 100 100\" style=\"width: 100%; height: 100%; display: block;\"><g clip-path=\"url(#_S_5_-a)\"><path fill=\"#f7df1e\" d=\"M100 0H0v100h100z\"/><path fill=\"#000\" d=\"M67.175 78.125c2.014 3.29 4.634 5.707 9.27 5.707 3.893 0 6.38-1.946 6.38-4.635 0-3.222-2.555-4.364-6.84-6.238l-2.35-1.008c-6.781-2.89-11.286-6.508-11.286-14.159 0-7.047 5.37-12.413 13.762-12.413 5.975 0 10.27 2.08 13.365 7.524l-7.317 4.699c-1.612-2.89-3.35-4.027-6.048-4.027-2.752 0-4.497 1.746-4.497 4.027 0 2.819 1.746 3.96 5.778 5.706l2.35 1.006c7.983 3.424 12.491 6.915 12.491 14.762 0 8.46-6.646 13.096-15.571 13.096-8.727 0-14.365-4.16-17.124-9.61zm-33.196.815c1.477 2.619 2.82 4.833 6.048 4.833 3.087 0 5.035-1.208 5.035-5.905V45.916h9.397v32.08c0 9.73-5.705 14.158-14.032 14.158-7.524 0-11.881-3.894-14.097-8.583z\"/></g><defs><clipPath id=\"_S_5_-a\"><path fill=\"#fff\" d=\"M0 0h100v100H0z\"/></clipPath></defs></svg>"}}]}],["$","div",null,{"className":"flex flex-col","children":[["$","span",null,{"className":"text-sm font-semibold text-fd-foreground","children":"Vanilla JS"}],["$","span",null,{"className":"text-[11px] text-fd-muted-foreground","children":"Vanilla JS bindings for DiaX"}]]}]]}]
+25:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+26:T15ff,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DecisionNode, DiagramFrame, EvidenceNode } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import { FileCheck2, GitCommitHorizontal } from "lucide-react";
+import type { ReactNode } from "react";
+
+const revision = "3e0f4d8382c500c286fe5d5d29ec28597ed58c7c";
+const repository = "https://github.com/tt-a1i/archify";
+
+const sources = [
+  {
+    id: "bounded-authoring",
+    eyebrow: "Authoring contract",
+    title: "Write the candidate before reading renderer internals",
+    description:
+      "The first pass stays semantic, automatic, and bounded; repair follows diagnostics.",
+    path: "archify/SKILL.md",
+    lines: "L15-L37",
+  },
+  {
+    id: "scenario-registry",
+    eyebrow: "Content source",
+    title: "Scenario guidance is one immutable data projection",
+    description:
+      "The same records preserve localized questions, required facts, and presentation policy.",
+    path: "archify/recipes/scenarios.mjs",
+    lines: "L235-L264",
+  },
+  {
+    id: "verified-evidence",
+    eyebrow: "Proof boundary",
+    title: "Repository evidence fails closed at the pinned revision",
+    description:
+      "Commit, blob, and line-range checks happen before stable source links are emitted.",
+    path: "archify/renderers/shared/repository-evidence.mjs",
+    lines: "L149-L234",
+  },
+] as const;
+
+const relations: readonly DiaxRelation<ReactNode>[] = sources.map((source) => ({
+  id: `${source.id}-decision`,
+  from: source.id,
+  to: "adoption-decision",
+  color: "#6676a8",
+  targetMarker: "arrow",
+  gap: 8,
+  label: <RelationLabel>supports</RelationLabel>,
+}));
+
+function sourceHref(path: string, lines: string) {
+  return `${repository}/blob/${revision}/${path}#${lines}`;
+}
+
+export default function RepositoryEvidenceMap() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="repository-evidence-map"
+      eyebrow="Repository evidence · Authored DOM"
+      title="Pin the fact before drawing the conclusion."
+      description="Source links remain reviewable because every path and line range names one immutable commit."
+      icon={<GitCommitHorizontal aria-hidden="true" />}
+      caption="This specimen demonstrates trusted evidence already verified by the authoring workflow. DiaX performs no Git or network access."
+      className="w-full max-w-[1120px] [--diax-accent:#91a0d0] [--diax-frame-bg:#0b1018] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#111824] [--diax-node-border:#334057] [--diax-node-shadow:none] [--diax-node-text:#e7ebf4] [--diax-ui-radius:3px]"
+    >
+      <div className="mb-5 grid border-y border-slate-700 sm:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="min-w-0 px-3 py-3 sm:border-r sm:border-slate-700">
+          <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-slate-500">
+            Repository
+          </p>
+          <p className="m-0 mt-1 truncate text-[10px] text-slate-300">{repository}</p>
+        </div>
+        <div className="min-w-0 border-t border-slate-700 px-3 py-3 sm:border-t-0">
+          <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-slate-500">
+            Full revision
+          </p>
+          <code className="mt-1 block truncate font-mono text-[9px] text-indigo-200">
+            {revision}
+          </code>
+        </div>
+      </div>
+
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Pinned source facts supporting one adoption decision"
+        className="grid gap-20 py-2 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-24 sm:py-4"
+      >
+        {sources.map((source) => (
+          <EvidenceNode
+            key={source.id}
+            {...connectionTarget(source.id)}
+            eyebrow={source.eyebrow}
+            title={source.title}
+            description={source.description}
+            strength="high"
+            strengthLabel="verified source"
+            sourceLabel="Pinned citation"
+            source={
+              <a
+                href={sourceHref(source.path, source.lines)}
+                target="_blank"
+                rel="noreferrer"
+                className="font-mono text-[9px] text-indigo-200 underline decoration-indigo-300/40 underline-offset-2 focus-visible:outline-2 focus-visible:outline-indigo-300"
+              >
+                {source.path} · {source.lines}
+              </a>
+            }
+            className="relative max-w-none"
+          />
+        ))}
+
+        <DecisionNode
+          {...connectionTarget("adoption-decision")}
+          title="Adopt the discipline, preserve the DiaX product boundary"
+          outcome="Question-first corpus, bounded repair, and pinned evidence stay in authoring and Docs seams."
+          criteria={[
+            "No new diagram modes",
+            "No Git or network access in Core",
+            "No inferred runtime causality",
+          ]}
+          rationale="The source facts justify an evidence loop; they do not justify copying Archify's renderer or coordinate model."
+          status="approved"
+          owner="DiaX architecture"
+          icon={<FileCheck2 aria-hidden="true" />}
+          className="relative max-w-none sm:col-span-3 sm:mx-auto sm:w-[54%]"
+        />
+      </ConnectionSurface>
+    </DiagramFrame>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-600 bg-[#0b1018] px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.06em] text-slate-300">
+      {children}
+    </span>
+  );
+}
+1c:["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"connect","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L9",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L17",null,{"ref":"$undefined","iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Source-grounded architecture review"}],["$","h1",null,{"children":"Repository Evidence Map"}],["$","p",null,{"children":"A source-grounded decision study that keeps full-commit file and line evidence in real DOM without teaching Core about Git or GitHub."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L17",null,{"ref":"$undefined","iconNode":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1","key":"ezmyqa"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1","key":"e1hn23"}]],"className":"lucide-braces","aria-hidden":"true"}]," ","Connect DOM"]}],["$","li",null,{"children":"intermediate"}],[["$","li","ai",{"children":"ai"}],["$","li","citation",{"children":"citation"}],["$","li","connect",{"children":"connect"}],["$","li","decision",{"children":"decision"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L25",null,{"sourceCode":"$26"}],null]}]]}],"$L27","$L28","$L29",null,"$L2a","$L2b"]}]}]
+2c:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+2d:I[87565,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseReader"]
+2e:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+30:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+27:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"DOM measurement, target lifecycle and connection geometry."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"JSX, CSS layout, reading order and responsive composition."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"3 pinned source facts · 1 bounded adoption decision · no inferred topology"}]]}]]}]]}]
+28:["$","section",null,{"className":"showcase-module__5fFjmW__scenarioGuidance","aria-labelledby":"repository-evidence-map-scenario-question","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Question-First Recipe"}],["$","h2",null,{"id":"repository-evidence-map-scenario-question","children":"Which source facts justify this architecture decision at one exact repository revision?"}],["$","p",null,{"children":"Verify Git facts in an authoring or build step, then pass trusted links into EvidenceNode and use Connect only for the declared review relationship."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioDecisionGrid","children":[["$","section",null,{"aria-labelledby":"repository-evidence-map-use-when","children":[["$","h3",null,{"id":"repository-evidence-map-use-when","children":"Use this shape when"}],["$","ul",null,{"children":[["$","li","Explain an architecture decision with reviewable file and line evidence",{"children":"Explain an architecture decision with reviewable file and line evidence"}],["$","li","Give an AI-generated technical map citations that survive branch movement",{"children":"Give an AI-generated technical map citations that survive branch movement"}]]}]]}],["$","section",null,{"aria-labelledby":"repository-evidence-map-avoid-when","children":[["$","h3",null,{"id":"repository-evidence-map-avoid-when","children":"Choose another shape when"}],["$","p",null,{"children":"Avoid this recipe when the repository is private to the audience, the revision or line ranges cannot be verified, or the visual would imply runtime causality that the source does not establish."}]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioFacts","children":[["$","h3",null,{"children":"Facts the author or agent must know first"}],["$","ol",null,{"children":[["$","li","A full 40-character commit SHA",{"children":"A full 40-character commit SHA"}],["$","li","A public HTTPS repository URL",{"children":"A public HTTPS repository URL"}],["$","li","Repository-relative POSIX file paths",{"children":"Repository-relative POSIX file paths"}],["$","li","The bounded decision each fact supports without inventing causality",{"children":"The bounded decision each fact supports without inventing causality"}],["$","li","Verified line ranges at that exact commit",{"children":"Verified line ranges at that exact commit"}]]}]]}],["$","details",null,{"className":"showcase-module__5fFjmW__scenarioPrompt","children":[["$","summary",null,{"children":"Copy-ready agent prompts"}],["$","div",null,{"children":[["$","section",null,{"children":[["$","h3",null,{"children":"English"}],["$","p",null,{"children":"Create a source-grounded DiaX Connect study from a public repository. Pin a full commit SHA, verify every file and line range at that revision, render citations as trusted DOM links, and connect facts only to the decision they explicitly support. Fail closed on missing evidence."}]]}],["$","section",null,{"lang":"zh-CN","children":[["$","h3",null,{"children":"中文"}],["$","p",null,{"children":"基于公开仓库创建一个有源码依据的 DiaX Connect 图示。固定完整 40 位 commit SHA，验证该版本下每个文件与行号范围，把引用渲染为可信 DOM 链接；只把事实连接到其明确支持的决策，证据缺失时必须失败关闭。"}]]}]]}]]}]]}]
+31:T15ff,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DecisionNode, DiagramFrame, EvidenceNode } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import { FileCheck2, GitCommitHorizontal } from "lucide-react";
+import type { ReactNode } from "react";
+
+const revision = "3e0f4d8382c500c286fe5d5d29ec28597ed58c7c";
+const repository = "https://github.com/tt-a1i/archify";
+
+const sources = [
+  {
+    id: "bounded-authoring",
+    eyebrow: "Authoring contract",
+    title: "Write the candidate before reading renderer internals",
+    description:
+      "The first pass stays semantic, automatic, and bounded; repair follows diagnostics.",
+    path: "archify/SKILL.md",
+    lines: "L15-L37",
+  },
+  {
+    id: "scenario-registry",
+    eyebrow: "Content source",
+    title: "Scenario guidance is one immutable data projection",
+    description:
+      "The same records preserve localized questions, required facts, and presentation policy.",
+    path: "archify/recipes/scenarios.mjs",
+    lines: "L235-L264",
+  },
+  {
+    id: "verified-evidence",
+    eyebrow: "Proof boundary",
+    title: "Repository evidence fails closed at the pinned revision",
+    description:
+      "Commit, blob, and line-range checks happen before stable source links are emitted.",
+    path: "archify/renderers/shared/repository-evidence.mjs",
+    lines: "L149-L234",
+  },
+] as const;
+
+const relations: readonly DiaxRelation<ReactNode>[] = sources.map((source) => ({
+  id: `${source.id}-decision`,
+  from: source.id,
+  to: "adoption-decision",
+  color: "#6676a8",
+  targetMarker: "arrow",
+  gap: 8,
+  label: <RelationLabel>supports</RelationLabel>,
+}));
+
+function sourceHref(path: string, lines: string) {
+  return `${repository}/blob/${revision}/${path}#${lines}`;
+}
+
+export default function RepositoryEvidenceMap() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="repository-evidence-map"
+      eyebrow="Repository evidence · Authored DOM"
+      title="Pin the fact before drawing the conclusion."
+      description="Source links remain reviewable because every path and line range names one immutable commit."
+      icon={<GitCommitHorizontal aria-hidden="true" />}
+      caption="This specimen demonstrates trusted evidence already verified by the authoring workflow. DiaX performs no Git or network access."
+      className="w-full max-w-[1120px] [--diax-accent:#91a0d0] [--diax-frame-bg:#0b1018] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#111824] [--diax-node-border:#334057] [--diax-node-shadow:none] [--diax-node-text:#e7ebf4] [--diax-ui-radius:3px]"
+    >
+      <div className="mb-5 grid border-y border-slate-700 sm:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="min-w-0 px-3 py-3 sm:border-r sm:border-slate-700">
+          <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-slate-500">
+            Repository
+          </p>
+          <p className="m-0 mt-1 truncate text-[10px] text-slate-300">{repository}</p>
+        </div>
+        <div className="min-w-0 border-t border-slate-700 px-3 py-3 sm:border-t-0">
+          <p className="m-0 font-mono text-[8px] font-bold uppercase tracking-[0.1em] text-slate-500">
+            Full revision
+          </p>
+          <code className="mt-1 block truncate font-mono text-[9px] text-indigo-200">
+            {revision}
+          </code>
+        </div>
+      </div>
+
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Pinned source facts supporting one adoption decision"
+        className="grid gap-20 py-2 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-24 sm:py-4"
+      >
+        {sources.map((source) => (
+          <EvidenceNode
+            key={source.id}
+            {...connectionTarget(source.id)}
+            eyebrow={source.eyebrow}
+            title={source.title}
+            description={source.description}
+            strength="high"
+            strengthLabel="verified source"
+            sourceLabel="Pinned citation"
+            source={
+              <a
+                href={sourceHref(source.path, source.lines)}
+                target="_blank"
+                rel="noreferrer"
+                className="font-mono text-[9px] text-indigo-200 underline decoration-indigo-300/40 underline-offset-2 focus-visible:outline-2 focus-visible:outline-indigo-300"
+              >
+                {source.path} · {source.lines}
+              </a>
+            }
+            className="relative max-w-none"
+          />
+        ))}
+
+        <DecisionNode
+          {...connectionTarget("adoption-decision")}
+          title="Adopt the discipline, preserve the DiaX product boundary"
+          outcome="Question-first corpus, bounded repair, and pinned evidence stay in authoring and Docs seams."
+          criteria={[
+            "No new diagram modes",
+            "No Git or network access in Core",
+            "No inferred runtime causality",
+          ]}
+          rationale="The source facts justify an evidence loop; they do not justify copying Archify's renderer or coordinate model."
+          status="approved"
+          owner="DiaX architecture"
+          icon={<FileCheck2 aria-hidden="true" />}
+          className="relative max-w-none sm:col-span-3 sm:mx-auto sm:w-[54%]"
+        />
+      </ConnectionSurface>
+    </DiagramFrame>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-600 bg-[#0b1018] px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-[0.06em] text-slate-300">
+      {children}
+    </span>
+  );
+}
+29:["$","$L2c",null,{"title":"Repository Evidence Map","entryLabel":"Connect DOM","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"repository-evidence-map","children":["$","$L2d",null,{"definition":{"steps":[{"id":"bound-the-authoring-pass","title":"Bound the authoring pass","description":"Start from the semantic candidate. Renderer internals are not evidence for the first draft.","nodeIds":["bounded-authoring"],"edgeIds":[],"evidenceIds":["bounded-authoring-source"]},{"id":"reuse-one-scenario-source","title":"Reuse one scenario source","description":"Questions, required facts, and presentation guidance remain one immutable projection.","nodeIds":["scenario-registry"],"edgeIds":[],"evidenceIds":["scenario-registry-source"]},{"id":"verify-before-linking","title":"Verify before linking","description":"Commit, blob, path, and line-range checks fail closed before a source link is trusted.","nodeIds":["verified-evidence"],"edgeIds":[],"evidenceIds":["repository-evidence-source"]},{"id":"make-the-bounded-decision","title":"Make the bounded decision","description":"The three source facts support one adoption decision; they do not prove runtime causality.","nodeIds":["bounded-authoring","scenario-registry","verified-evidence","adoption-decision"],"edgeIds":["bounded-authoring-decision","scenario-registry-decision","verified-evidence-decision"],"evidenceIds":["bounded-authoring-source","scenario-registry-source","repository-evidence-source"]}],"evidence":[{"id":"bounded-authoring-source","title":"Bounded authoring contract","description":"The Skill asks for a semantic candidate before renderer spelunking and permits only diagnosed repair.","source":{"repository":"https://github.com/tt-a1i/archify","revision":"3e0f4d8382c500c286fe5d5d29ec28597ed58c7c","path":"archify/SKILL.md","lines":{"start":15,"end":37}}},{"id":"scenario-registry-source","title":"Scenario projection","description":"One source record carries the question, required facts, and presentation policy.","source":{"repository":"https://github.com/tt-a1i/archify","revision":"3e0f4d8382c500c286fe5d5d29ec28597ed58c7c","path":"archify/recipes/scenarios.mjs","lines":{"start":235,"end":264}}},{"id":"repository-evidence-source","title":"Fail-closed evidence verification","description":"Repository origin, full commit, blob, path, and line range are checked before immutable links are emitted.","source":{"repository":"https://github.com/tt-a1i/archify","revision":"3e0f4d8382c500c286fe5d5d29ec28597ed58c7c","path":"archify/renderers/shared/repository-evidence.mjs","lines":{"start":149,"end":234}}}]},"children":[["$","$L2e",null,{"moduleIds":[579276]}],"$L2f"]}]}],"code":["$","$L30",null,{"files":[{"path":"components/diagrams/repository-evidence-map/repository-evidence-map.tsx","content":"$31"}],"slug":"repository-evidence-map"}]}]
+2a:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","@diax/ui-react",{"translate":"no","children":"@diax/ui-react"}],["$","li","diax",{"translate":"no","children":"diax"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+2b:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L9",null,{"href":"/docs/react/connect","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L17",null,{"ref":"$undefined","iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Connect DOM"]}],["$","strong",null,{"children":"Connect Authored DOM"}],["$","span",null,{"children":"Keep your JSX and CSS layout while DiaX measures and connects exact elements."}]]}],["$","$L17",null,{"ref":"$undefined","iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","release-gate-decision",{"children":["$","$L9",null,{"href":"/showcase/release-gate-decision","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Collect Evidence, Decide Once"}],["$","span",null,{"children":"3 semantic targets · 2 evidence relations · native HTML comparison"}]]}],["$","$L17",null,{"ref":"$undefined","iconNode":"$2b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","ai-content-compiler",{"children":["$","$L9",null,{"href":"/showcase/ai-content-compiler","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"AI Content Compiler"}],["$","span",null,{"children":"2 scoped surfaces · 10 DOM targets · 8 relations"}]]}],["$","$L17",null,{"ref":"$undefined","iconNode":"$2b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","agent-review-sequence",{"children":["$","$L9",null,{"href":"/showcase/agent-review-sequence","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Agent Review Sequence"}],["$","span",null,{"children":"4 participants · 6 ordered messages · 12 measured row endpoints · responsive transcript"}]]}],["$","$L17",null,{"ref":"$undefined","iconNode":"$2b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+32:I[671018,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+2f:["$","$L32",null,{}]
+21:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]
+1f:null
+23:[["$","title","0",{"children":"Repository Evidence Map — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"A source-grounded decision study that keeps full-commit file and line evidence in real DOM without teaching Core about Git or GitHub."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/repository-evidence-map/"}],["$","meta","3",{"property":"og:title","content":"Repository Evidence Map — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"A source-grounded decision study that keeps full-commit file and line evidence in real DOM without teaching Core about Git or GitHub."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/repository-evidence-map/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]

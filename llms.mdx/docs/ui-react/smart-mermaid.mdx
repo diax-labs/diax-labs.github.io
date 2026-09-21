@@ -1,0 +1,230 @@
+# SmartMermaidDiagram (/docs/ui-react/smart-mermaid)
+
+
+
+
+
+Overview [#overview]
+
+`SmartMermaidDiagram` parses any supported Mermaid syntax, auto-detects the diagram
+type, and renders it using the matching preset node components from `@diax/ui-react`.
+
+Supported types: `flowchart`, `classDiagram`, `stateDiagram`, `erDiagram`, `requirement`, `mindmap`.
+
+Flowchart [#flowchart]
+
+<DiagramPreview
+  title="Auto-detected flowchart"
+  code="`import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram chart={\`
+graph TD
+  A[Start] --> B{Decision}
+  B -->|Yes| C[Process]
+  B -->|No| D[End]
+  C --> D
+\`} />`"
+>
+  <SmartMermaidDiagram
+    chart="`graph TD
+  A[Start] --> B{Decision}
+  B -->|Yes| C[Process]
+  B -->|No| D[End]
+  C --> D`"
+  />
+</DiagramPreview>
+
+Class Diagram [#class-diagram]
+
+<DiagramPreview
+  title="Auto-detected classDiagram"
+  code="`import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram chart={\`
+classDiagram
+  class Animal {
+    +String name
+    +int age
+    +makeSound()
+  }
+  class Dog {
+    +fetch()
+  }
+  Animal <|-- Dog
+\`} />`"
+>
+  <SmartMermaidDiagram
+    chart="`classDiagram
+  class Animal {
+    +String name
+    +int age
+    +makeSound()
+  }
+  class Dog {
+    +fetch()
+  }
+  Animal <|-- Dog`"
+  />
+</DiagramPreview>
+
+ER Diagram [#er-diagram]
+
+<DiagramPreview
+  title="Auto-detected erDiagram"
+  code="`import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram chart={\`
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ LINE-ITEM : contains
+\`} />`"
+>
+  <SmartMermaidDiagram
+    chart="`erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ LINE-ITEM : contains`"
+  />
+</DiagramPreview>
+
+State Diagram [#state-diagram]
+
+<DiagramPreview
+  title="Auto-detected stateDiagram"
+  code="`import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram chart={\`
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Processing : submit
+  Processing --> Success : done
+  Processing --> Error : fail
+  Error --> Idle : retry
+  Success --> [*]
+\`} />`"
+>
+  <SmartMermaidDiagram
+    chart="`stateDiagram-v2
+  [*] --> Idle
+  Idle --> Processing : submit
+  Processing --> Success : done
+  Processing --> Error : fail
+  Error --> Idle : retry
+  Success --> [*]`"
+  />
+</DiagramPreview>
+
+Requirement Diagram [#requirement-diagram]
+
+<DiagramPreview
+  title="Auto-detected requirementDiagram"
+  code="`import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram chart={\`
+requirementDiagram
+  requirement auth_req {
+    id: &#x22;REQ-001&#x22;
+    text: Users must authenticate via OAuth2
+    risk: high
+    verifymethod: test
+  }
+  element auth_module {
+    type: module
+    docRef: auth/spec.md
+  }
+  auth_module - satisfies -> auth_req
+\`} />`"
+>
+  <SmartMermaidDiagram
+    chart="`requirementDiagram
+  requirement auth_req {
+    id: &#x22;REQ-001&#x22;
+    text: Users must authenticate via OAuth2
+    risk: high
+    verifymethod: test
+  }
+  element auth_module {
+    type: module
+    docRef: auth/spec.md
+  }
+  auth_module - satisfies -> auth_req`"
+  />
+</DiagramPreview>
+
+Mindmap [#mindmap]
+
+<DiagramPreview
+  title="Auto-detected mindmap"
+  code="`import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram chart={\`
+mindmap
+  root((DiaX))
+    Core
+      Layout Engine
+      Edge Routing
+      DSL Parser
+    Frameworks
+      React
+      Vue
+      Svelte
+\`} />`"
+>
+  <SmartMermaidDiagram
+    chart="`mindmap
+  root((DiaX))
+    Core
+      Layout Engine
+      Edge Routing
+      DSL Parser
+    Frameworks
+      React
+      Vue
+      Svelte`"
+  />
+</DiagramPreview>
+
+Custom nodeTypes Override [#custom-nodetypes-override]
+
+You can override or extend the auto-detected nodeTypes registry:
+
+```tsx
+import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram
+  chart={`graph TD
+    A[Custom] --> B[Nodes]
+  `}
+  nodeTypes={{
+    default: (node) => (
+      <div className="custom-node">{node.content}</div>
+    ),
+  }}
+/>
+```
+
+Props [#props]
+
+| Prop         | Type                                     | Default          | Description                                                           |
+| ------------ | ---------------------------------------- | ---------------- | --------------------------------------------------------------------- |
+| `chart`      | `string`                                 | —                | Mermaid syntax string (required)                                      |
+| `nodeTypes`  | `Record<string, NodeRenderer>`           | —                | Override/extend auto-detected renderers                               |
+| `renderNode` | `(node, context) => ReactNode`           | —                | Locally override nodes while retaining `context.defaultNode`          |
+| `direction`  | `Direction`                              | `'horizontal'`   | Layout direction                                                      |
+| `density`    | `Density`                                | `'comfortable'`  | Spacing between nodes                                                 |
+| `theme`      | `ThemeName \| DiaxTheme`                 | —                | Theme preset or custom theme object                                   |
+| `pathType`   | `'bezier' \| 'straight' \| 'orthogonal'` | `'bezier'`       | Edge path style                                                       |
+| `className`  | `string`                                 | —                | Container class                                                       |
+| `centered`   | `boolean`                                | `false`          | Center nodes in grid cells                                            |
+| `fallback`   | `ReactNode \| (error) => ReactNode`      | accessible error | Custom invalid-input UI; the diagnostic is available as `error.cause` |
+| `onError`    | `(error) => void`                        | —                | Observe detection or parsing failures                                 |
+
+How It Works [#how-it-works]
+
+1. `parseMermaid(chart)` detects and parses through one public entry
+2. The matching transformer converts the supported Mermaid subset → `DiaxAST`
+3. `BUILTIN_NODE_TYPES[type]` provides the default nodeTypes registry
+4. Custom `nodeTypes` prop is merged on top (overrides win)
+5. `FlowDiagram` renders with the resolved `nodeTypes` + `renderNode`
+
+This is the same **component registry** pattern used by Formily — type strings
+map to render functions, and the registry is extensible at runtime.

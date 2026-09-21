@@ -1,0 +1,399 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T19ec,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DiagramFrame, StageNode } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import { Eye, ShieldCheck, TrendingUp } from "lucide-react";
+import type { ReactNode } from "react";
+
+const phases = [
+  {
+    id: "observe",
+    step: "01 / Observe",
+    title: "Instrument without blocking",
+    description: "Establish a trustworthy baseline before changing developer behavior.",
+    status: "complete" as const,
+    tone: "info" as const,
+    owner: "Platform observability",
+    metric: "100%",
+    metricLabel: "workflows reporting",
+    actions: ["Run checks in advisory mode", "Capture edge cases", "Publish a shared baseline"],
+  },
+  {
+    id: "explain",
+    step: "02 / Explain",
+    title: "Make the evidence visible",
+    description: "Turn raw findings into team-level signals people can understand and act on.",
+    status: "active" as const,
+    tone: "success" as const,
+    owner: "Product enablement",
+    metric: "4.6×",
+    metricLabel: "faster issue discovery",
+    actions: [
+      "Show trends, not isolated failures",
+      "Link every signal to its source",
+      "Keep remediation one click away",
+    ],
+  },
+  {
+    id: "enforce",
+    step: "03 / Enforce",
+    title: "Protect the new baseline",
+    description: "Block only new regressions after the team has learned the system.",
+    status: "upcoming" as const,
+    tone: "warning" as const,
+    owner: "Repository owners",
+    metric: "< 30",
+    metricLabel: "known critical findings",
+    actions: [
+      "Gate incremental risk",
+      "Keep legacy debt visible",
+      "Provide an automated repair path",
+    ],
+  },
+] as const;
+
+const behaviorShift = [
+  { phase: "Observe", mindset: "This does not affect me", behavior: "Passive awareness" },
+  { phase: "Explain", mindset: "I can see my project risk", behavior: "Active investigation" },
+  { phase: "Enforce", mindset: "I check before I merge", behavior: "Habitual prevention" },
+] as const;
+
+const relations: readonly DiaxRelation<ReactNode>[] = [
+  {
+    id: "observe-explain",
+    from: "observe",
+    to: "explain",
+    color: "#25879a",
+    targetMarker: "arrow",
+    gap: 8,
+    label: <TransitionLabel>Trust the data</TransitionLabel>,
+  },
+  {
+    id: "explain-enforce",
+    from: "explain",
+    to: "enforce",
+    color: "#e8613c",
+    targetMarker: "arrow",
+    gap: 8,
+    label: <TransitionLabel>Protect the habit</TransitionLabel>,
+  },
+];
+
+export default function ProgressiveRollout() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="progressive-rollout"
+      eyebrow="Adoption strategy · Authored DOM"
+      title="Progressive rollout"
+      description="Move from observation to enforcement without asking teams to trust a gate they have never seen."
+      icon={<TrendingUp aria-hidden="true" />}
+      caption="The cards and behavior model remain ordinary semantic DOM. DiaX owns only the 2 measured transitions."
+      className="w-full max-w-[1120px] [--diax-frame-bg:#f3f5f6] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#fff] [--diax-node-border:#c8d0d5] [--diax-node-shadow:none] [--diax-node-text:#18232c] [--diax-ui-radius:3px]"
+    >
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Progressive rollout phase transitions"
+        className="grid gap-20 py-3 sm:grid-cols-3 sm:gap-12 sm:py-6"
+      >
+        {phases.map((phase, index) => (
+          <StageNode
+            key={phase.id}
+            {...connectionTarget(phase.id)}
+            title={phase.title}
+            step={phase.step}
+            status={phase.status}
+            tone={phase.tone}
+            owner={phase.owner}
+            description={phase.description}
+            icon={index === 1 ? <Eye aria-hidden="true" /> : <ShieldCheck aria-hidden="true" />}
+            className="relative h-full max-w-none"
+          >
+            <ul className="m-0 grid list-none gap-2 p-0 text-[11px] text-slate-600">
+              {phase.actions.map((action) => (
+                <li key={action} className="grid grid-cols-[10px_minmax(0,1fr)] gap-1.5">
+                  <span aria-hidden="true" className="mt-[7px] block size-1 bg-current" />
+                  <span>{action}</span>
+                </li>
+              ))}
+            </ul>
+            <dl className="mt-3 grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-2 border-t border-slate-200 pt-3">
+              <dd className="m-0 font-mono text-xl font-bold tracking-[-0.05em] text-slate-900">
+                {phase.metric}
+              </dd>
+              <dt className="text-[9px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                {phase.metricLabel}
+              </dt>
+            </dl>
+          </StageNode>
+        ))}
+      </ConnectionSurface>
+
+      <section
+        className="mt-5 border-t border-slate-300 pt-4"
+        aria-labelledby="behavior-shift-title"
+      >
+        <div className="grid gap-1 sm:grid-cols-[180px_minmax(0,1fr)] sm:items-end">
+          <h2
+            id="behavior-shift-title"
+            className="m-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600"
+          >
+            Behavior shift
+          </h2>
+          <p className="m-0 text-[10px] text-slate-500 sm:text-right">
+            Enforcement is the outcome of understanding—not the opening move.
+          </p>
+        </div>
+        <ol className="m-0 mt-3 grid list-none border-y border-slate-300 p-0 sm:grid-cols-3">
+          {behaviorShift.map((item, index) => (
+            <li
+              key={item.phase}
+              className="grid grid-cols-[32px_minmax(0,1fr)] gap-2 border-slate-300 px-2 py-3 sm:border-l sm:first:border-l-0"
+            >
+              <span className="font-mono text-[10px] font-bold text-[#25879a]">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span>
+                <strong className="block text-[11px] text-slate-900">{item.mindset}</strong>
+                <small className="mt-1 block text-[9px] uppercase tracking-[0.06em] text-slate-500">
+                  {item.phase} · {item.behavior}
+                </small>
+              </span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </DiagramFrame>
+  );
+}
+
+function TransitionLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-300 bg-[#f3f5f6] px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.06em] text-slate-600">
+      {children}
+    </span>
+  );
+}
+17:X
+1c:X
+1c:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"connect","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Adoption roadmap"}],["$","h1",null,{"children":"Progressive Rollout"}],["$","p",null,{"children":"An authored rollout timeline that connects three information-dense DOM phases while preserving a readable behavior-change narrative."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1","key":"ezmyqa"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1","key":"e1hn23"}]],"className":"lucide-braces","aria-hidden":"true"}]," ","Connect DOM"]}],["$","li",null,{"children":"intermediate"}],[["$","li","connect",{"children":"connect"}],["$","li","metrics",{"children":"metrics"}],["$","li","presentation",{"children":"presentation"}],["$","li","responsive",{"children":"responsive"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6",null,"$L7",null,"$L8","$L9"]}]}],["$La","$Lb","$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14"],"$L15"]}],"isPartial":"$@16","staleTime":"$17","varyParams":null},{"rsc":"$L18","isPartial":"$@19","staleTime":"$17","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$17","varyParams":"$1c"}],"isUpgradeableISRFallback":false,"a":"$@1d","rootVaryParams":null,"needsRuntimeRequest":"$@1e"}
+1f:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+20:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+21:I[473252,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+22:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+24:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+25:"$Sreact.suspense"
+27:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+28:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+29:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+2a:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"DOM measurement, target lifecycle and connection geometry."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"JSX, CSS layout, reading order and responsive composition."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"3 semantic phase targets · 2 rich transitions · responsive reflow"}]]}]]}]]}]
+23:T19ec,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DiagramFrame, StageNode } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import { Eye, ShieldCheck, TrendingUp } from "lucide-react";
+import type { ReactNode } from "react";
+
+const phases = [
+  {
+    id: "observe",
+    step: "01 / Observe",
+    title: "Instrument without blocking",
+    description: "Establish a trustworthy baseline before changing developer behavior.",
+    status: "complete" as const,
+    tone: "info" as const,
+    owner: "Platform observability",
+    metric: "100%",
+    metricLabel: "workflows reporting",
+    actions: ["Run checks in advisory mode", "Capture edge cases", "Publish a shared baseline"],
+  },
+  {
+    id: "explain",
+    step: "02 / Explain",
+    title: "Make the evidence visible",
+    description: "Turn raw findings into team-level signals people can understand and act on.",
+    status: "active" as const,
+    tone: "success" as const,
+    owner: "Product enablement",
+    metric: "4.6×",
+    metricLabel: "faster issue discovery",
+    actions: [
+      "Show trends, not isolated failures",
+      "Link every signal to its source",
+      "Keep remediation one click away",
+    ],
+  },
+  {
+    id: "enforce",
+    step: "03 / Enforce",
+    title: "Protect the new baseline",
+    description: "Block only new regressions after the team has learned the system.",
+    status: "upcoming" as const,
+    tone: "warning" as const,
+    owner: "Repository owners",
+    metric: "< 30",
+    metricLabel: "known critical findings",
+    actions: [
+      "Gate incremental risk",
+      "Keep legacy debt visible",
+      "Provide an automated repair path",
+    ],
+  },
+] as const;
+
+const behaviorShift = [
+  { phase: "Observe", mindset: "This does not affect me", behavior: "Passive awareness" },
+  { phase: "Explain", mindset: "I can see my project risk", behavior: "Active investigation" },
+  { phase: "Enforce", mindset: "I check before I merge", behavior: "Habitual prevention" },
+] as const;
+
+const relations: readonly DiaxRelation<ReactNode>[] = [
+  {
+    id: "observe-explain",
+    from: "observe",
+    to: "explain",
+    color: "#25879a",
+    targetMarker: "arrow",
+    gap: 8,
+    label: <TransitionLabel>Trust the data</TransitionLabel>,
+  },
+  {
+    id: "explain-enforce",
+    from: "explain",
+    to: "enforce",
+    color: "#e8613c",
+    targetMarker: "arrow",
+    gap: 8,
+    label: <TransitionLabel>Protect the habit</TransitionLabel>,
+  },
+];
+
+export default function ProgressiveRollout() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="progressive-rollout"
+      eyebrow="Adoption strategy · Authored DOM"
+      title="Progressive rollout"
+      description="Move from observation to enforcement without asking teams to trust a gate they have never seen."
+      icon={<TrendingUp aria-hidden="true" />}
+      caption="The cards and behavior model remain ordinary semantic DOM. DiaX owns only the 2 measured transitions."
+      className="w-full max-w-[1120px] [--diax-frame-bg:#f3f5f6] [--diax-frame-radius:3px] [--diax-frame-shadow:none] [--diax-node-bg:#fff] [--diax-node-border:#c8d0d5] [--diax-node-shadow:none] [--diax-node-text:#18232c] [--diax-ui-radius:3px]"
+    >
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Progressive rollout phase transitions"
+        className="grid gap-20 py-3 sm:grid-cols-3 sm:gap-12 sm:py-6"
+      >
+        {phases.map((phase, index) => (
+          <StageNode
+            key={phase.id}
+            {...connectionTarget(phase.id)}
+            title={phase.title}
+            step={phase.step}
+            status={phase.status}
+            tone={phase.tone}
+            owner={phase.owner}
+            description={phase.description}
+            icon={index === 1 ? <Eye aria-hidden="true" /> : <ShieldCheck aria-hidden="true" />}
+            className="relative h-full max-w-none"
+          >
+            <ul className="m-0 grid list-none gap-2 p-0 text-[11px] text-slate-600">
+              {phase.actions.map((action) => (
+                <li key={action} className="grid grid-cols-[10px_minmax(0,1fr)] gap-1.5">
+                  <span aria-hidden="true" className="mt-[7px] block size-1 bg-current" />
+                  <span>{action}</span>
+                </li>
+              ))}
+            </ul>
+            <dl className="mt-3 grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-2 border-t border-slate-200 pt-3">
+              <dd className="m-0 font-mono text-xl font-bold tracking-[-0.05em] text-slate-900">
+                {phase.metric}
+              </dd>
+              <dt className="text-[9px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                {phase.metricLabel}
+              </dt>
+            </dl>
+          </StageNode>
+        ))}
+      </ConnectionSurface>
+
+      <section
+        className="mt-5 border-t border-slate-300 pt-4"
+        aria-labelledby="behavior-shift-title"
+      >
+        <div className="grid gap-1 sm:grid-cols-[180px_minmax(0,1fr)] sm:items-end">
+          <h2
+            id="behavior-shift-title"
+            className="m-0 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600"
+          >
+            Behavior shift
+          </h2>
+          <p className="m-0 text-[10px] text-slate-500 sm:text-right">
+            Enforcement is the outcome of understanding—not the opening move.
+          </p>
+        </div>
+        <ol className="m-0 mt-3 grid list-none border-y border-slate-300 p-0 sm:grid-cols-3">
+          {behaviorShift.map((item, index) => (
+            <li
+              key={item.phase}
+              className="grid grid-cols-[32px_minmax(0,1fr)] gap-2 border-slate-300 px-2 py-3 sm:border-l sm:first:border-l-0"
+            >
+              <span className="font-mono text-[10px] font-bold text-[#25879a]">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span>
+                <strong className="block text-[11px] text-slate-900">{item.mindset}</strong>
+                <small className="mt-1 block text-[9px] uppercase tracking-[0.06em] text-slate-500">
+                  {item.phase} · {item.behavior}
+                </small>
+              </span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </DiagramFrame>
+  );
+}
+
+function TransitionLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-300 bg-[#f3f5f6] px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.06em] text-slate-600">
+      {children}
+    </span>
+  );
+}
+7:["$","$L1f",null,{"title":"Progressive Rollout","entryLabel":"Connect DOM","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"progressive-rollout","children":[["$","$L20",null,{"moduleIds":[188946]}],["$","$L21",null,{}]]}],"code":["$","$L22",null,{"files":[{"path":"components/diagrams/progressive-rollout/progressive-rollout.tsx","content":"$23"}],"slug":"progressive-rollout"}]}]
+8:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","@diax/ui-react",{"translate":"no","children":"@diax/ui-react"}],["$","li","diax",{"translate":"no","children":"diax"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react/connect","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Connect DOM"]}],["$","strong",null,{"children":"Connect Authored DOM"}],["$","span",null,{"children":"Keep your JSX and CSS layout while DiaX measures and connects exact elements."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","dom-system-architecture",{"children":["$","$L2",null,{"href":"/showcase/dom-system-architecture","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"DOM System Architecture"}],["$","span",null,{"children":"9 DOM targets · 7 relations · 0 manual anchors"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","agent-review-sequence",{"children":["$","$L2",null,{"href":"/showcase/agent-review-sequence","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Agent Review Sequence"}],["$","span",null,{"children":"4 participants · 6 ordered messages · 12 measured row endpoints · responsive transcript"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","incident-response-workflow",{"children":["$","$L2",null,{"href":"/showcase/incident-response-workflow","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Incident Response Workflow"}],["$","span",null,{"children":"3 semantic lanes · 6 stable relations · conditional escalation · responsive source order"}]]}],["$","$L3",null,{"iconNode":"$9:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+a:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+b:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+c:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+d:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+e:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+f:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+10:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+11:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+12:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+13:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+14:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+15:["$","$L24",null,{"children":["$","$25",null,{"name":"Next.MetadataOutlet","children":"$@26"}]}]
+18:["$","$1","h",{"children":[null,["$","$L27",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L28",null,{"children":["$","$25",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Progressive Rollout — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"An authored rollout timeline that connects three information-dense DOM phases while preserving a readable behavior-change narrative."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/progressive-rollout/"}],["$","meta","3",{"property":"og:title","content":"Progressive Rollout — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"An authored rollout timeline that connects three information-dense DOM phases while preserving a readable behavior-change narrative."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/progressive-rollout/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1a:["$","$1","c",{"children":[null,["$","$L29",null,{"parallelRouterKey":"children","template":["$","$L2a",null,{}]}]]}]
+1e:true
+26:null
+17:300
+17:C
+1d:0
+19:"$undefined"
+1b:"$undefined"
+16:"$undefined"

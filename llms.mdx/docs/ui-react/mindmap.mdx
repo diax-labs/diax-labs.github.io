@@ -1,0 +1,67 @@
+# MindmapNode (/docs/ui-react/mindmap)
+
+
+
+
+
+Overview [#overview]
+
+`MindmapNode` renders depth-aware mindmap nodes. Colors cycle through a built-in
+palette based on `depth`, and font/padding sizes decrease at deeper levels.
+
+Depth Levels [#depth-levels]
+
+<DiagramPreview
+  title="MindmapNode — depth levels"
+  code="`import { MindmapNode } from '@diax/ui-react';
+
+<div className=&#x22;flex flex-wrap items-center gap-4&#x22;>
+<MindmapNode depth={0}>Root Topic</MindmapNode>
+<MindmapNode depth={1}>Branch A</MindmapNode>
+<MindmapNode depth={2}>Sub-topic</MindmapNode>
+<MindmapNode depth={3}>Deep Leaf</MindmapNode>
+<MindmapNode depth={4}>Deeper Leaf</MindmapNode>
+</div>`"
+>
+  <div className="flex flex-wrap items-center gap-4">
+    <MindmapNode depth="0">
+      Root Topic
+    </MindmapNode>
+
+    <MindmapNode depth="1">
+      Branch A
+    </MindmapNode>
+
+    <MindmapNode depth="2">
+      Sub-topic
+    </MindmapNode>
+
+    <MindmapNode depth="3">
+      Deep Leaf
+    </MindmapNode>
+
+    <MindmapNode depth="4">
+      Deeper Leaf
+    </MindmapNode>
+  </div>
+</DiagramPreview>
+
+Color Cycling [#color-cycling]
+
+The depth palette cycles through 6 colors: violet → amber → emerald → sky → rose → orange.
+After depth 5 the cycle repeats.
+
+Sizing [#sizing]
+
+| Depth | Font                      | Padding       | Border Radius |
+| ----- | ------------------------- | ------------- | ------------- |
+| 0     | `text-lg font-bold`       | `px-5 py-3`   | `rounded-xl`  |
+| 1     | `text-base font-semibold` | `px-4 py-2`   | `rounded-lg`  |
+| 2+    | `text-sm`                 | `px-3 py-1.5` | `rounded-md`  |
+
+Props [#props]
+
+| Prop       | Type        | Default | Description                            |
+| ---------- | ----------- | ------- | -------------------------------------- |
+| `depth`    | `number`    | `0`     | Nesting depth, controls color + sizing |
+| `children` | `ReactNode` | —       | Node label content                     |

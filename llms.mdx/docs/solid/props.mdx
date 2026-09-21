@@ -1,0 +1,29 @@
+# Props Reference (/docs/solid/props)
+
+
+
+Options [#options]
+
+<TypeTable
+  type="{
+  nodes: { description: 'Node definitions', type: 'DiaxNode[]', default: 'required' },
+  relations: { description: 'Relations (string DSL or object form)', type: 'DiaxRelation[]', default: 'required' },
+  groups: { description: 'Nested semantic boundaries derived from direct members', type: 'DiaxGroup[]', default: '[]' },
+  namespace: { description: 'Resolved DOM ID namespace', type: 'string' },
+  direction: { description: 'Layout direction', type: &#x22;'horizontal' | 'vertical'&#x22;, default: &#x22;'horizontal'&#x22; },
+  layout: { description: 'Layout algorithm', type: &#x22;'flow' | 'mindmap'&#x22;, default: &#x22;'flow'&#x22; },
+  density: { description: 'Spacing', type: &#x22;'compact' | 'comfortable' | 'spacious'&#x22;, default: &#x22;'comfortable'&#x22; },
+  centered: { description: 'Center nodes in cells', type: 'boolean', default: 'false' },
+  align: { description: 'Align nodes within grid cells', type: &#x22;'start' | 'center' | 'end'&#x22;, default: &#x22;'start'&#x22; },
+  highlightOnHover: { description: 'Highlight path on hover', type: 'boolean', default: 'false' },
+  stagger: { description: 'Stagger entrance animation', type: 'boolean | number', default: 'false' },
+  theme: { description: 'Theme preset or object', type: &#x22;'linear' | 'light' | 'notion' | 'github' | DiaxTheme&#x22; },
+  nodeTypes: { description: 'Node type registry', type: 'Record<string, (node: Accessor<DiaxNode>, state: Accessor<NodeState>) => JSX.Element>' },
+  renderNode: { description: 'Custom node renderer', type: '(node: Accessor<DiaxNode>, state: Accessor<NodeState>) => JSX.Element' },
+  renderEdgeLabel: { description: 'Custom edge label renderer', type: '(label: string) => JSX.Element' },
+  pathType: { description: 'Edge path type', type: &#x22;'bezier' | 'straight' | 'orthogonal'&#x22;, default: &#x22;'bezier'&#x22; },
+  strokeColor: { description: 'Edge color; inherits currentColor when unthemed', type: 'string', default: &#x22;'var(--diax-edge-color, currentColor)'&#x22; },
+  strokeWidth: { description: 'Edge width', type: 'number', default: '1' },
+  arrowSize: { description: 'Arrow marker size', type: 'number', default: '6' },
+}"
+/>

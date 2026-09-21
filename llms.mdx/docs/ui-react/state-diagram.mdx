@@ -1,0 +1,108 @@
+# StateNode (/docs/ui-react/state-diagram)
+
+
+
+
+
+Overview [#overview]
+
+`StateNode` renders state machine nodes with three variants: default (rounded rectangle),
+initial (filled circle), and final (double circle).
+
+All Variants [#all-variants]
+
+<DiagramPreview
+  title="StateNode — 3 variants"
+  code="`import { StateNode } from '@diax/ui-react';
+
+<div className=&#x22;flex flex-wrap gap-6 items-center&#x22;>
+<div className=&#x22;flex flex-col items-center gap-2&#x22;>
+  <StateNode variant=&#x22;initial&#x22; />
+  <span className=&#x22;text-xs text-muted-foreground&#x22;>initial</span>
+</div>
+<div className=&#x22;flex flex-col items-center gap-2&#x22;>
+  <StateNode>Idle</StateNode>
+  <span className=&#x22;text-xs text-muted-foreground&#x22;>default</span>
+</div>
+<div className=&#x22;flex flex-col items-center gap-2&#x22;>
+  <StateNode active>Processing</StateNode>
+  <span className=&#x22;text-xs text-muted-foreground&#x22;>active</span>
+</div>
+<div className=&#x22;flex flex-col items-center gap-2&#x22;>
+  <StateNode variant=&#x22;final&#x22; />
+  <span className=&#x22;text-xs text-muted-foreground&#x22;>final</span>
+</div>
+</div>`"
+>
+  <div className="flex flex-wrap gap-6 items-center">
+    <div className="flex flex-col items-center gap-2">
+      <StateNode variant="initial" />
+
+      <span className="text-xs text-muted-foreground">
+        initial
+      </span>
+    </div>
+
+    <div className="flex flex-col items-center gap-2">
+      <StateNode>
+        Idle
+      </StateNode>
+
+      <span className="text-xs text-muted-foreground">
+        default
+      </span>
+    </div>
+
+    <div className="flex flex-col items-center gap-2">
+      <StateNode>
+        Processing
+      </StateNode>
+
+      <span className="text-xs text-muted-foreground">
+        active
+      </span>
+    </div>
+
+    <div className="flex flex-col items-center gap-2">
+      <StateNode variant="final" />
+
+      <span className="text-xs text-muted-foreground">
+        final
+      </span>
+    </div>
+  </div>
+</DiagramPreview>
+
+Interactive States [#interactive-states]
+
+<DiagramPreview
+  title="Highlighted & dimmed"
+  code="`<div className=&#x22;flex gap-4&#x22;>
+<StateNode>Normal</StateNode>
+<StateNode highlighted>Highlighted</StateNode>
+<StateNode dimmed>Dimmed</StateNode>
+</div>`"
+>
+  <div className="flex gap-4">
+    <StateNode>
+      Normal
+    </StateNode>
+
+    <StateNode>
+      Highlighted
+    </StateNode>
+
+    <StateNode>
+      Dimmed
+    </StateNode>
+  </div>
+</DiagramPreview>
+
+Props [#props]
+
+| Prop          | Type                                | Default     | Description        |
+| ------------- | ----------------------------------- | ----------- | ------------------ |
+| `variant`     | `"default" \| "initial" \| "final"` | `"default"` | Node shape variant |
+| `active`      | `boolean`                           | `false`     | Accent border glow |
+| `highlighted` | `boolean`                           | `false`     | Ring + scale       |
+| `dimmed`      | `boolean`                           | `false`     | Reduced opacity    |

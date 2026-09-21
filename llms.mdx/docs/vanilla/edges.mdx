@@ -1,0 +1,233 @@
+# Edge Types (/docs/vanilla/edges)
+
+
+
+Edge Animations [#edge-animations]
+
+Use object-form relations for animated edges:
+
+```js
+// [!code word:animate]
+const diagram = createDiagram(container, {
+  nodes: [...],
+  relations: [
+    { from: 'a', to: 'b', animate: 'flow' },
+    { from: 'b', to: 'c', animate: 'pulse', color: '#4CAF50' },
+    { from: 'c', to: 'd', animate: 'shimmer', color: '#5E6AD2' },
+  ],
+});
+```
+
+Animation Presets [#animation-presets]
+
+| Preset              | Effect                         |
+| ------------------- | ------------------------------ |
+| `"flow"`            | Flowing dashes along the edge  |
+| `"pulse"`           | Breathing opacity effect       |
+| `"shimmer"`         | Light traveling along the edge |
+| `"reverse-flow"`    | Reverse flowing dashes         |
+| `"reverse-shimmer"` | Reverse shimmer                |
+
+***
+
+Edge Path Types [#edge-path-types]
+
+Control how edges are drawn with the `pathType` option:
+
+Bezier (default) [#bezier-default]
+
+Smooth cubic bezier curves — the default and most common style:
+
+```js
+// [!code word:pathType]
+const diagram = createDiagram(container, {
+  nodes: [
+    { id: 'a', content: 'Start' },
+    { id: 'b', content: 'Middle' },
+    { id: 'c', content: 'End' },
+  ],
+  relations: ['a->b', 'b->c'],
+  pathType: 'bezier',
+});
+```
+
+Straight [#straight]
+
+Direct straight lines between nodes:
+
+```js
+// [!code word:pathType]
+const diagram = createDiagram(container, {
+  nodes: [
+    { id: 'a', content: 'Start' },
+    { id: 'b', content: 'Middle' },
+    { id: 'c', content: 'End' },
+  ],
+  relations: ['a->b', 'b->c'],
+  pathType: 'straight',
+});
+```
+
+Orthogonal [#orthogonal]
+
+Right-angle polylines that follow horizontal/vertical paths only:
+
+```js
+// [!code word:pathType]
+const diagram = createDiagram(container, {
+  nodes: [
+    { id: 'a', content: 'Start' },
+    { id: 'b', content: 'Middle' },
+    { id: 'c', content: 'End' },
+  ],
+  relations: ['a->b', 'b->c'],
+  pathType: 'orthogonal',
+});
+```
+
+***
+
+Edge Labels [#edge-labels]
+
+Use the `label` property on object-form relations to add labels to edges:
+
+```js
+const diagram = createDiagram(container, {
+  nodes: [
+    { id: 'client', content: 'Client' },
+    { id: 'api', content: 'API Server' },
+    { id: 'db', content: 'Database' },
+  ],
+  relations: [
+    { from: 'client', to: 'api', label: 'HTTPS' },
+    { from: 'api', to: 'db', label: 'SQL' },
+  ],
+});
+```
+
+You can also use the string DSL shorthand:
+
+```js
+relations: ['client->|HTTPS|api', 'api->|SQL|db']
+```
+
+Labels are real HTML inside the SVG overlay, so normal DOM styling and content work. Use
+`renderEdgeLabel` when a string is not expressive enough:
+
+```ts contract vanilla
+import { createDiagram } from '@diax/vanilla';
+
+interface ProtocolLabel {
+  icon: string;
+  text: string;
+}
+
+const container = document.querySelector<HTMLElement>('#diagram');
+if (!container) throw new Error('Missing #diagram container.');
+
+createDiagram<string, ProtocolLabel>(container, {
+  nodes: [
+    { id: 'client', content: 'Client' },
+    { id: 'api', content: 'API' },
+  ],
+  relations: [
+    { from: 'client', to: 'api', label: { icon: '🔒', text: 'HTTPS' } },
+  ],
+  renderEdgeLabel: (label, element) => {
+    if (typeof label === 'string') {
+      element.textContent = label;
+      return;
+    }
+    element.className = 'protocol-badge';
+    element.append(label.icon, label.text);
+  },
+});
+```
+
+The callback receives a fresh DiaX-owned element whenever the edge layer is rebuilt. Treat it as an
+owned render target: append content and classes to that element, and let DiaX retain measurement and
+cleanup ownership.
+
+Group Labels [#group-labels]
+
+Use `renderGroupLabel` to apply application-owned DOM presentation without putting elements or HTML
+strings into the semantic group definition:
+
+```ts contract vanilla
+import { createDiagram } from '@diax/vanilla';
+
+const container = document.querySelector<HTMLElement>('#diagram');
+if (!container) throw new Error('Missing #diagram container.');
+
+createDiagram(container, {
+  nodes: [
+    { id: 'browser', content: 'Browser' },
+    { id: 'api', content: 'API' },
+  ],
+  relations: ['browser->api'],
+  groups: [{ id: 'backend', label: 'Backend', nodeIds: ['api'] }],
+  renderGroupLabel: (group, element) => {
+    element.className = 'boundary-label';
+    element.dataset.group = group.id;
+    element.append('◫ ', group.label ?? '');
+  },
+});
+```
+
+The callback receives the original semantic group and a fresh DiaX-owned label element. Boundary
+geometry, ResizeObserver invalidation and cleanup stay automatic. Group surfaces intentionally do
+not accept pointer interaction; place controls inside nodes instead.
+
+***
+
+Highlight on Hover [#highlight-on-hover]
+
+Enable `highlightOnHover` to automatically highlight connected paths when hovering over a node. Nodes on the hovered path receive the `"highlighted"` state, while all other nodes are `"dimmed"`:
+
+```js
+// [!code word:highlightOnHover]
+const diagram = createDiagram(container, {
+  nodes: [
+    { id: 'gw', content: 'API Gateway' },
+    { id: 'auth', content: 'Auth Service' },
+    { id: 'user', content: 'User Service' },
+    { id: 'db', content: 'PostgreSQL' },
+  ],
+  relations: ['gw->auth', 'gw->user', 'auth->db', 'user->db'],
+  highlightOnHover: true,
+});
+```
+
+Combine with `renderNode` to apply custom highlight styles:
+
+```js
+// [!code word:highlightOnHover]
+// [!code word:renderNode]
+const diagram = createDiagram(container, {
+  nodes: [...],
+  relations: [...],
+  highlightOnHover: true,
+  renderNode: (node, el, state) => {
+    el.innerHTML = `<div class="node">${node.content}</div>`;
+    const div = el.querySelector('.node');
+    div.style.padding = '8px 16px';
+    div.style.borderRadius = '10px';
+    div.style.border = '1px solid rgba(255,255,255,0.1)';
+    div.style.color = '#EDEDEF';
+    div.style.fontFamily = 'Inter, system-ui';
+    div.style.fontSize = '13px';
+    div.style.transition = 'opacity 0.2s, box-shadow 0.2s';
+
+    if (state === 'highlighted') {
+      div.style.boxShadow = '0 0 0 2px rgba(94,106,210,0.6)';
+      div.style.opacity = '1';
+    } else if (state === 'dimmed') {
+      div.style.opacity = '0.25';
+      div.style.boxShadow = 'none';
+    } else {
+      div.style.opacity = '1';
+      div.style.boxShadow = 'none';
+    }
+  },
+});
+```

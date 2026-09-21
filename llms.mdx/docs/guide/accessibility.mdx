@@ -1,0 +1,192 @@
+# Accessibility (A11y) (/docs/guide/accessibility)
+
+
+
+What DiaX Guarantees [#what-diax-guarantees]
+
+DiaX keeps node content in the DOM. Your headings, links, buttons, form controls and text therefore
+remain available to browsers and assistive technology instead of being flattened into Canvas or one
+opaque image.
+
+The built-in adapters also provide 3 narrow guarantees:
+
+* node wrappers receive stable DOM IDs and valid `aria-flowto` ID references;
+* hover-only nodes and relations do not enter the tab order;
+* a relation with `events.onClick` becomes a named SVG button with visible focus and Enter/Space
+  activation.
+
+DiaX does not infer a complete text alternative from graph geometry. The semantics, contrast and
+accessible names of the DOM you render inside each node remain application responsibilities.
+
+Start With a Named Region [#start-with-a-named-region]
+
+Give each important diagram a visible heading and a short summary. This lets people find the diagram
+by landmark or heading even when its spatial layout is not useful to them.
+
+```tsx
+<section aria-labelledby="deployment-heading">
+  <h2 id="deployment-heading">Deployment Pipeline</h2>
+  <p>Commits pass through build and review before production deployment.</p>
+
+  <FlowDiagram nodes={nodes} relations={relations} />
+</section>
+```
+
+If every relationship is necessary to understand the page, add an adjacent ordered list, table or
+paragraph as the non-spatial explanation. Do not rely on arrow position, color or `aria-flowto` as the
+only source of meaning.
+
+Supplemental Relationship Metadata [#supplemental-relationship-metadata]
+
+DiaX maps relations by injecting `aria-flowto` into each source node wrapper. Every referenced value
+is also the target wrapper's DOM `id`, so the IDREF resolves inside the current diagram.
+
+Support for `aria-flowto` varies across screen readers and browser combinations. Treat it as
+supplemental metadata, not as a portable navigation command or a replacement for meaningful DOM
+order.
+
+When using `<FlowDiagram>` or `<Mindmap>`, the adapter binds this automatically. When composing a
+headless renderer, preserve both the target `id` and the relationship metadata.
+
+**React / Vue:**
+
+```tsx
+<div {...node.bindProps}>{node.data.content}</div>
+```
+
+**Solid:**
+
+```tsx
+<div
+  id={node.resolvedId}
+  data-diax-node={node.resolvedId}
+  aria-flowto={node.ariaFlowTo}
+  style={node.style}
+>
+  {node.data.content}
+</div>
+```
+
+**Svelte:**
+
+```svelte
+<div
+  id={node.resolvedId}
+  data-diax-node={node.resolvedId}
+  aria-flowto={node.ariaFlowTo}
+  style={node.style}
+>
+  {node.data.content}
+</div>
+```
+
+Namespaces & DOM IDs [#namespaces--dom-ids]
+
+Use `namespace` when multiple diagrams can repeat local node IDs such as `api` or `database` on one
+page. DiaX resolves both the wrapper `id` and every `aria-flowto` target with the same namespace.
+Do not replace the generated `id` while retaining `aria-flowto`, or the relationship becomes a broken
+ID reference.
+
+Reading Order & Group Boundaries [#reading-order--group-boundaries]
+
+Assistive technology follows DOM order, not arrow coordinates. Built-in Diagram adapters emit a
+deterministic layout order; a two-dimensional graph still has no universally correct linear reading
+order. Put the intended narrative before the diagram when sequence matters.
+
+Node wrappers are semantic-transparent `<div>` elements. DiaX does not add `role="group"` to every
+node because repeated anonymous groups create navigation noise. Render a native heading, list,
+button or link inside a node when that meaning exists.
+
+Nested group boundaries are derived visual surfaces. Their visible labels remain text, but the CSS
+boundary does not claim to contain distant node DOM in the accessibility tree. Explain essential
+containment in the region summary or in ordinary semantic HTML.
+
+Interactive Edges [#interactive-edges]
+
+A relation with `events.onClick` becomes an SVG control with `role="button"`, a deterministic
+accessible name, a visible focus treatment and Enter/Space activation. The SVG drawing surface is
+presentation-only, so it does not become an “image containing a button” in the accessibility tree.
+Hover-only relations remain outside the tab order because visual emphasis is not an action.
+
+Provide an explicit, localized `ariaLabel`. The fallback `Connection from {from} to {to}` is useful
+for development but rarely matches product language, and visible rich-label content is not a
+substitute for the control's name.
+
+```tsx
+const relations = [
+  {
+    from: 'review',
+    to: 'evidence',
+    label: '3 findings',
+    ariaLabel: 'Open the 3 review findings',
+    events: { onClick: openFindings },
+  },
+];
+```
+
+The default transparent pointer path is 24 CSS px wide. Increase `hitSlop` when the product requires
+a more forgiving pointer target; keyboard focus and activation do not depend on that width.
+
+High Contrast & Focus [#high-contrast--focus]
+
+DiaX uses the system `Highlight` color for a focused edge while forced colors are active. Node cards,
+icons and controls are authored DOM, so test their borders, text and focus states in the Windows High
+Contrast themes your product supports.
+
+Prefer system colors and allow the browser to adapt authored content:
+
+```css
+@media (forced-colors: active) {
+  .service-card {
+    color: CanvasText;
+    background: Canvas;
+    border: 1px solid CanvasText;
+  }
+}
+```
+
+Avoid `forced-color-adjust: none` unless preserving a specific color is essential and you have tested
+the resulting contrast. `highlightOnHover` is visual emphasis only; put real actions on native
+controls with their own `:focus-visible` treatment.
+
+Reduced Motion & Zoom [#reduced-motion--zoom]
+
+DiaX edge animations and the React/Solid stagger reveal respect `prefers-reduced-motion`. Apply the
+same policy to authored node animation:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .my-diagram-animation {
+    animation: none;
+    transition: none;
+  }
+}
+```
+
+At 200% zoom, keep authored node text reflowable and avoid fixed canvas heights that clip the Grid or
+edge labels.
+
+Evidence Boundaries [#evidence-boundaries]
+
+Different checks answer different questions:
+
+| Evidence                                      | What it can establish                                            | What it cannot establish                        |
+| --------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------- |
+| DOM and accessibility-tree automation         | valid IDREFs, semantic roles, names, order and keyboard behavior | announcement quality or screen-reader shortcuts |
+| Chromium forced-colors emulation              | CSS media-query coverage and obvious system-color regressions    | real Windows High Contrast rendering            |
+| Firefox/WebKit automation                     | engine behavior, accessibility-tree and focus parity             | macOS Safari hardware behavior                  |
+| VoiceOver, NVDA or JAWS on supported hardware | actual announcements and navigation                              | every user's assistive-technology configuration |
+
+Do not report emulation as real assistive-technology or hardware acceptance.
+
+Manual Acceptance Checklist [#manual-acceptance-checklist]
+
+1. Navigate the page by headings and regions before entering the diagram.
+2. Confirm the authored node controls have useful names and a logical Tab order.
+3. Confirm each clickable edge announces the explicit `ariaLabel` and activates once with Enter and
+   Space.
+4. Confirm hover-only edges and node wrappers do not add tab stops or repeated anonymous groups.
+5. Read the non-spatial summary without looking at the diagram and verify that no essential meaning
+   is missing.
+6. Repeat at 200% zoom, with reduced motion, in real Windows High Contrast and with the supported
+   Safari + VoiceOver and Edge + NVDA combinations.

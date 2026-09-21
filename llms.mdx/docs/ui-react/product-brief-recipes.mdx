@@ -1,0 +1,169 @@
+# Product Brief Recipes (/docs/ui-react/product-brief-recipes)
+
+
+
+
+
+Visual explanations are not card collections [#visual-explanations-are-not-card-collections]
+
+Product reviews, engineering promotion material and AI-generated briefs often need metrics, scope,
+code evidence and adoption policy on the same page. That does not make them four graph types—and it
+does not make them a dashboard of interchangeable rounded cards.
+
+This recipe family uses four deliberately different structures:
+
+| Reader question                          | Native structure                 | Reused UI primitive            |
+| ---------------------------------------- | -------------------------------- | ------------------------------ |
+| Did the work change the cost curve?      | outcome ledger table             | `MetricNode`, `DiagramFrame`   |
+| Which decision scope am I looking at?    | ordered scope lenses             | `NodeBadge`, `DiagramFrame`    |
+| Can the change be reversed?              | selectable diff + invariant list | `EvidenceNode`, `DiagramFrame` |
+| Which user work did the platform absorb? | ordered friction register        | `NodeBadge`, `DecisionNode`    |
+
+<Callout type="info">
+  These compositions were generalized from real engineering-review visuals. The source material is
+  evidence, not an interface specification: none of these recipes adds a product-brief mode, graph
+  node type or runtime dependency.
+</Callout>
+
+Art direction: an engineering review folio [#art-direction-an-engineering-review-folio]
+
+The page behaves like a review packet, not a component-store landing page:
+
+* dark ink carries the argument; semantic blue, green, amber and red only annotate decisions;
+* tabular numbers, versions and code use monospace; body text stays in the host document face;
+* horizontal rules encode comparable rows, ordered scope and evidence boundaries;
+* shadows and rounded enclosures are reserved for reusable DiaX nodes, not applied to every group;
+* labels name a real unit, state, scope or owner—never a decorative category.
+
+The signature is structural variety. If every section used the same card shell, readers would need
+to decode the content before knowing whether it is a metric, hierarchy, diff or operating policy.
+
+Outcome ledger: keep the baseline in frame [#outcome-ledger-keep-the-baseline-in-frame]
+
+<DiagramPreview title="Outcome ledger" description="A baseline, comparable units and sample rows without loading a chart library" code="outcomeLedgerRecipeCode">
+  <OutcomeLedgerRecipePreview />
+</DiagramPreview>
+
+Use a native table when each row shares the same dimensions. The miniature reduction rail improves
+scanning but remains `aria-hidden`; the percentage cell is the actual value. Keeping the unchanged
+reference row prevents the visual from implying that every sampled surface improved.
+
+This recipe intentionally does not wrap Recharts, Vega or another quantitative grammar. Use a real
+chart library when scale, distribution or interaction matters. Use this ledger when the review task
+is exact row-level comparison.
+
+Capability lenses: order the reader's scope [#capability-lenses-order-the-readers-scope]
+
+<DiagramPreview title="Capability lenses" description="Build → project → portfolio questions expressed as an ordered scope model" code="capabilityLensesRecipeCode">
+  <CapabilityLensesRecipePreview />
+</DiagramPreview>
+
+The numbers are not decorative. L1, L2 and L3 represent a widening decision scope:
+
+1. **Build:** diagnose one run.
+2. **Project:** compare repository history.
+3. **Portfolio:** prioritize organizational action.
+
+An `<ol>` preserves that progression without arrows or a hierarchy runtime. The content changes
+from source findings to trends to governance, so a public `CapabilityMap` would mostly rename native
+document structure and freeze one product's vocabulary.
+
+Reversible change record: show the round trip [#reversible-change-record-show-the-round-trip]
+
+<DiagramPreview title="Reversible change record" description="Selectable source diff, rollback invariants and visible test provenance" code="reversibleChangeRecipeCode">
+  <ReversibleChangeRecipePreview />
+</DiagramPreview>
+
+Before/after screenshots hide the most valuable properties of technical evidence: selection,
+copying, search, zoom and screen-reader access. Keep code as `<pre><code>` and use `<del>` / `<ins>`
+when the removal and insertion are part of the claim.
+
+The invariant list answers a different question from the diff. The diff shows the mutation; the
+ordered list explains the rollback algorithm; `EvidenceNode` names how the round trip was verified.
+Combining those jobs into one `BeforeAfter` component would make each of them weaker.
+
+Friction register: make invisible platform work reviewable [#friction-register-make-invisible-platform-work-reviewable]
+
+<DiagramPreview title="Friction removal register" description="Obstacle → platform intervention → remaining user effort, followed by an owner decision" code="frictionRegisterRecipeCode">
+  <FrictionRegisterRecipePreview />
+</DiagramPreview>
+
+“Zero friction” is not a visual tone. It is an ownership claim that should be auditable row by row:
+
+* name the original work imposed on the user;
+* name the automation or governance that absorbed it;
+* state the remaining effort in visible text;
+* finish with a reviewable adoption contract.
+
+The register uses an ordered list because each intervention stands alone and narrow screens should
+stack each record without turning column headings into an inaccessible mobile table. The final
+`DecisionNode` records the product promise; it does not connect the rows into a fake workflow.
+
+Loading boundary [#loading-boundary]
+
+All four recipes import only the parser-free Presentation entry:
+
+```tsx contract
+import {
+  DecisionNode,
+  DiagramFrame,
+  EvidenceNode,
+  MetricNode,
+  NodeBadge,
+} from '@diax/ui-react/presentation';
+```
+
+They do not load `@diax/react`, Connect, Mermaid or a chart runtime. This is intentional: composition
+should not pay for relation measurement when the reader's question is tabular, hierarchical or
+documentary.
+
+Responsive and accessibility contract [#responsive-and-accessibility-contract]
+
+Each recipe keeps one durable DOM order:
+
+* outcome and code regions scroll internally when content genuinely needs horizontal width;
+* capability and friction records reflow in source order at 320 px;
+* tables keep captions and row/column scopes;
+* focusable scroll regions expose a visible focus boundary;
+* colored rails, diff backgrounds and badges repeat their meaning as text;
+* forced colors retains borders and textual status without depending on shadows.
+
+Automation can verify reflow, overflow, focus paint and semantic elements. It cannot claim a real
+Windows High Contrast session, hardware Safari rendering, projector legibility or a physical print.
+The release preflight also places these four figures on four separate A4 PDF pages and rejects
+overflow or accidental pagination; see [Export DOM Visuals](/docs/guide/exporting) for the output
+contract and viewer limitations.
+
+AI authoring prompt [#ai-authoring-prompt]
+
+Ask an agent to classify the reader's question before selecting a structure:
+
+```text
+Create a React engineering-review figure from structured evidence.
+
+If the question compares exact values across the same dimensions, use a native table.
+If it widens through named decision scopes, use an ordered list of semantic sections.
+If it claims a code transformation is reversible, show selectable before/after code,
+rollback invariants and evidence provenance.
+If it claims zero-friction adoption, name obstacle, platform intervention and remaining user effort.
+
+Use @diax/ui-react/presentation only for recurring semantic roles.
+Do not invent a graph, relations, SVG chart, universal card shell or new public component.
+Preserve reading order at 320 px and keep every claim meaningful without color.
+```
+
+For runtime-generated, untrusted content, validate the facts before mapping them into these trusted
+renderers. Do not execute model-produced JSX.
+
+Graduation decisions [#graduation-decisions]
+
+| Candidate                                    | Decision           | Reason                                                                               |
+| -------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------ |
+| `OutcomeChart`                               | Reject             | Exact comparison belongs to table semantics; distributions belong to chart libraries |
+| `CapabilityMap`                              | Keep as recipe     | Levels and scope vocabulary remain product-specific                                  |
+| `BeforeAfter`                                | Keep as native DOM | Text, code, UI and image comparisons need different semantics                        |
+| `OnboardingStrategy`                         | Reject             | Adoption ownership is content, not a reusable visual component                       |
+| `MetricNode`, `EvidenceNode`, `DecisionNode` | Reuse              | Their semantics and accessibility repeat across independent reports                  |
+
+The public UI vocabulary stays small while the recipe catalog gets more expressive. That is the
+intended asymmetry: deep reusable roles, abundant application-owned visual explanations.

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tech-radar",
+  "type": "registry:block",
+  "title": "Tech Radar",
+  "description": "Technology radar mindmap with categorized tech choices and adoption status",
+  "dependencies": ["@diax/react", "lucide-react"],
+  "files": [
+    {
+      "path": "components/diagrams/tech-radar/tech-radar.tsx",
+      "type": "registry:component",
+      "content": "'use client';\n\nimport { Mindmap } from '@diax/react';\nimport {\n  Box,\n  Cloud,\n  Code,\n  Database,\n  type LucideIcon,\n  Monitor,\n  Server,\n  Shield,\n} from 'lucide-react';\n\nconst RadarNode = ({\n  icon: Icon,\n  title,\n  ring,\n}: {\n  icon: LucideIcon;\n  title: string;\n  ring: 'adopt' | 'trial' | 'assess' | 'hold' | 'hub';\n}) => {\n  const styles = {\n    hub: 'border-[#5E6AD2]/50 bg-[#5E6AD2]/15 text-white shadow-[0_0_20px_rgba(94,106,210,0.3)] min-w-[140px] justify-center',\n    adopt: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300',\n    trial: 'border-sky-500/40 bg-sky-500/10 text-sky-300',\n    assess: 'border-amber-500/40 bg-amber-500/10 text-amber-300',\n    hold: 'border-red-400/30 bg-red-400/5 text-red-300/70',\n  };\n\n  return (\n    <div\n      className={`flex items-center gap-2.5 rounded-xl border px-4 py-2.5 backdrop-blur-md shadow-lg transition-all ${styles[ring]}`}\n    >\n      <Icon className=\"h-4 w-4 shrink-0\" />\n      <span className=\"text-sm font-medium whitespace-nowrap\">{title}</span>\n    </div>\n  );\n};\n\nexport default function TechRadar() {\n  return (\n    <Mindmap\n      nodes={[\n        {\n          id: 'hub',\n          content: <RadarNode icon={Box} title=\"Tech Radar 2025\" ring=\"hub\" />,\n        },\n        {\n          id: 'frontend',\n          content: <RadarNode icon={Monitor} title=\"React 19\" ring=\"adopt\" />,\n        },\n        {\n          id: 'lang',\n          content: <RadarNode icon={Code} title=\"TypeScript\" ring=\"adopt\" />,\n        },\n        {\n          id: 'infra',\n          content: <RadarNode icon={Cloud} title=\"Vercel Edge\" ring=\"trial\" />,\n        },\n        {\n          id: 'db',\n          content: (\n            <RadarNode icon={Database} title=\"Turso SQLite\" ring=\"assess\" />\n          ),\n        },\n        {\n          id: 'backend',\n          content: <RadarNode icon={Server} title=\"tRPC\" ring=\"adopt\" />,\n        },\n        {\n          id: 'auth',\n          content: <RadarNode icon={Shield} title=\"Passkeys\" ring=\"trial\" />,\n        },\n      ]}\n      relations={[\n        'hub->frontend',\n        'hub->lang',\n        'hub->infra',\n        'hub->db',\n        'hub->backend',\n        'hub->auth',\n      ]}\n      density=\"comfortable\"\n      stagger\n      highlightOnHover\n    />\n  );\n}\n"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+# RequirementNode (/docs/ui-react/requirement-diagram)
+
+
+
+
+
+Overview [#overview]
+
+`RequirementNode` renders requirement diagram nodes with type classification badges,
+priority indicators, and optional risk levels.
+
+All Type Badges [#all-type-badges]
+
+<DiagramPreview
+  title="RequirementNode — type badges"
+  code="`import { RequirementNode } from '@diax/ui-react';
+
+<div className=&#x22;flex flex-wrap gap-4&#x22;>
+<RequirementNode type=&#x22;functional&#x22; reqId=&#x22;REQ-001&#x22; priority=&#x22;high&#x22;>
+  User Authentication
+</RequirementNode>
+<RequirementNode type=&#x22;performance&#x22; reqId=&#x22;REQ-002&#x22; priority=&#x22;medium&#x22;>
+  Sub-200ms Response
+</RequirementNode>
+<RequirementNode type=&#x22;interface&#x22; reqId=&#x22;REQ-003&#x22; priority=&#x22;low&#x22;>
+  REST API v2
+</RequirementNode>
+<RequirementNode type=&#x22;design&#x22; reqId=&#x22;REQ-004&#x22; risk=&#x22;high&#x22;>
+  Microservice Split
+</RequirementNode>
+</div>`"
+>
+  <div className="flex flex-wrap gap-4">
+    <RequirementNode type="functional" reqId="REQ-001" priority="high">
+      User Authentication
+    </RequirementNode>
+
+    <RequirementNode type="performance" reqId="REQ-002" priority="medium">
+      Sub-200ms Response
+    </RequirementNode>
+
+    <RequirementNode type="interface" reqId="REQ-003" priority="low">
+      REST API v2
+    </RequirementNode>
+
+    <RequirementNode type="design" reqId="REQ-004" risk="high">
+      Microservice Split
+    </RequirementNode>
+  </div>
+</DiagramPreview>
+
+ElementNode [#elementnode]
+
+<DiagramPreview
+  title="Design element nodes"
+  code="`import { ElementNode } from '@diax/ui-react';
+
+<div className=&#x22;flex gap-4&#x22;>
+<ElementNode elementType=&#x22;module&#x22;>Auth Service</ElementNode>
+<ElementNode elementType=&#x22;component&#x22;>API Gateway</ElementNode>
+</div>`"
+>
+  <div className="flex gap-4">
+    <ElementNode elementType="module">
+      Auth Service
+    </ElementNode>
+
+    <ElementNode elementType="component">
+      API Gateway
+    </ElementNode>
+  </div>
+</DiagramPreview>
+
+Type Badges [#type-badges]
+
+| Type          | Color  |
+| ------------- | ------ |
+| `functional`  | Blue   |
+| `performance` | Orange |
+| `interface`   | Violet |
+| `design`      | Teal   |
+| `physical`    | Rose   |
+
+Priority Indicators [#priority-indicators]
+
+| Priority | Indicator |
+| -------- | --------- |
+| `high`   | Red dot   |
+| `medium` | Amber dot |
+| `low`    | Green dot |
+
+Props [#props]
+
+RequirementNode [#requirementnode]
+
+| Prop       | Type                          | Description            |
+| ---------- | ----------------------------- | ---------------------- |
+| `type`     | `RequirementType`             | Category badge         |
+| `priority` | `"high" \| "medium" \| "low"` | Priority dot           |
+| `risk`     | `"high" \| "medium" \| "low"` | Risk footer            |
+| `reqId`    | `string`                      | ID displayed in header |
+
+ElementNode [#elementnode-1]
+
+| Prop          | Type     | Description                                   |
+| ------------- | -------- | --------------------------------------------- |
+| `elementType` | `string` | Type annotation (e.g., "module", "component") |

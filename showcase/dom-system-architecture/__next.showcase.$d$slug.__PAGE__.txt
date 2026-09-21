@@ -1,0 +1,766 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T300e,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import type { DiaxRelation } from "diax";
+import {
+  Cloud,
+  Database,
+  FileCode2,
+  Globe2,
+  Monitor,
+  Server,
+  ShieldCheck,
+  Smartphone,
+  Users,
+} from "lucide-react";
+import type { ReactNode } from "react";
+
+const targets = {
+  externalUser: "user-external",
+  internalUser: "user-internal",
+  mobileUser: "user-mobile",
+  frontend: "frontend-layer",
+  article: "article-detail",
+  backend: "backend-layer",
+  mysql: "storage-mysql",
+  cdn: "storage-cdn",
+  account: "service-account",
+} as const;
+
+const relations = [
+  relation("external-to-frontend", targets.externalUser, targets.frontend, "#38758a", "HTTPS"),
+  relation("internal-to-frontend", targets.internalUser, targets.frontend, "#6d5ba7", "HTTPS"),
+  relation("mobile-to-article", targets.mobileUser, targets.article, "#3567b7", "deep link"),
+  relation("frontend-to-backend", targets.frontend, targets.backend, "#3567b7", "JSON / HTTPS"),
+  relation("backend-to-mysql", targets.backend, targets.mysql, "#6d5ba7", "SQL"),
+  relation("backend-to-cdn", targets.backend, targets.cdn, "#6d5ba7", "object write"),
+  relation("backend-to-account", targets.backend, targets.account, "#6d5ba7", "gRPC"),
+] as const satisfies readonly DiaxRelation<ReactNode>[];
+
+function relation(
+  id: string,
+  from: string,
+  to: string,
+  color: string,
+  label: string,
+): DiaxRelation<ReactNode> {
+  return {
+    id,
+    from,
+    to,
+    color,
+    label: <ProtocolLabel>{label}</ProtocolLabel>,
+    targetMarker: "arrow",
+    gap: 5,
+  };
+}
+
+const actors = [
+  { id: targets.externalUser, title: "External user", detail: "Public access", icon: Globe2 },
+  { id: targets.internalUser, title: "Operations", detail: "Managed publish", icon: Users },
+  { id: targets.mobileUser, title: "Mobile reader", detail: "Article view", icon: Smartphone },
+] as const;
+
+const storage = [
+  { id: targets.mysql, title: "MySQL", detail: "Content & metadata", icon: Database },
+  { id: targets.cdn, title: "Dual-bucket CDN", detail: "HTML & static assets", icon: Cloud },
+  { id: targets.account, title: "Account gRPC", detail: "Identity & access", icon: Users },
+] as const;
+
+const endpointClass =
+  "relative min-w-0 border border-slate-300 bg-white text-slate-900 shadow-[0_8px_22px_rgb(42_56_72_/_0.09)]";
+
+export default function DomSystemArchitecture() {
+  return (
+    <figure
+      data-showcase-corpus="dom-system-architecture"
+      className="w-full max-w-[1120px] overflow-hidden rounded-xl border border-slate-300 bg-[#e8eef1] p-3 text-slate-900 shadow-[0_24px_70px_rgb(31_47_60_/_0.16)] sm:p-6"
+    >
+      <figcaption className="mb-5 flex flex-col justify-between gap-3 border-b border-slate-300 pb-4 sm:flex-row sm:items-end">
+        <div>
+          <p className="m-0 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-[#2d7188]">
+            Real DOM architecture map
+          </p>
+          <h2 className="m-0 mt-1 text-xl font-semibold tracking-[-0.035em] sm:text-3xl">
+            Content delivery system
+          </h2>
+          <p className="m-0 mt-1 text-[10px] leading-relaxed text-slate-600 sm:text-xs">
+            Authored CSS owns the layers. DiaX keeps 7 relationships attached as the page reflows.
+          </p>
+        </div>
+        <dl className="m-0 flex gap-4 font-mono text-[8px] text-slate-600">
+          <div>
+            <dt>Targets</dt>
+            <dd className="m-0 mt-0.5 text-base font-semibold text-slate-900">9</dd>
+          </div>
+          <div>
+            <dt>Relations</dt>
+            <dd className="m-0 mt-0.5 text-base font-semibold text-slate-900">7</dd>
+          </div>
+          <div>
+            <dt>Anchors</dt>
+            <dd className="m-0 mt-0.5 text-base font-semibold text-slate-900">0</dd>
+          </div>
+        </dl>
+      </figcaption>
+
+      <ProtocolLegend />
+
+      <ConnectionSurface
+        relations={relations}
+        aria-label="Content delivery system relationships"
+        className="grid gap-14 overflow-hidden rounded-lg border border-slate-300 bg-[#f5f7f8] p-3 pb-14 [background-image:linear-gradient(rgb(48_71_88_/_0.05)_1px,transparent_1px),linear-gradient(90deg,rgb(48_71_88_/_0.05)_1px,transparent_1px)] [background-size:24px_24px] sm:gap-16 sm:p-6 sm:pb-16"
+      >
+        <section aria-labelledby="audience-title">
+          <BandHeading index="00" eyebrow="Entry points" title="Audience" id="audience-title" />
+          <div className="mx-auto mt-3 grid max-w-2xl grid-cols-3 gap-2 sm:gap-5">
+            {actors.map(({ id, title, detail, icon: Icon }) => (
+              <article
+                key={id}
+                {...connectionTarget(id)}
+                className={`${endpointClass} flex min-h-12 items-center justify-center gap-1 rounded-full px-1.5 py-2 text-center sm:gap-2 sm:px-3`}
+              >
+                <Icon
+                  aria-hidden="true"
+                  className="hidden size-3.5 shrink-0 text-[#2d7188] sm:block"
+                />
+                <span className="min-w-0">
+                  <strong className="block truncate text-[8px] sm:text-[11px]">{title}</strong>
+                  <small className="mt-0.5 block truncate text-[6px] text-slate-500 sm:text-[8px]">
+                    {detail}
+                  </small>
+                </span>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <Layer
+          id={targets.frontend}
+          labelId="frontend-title"
+          index="01"
+          eyebrow="Presentation"
+          title="Frontend applications"
+          icon={Monitor}
+          tone="blue"
+        >
+          <AppCard
+            icon={FileCode2}
+            title="Publishing console"
+            detail="Upload · preview · release"
+            code="React"
+          />
+          <AppCard
+            id={targets.article}
+            icon={Monitor}
+            title="Article detail"
+            detail="Content · comments · sharing"
+            code="React"
+          />
+          <AppCard
+            icon={Smartphone}
+            title="App handoff"
+            detail="Open the native app"
+            code="DOM script"
+          />
+        </Layer>
+
+        <Layer
+          id={targets.backend}
+          labelId="backend-title"
+          index="02"
+          eyebrow="Application"
+          title="Publishing service"
+          icon={Server}
+          tone="violet"
+        >
+          <ApiCard title="Public API" auth="Cookie auth" path="/x/article/content" />
+          <ApiCard title="Operations API" auth="Permit auth" path="/api/content" />
+        </Layer>
+
+        <section
+          className="relative rounded-lg border border-amber-700/30 bg-amber-50/60 p-2.5 sm:p-4"
+          aria-labelledby="storage-title"
+        >
+          <BandHeading
+            index="03"
+            eyebrow="Infrastructure"
+            title="Storage & dependencies"
+            id="storage-title"
+          />
+          <div className="mx-auto mt-3 grid max-w-2xl grid-cols-3 gap-1.5 sm:gap-3">
+            {storage.map(({ id, title, detail, icon: Icon }) => (
+              <article
+                key={id}
+                {...connectionTarget(id)}
+                className={`${endpointClass} rounded-md p-1.5 text-center sm:p-3`}
+              >
+                <Icon aria-hidden="true" className="mx-auto size-3 text-amber-700 sm:size-4" />
+                <h3 className="m-0 mt-1 truncate text-[7px] font-semibold sm:text-[10px]">
+                  {title}
+                </h3>
+                <p className="m-0 mt-1 line-clamp-2 text-[5px] leading-snug text-slate-500 sm:text-[8px]">
+                  {detail}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </ConnectionSurface>
+    </figure>
+  );
+}
+
+function ProtocolLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-300 bg-[#f5f7f8] px-1.5 py-0.5 font-mono text-[7px] font-bold text-slate-600 sm:text-[9px]">
+      {children}
+    </span>
+  );
+}
+
+function ProtocolLegend() {
+  return (
+    <dl
+      aria-label="Architecture protocol legend"
+      className="m-0 mb-4 grid border-y border-slate-300 text-[8px] text-slate-600 sm:grid-cols-3"
+    >
+      <ProtocolFact term="Web boundary" value="HTTPS · deep link" />
+      <ProtocolFact term="Service boundary" value="JSON / HTTPS · gRPC" />
+      <ProtocolFact term="Durable boundary" value="SQL · object write" />
+    </dl>
+  );
+}
+
+function ProtocolFact({ term, value }: { term: string; value: string }) {
+  return (
+    <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-2 px-3 py-2 sm:border-l sm:first:border-l-0">
+      <dt className="font-mono font-bold uppercase tracking-[0.08em] text-[#2d7188]">{term}</dt>
+      <dd className="m-0 text-right">{value}</dd>
+    </div>
+  );
+}
+
+function BandHeading({
+  index,
+  eyebrow,
+  title,
+  id,
+}: {
+  index: string;
+  eyebrow: string;
+  title: string;
+  id: string;
+}) {
+  return (
+    <div className="relative z-10 grid grid-cols-[28px_minmax(0,1fr)] items-center gap-2 sm:grid-cols-[32px_minmax(0,1fr)]">
+      <span className="grid size-7 place-items-center rounded-md border border-slate-300 bg-white font-mono text-[8px] font-bold text-slate-500 sm:size-8">
+        {index}
+      </span>
+      <div>
+        <p className="m-0 font-mono text-[6px] font-bold uppercase tracking-[0.12em] text-slate-500 sm:text-[8px]">
+          {eyebrow}
+        </p>
+        <h2 id={id} className="m-0 mt-0.5 text-[11px] font-semibold sm:text-sm">
+          {title}
+        </h2>
+      </div>
+    </div>
+  );
+}
+
+function Layer({
+  id,
+  labelId,
+  index,
+  eyebrow,
+  title,
+  icon: Icon,
+  tone,
+  children,
+}: {
+  id: string;
+  labelId: string;
+  index: string;
+  eyebrow: string;
+  title: string;
+  icon: typeof Monitor;
+  tone: "blue" | "violet";
+  children: React.ReactNode;
+}) {
+  const toneClass =
+    tone === "blue" ? "border-blue-700/25 bg-blue-50/55" : "border-violet-700/25 bg-violet-50/55";
+  return (
+    <section
+      {...connectionTarget(id)}
+      className={`relative rounded-lg border p-2.5 sm:p-4 ${toneClass}`}
+      aria-labelledby={labelId}
+    >
+      <div className="grid grid-cols-[28px_minmax(0,1fr)] items-center gap-2 sm:grid-cols-[32px_minmax(0,1fr)]">
+        <span className="grid size-7 place-items-center rounded-md border border-current bg-white text-slate-500 sm:size-8">
+          <Icon aria-hidden="true" className="size-3.5" />
+        </span>
+        <div>
+          <p className="m-0 font-mono text-[6px] font-bold uppercase tracking-[0.12em] text-slate-500 sm:text-[8px]">
+            {index} · {eyebrow}
+          </p>
+          <h2 id={labelId} className="m-0 mt-0.5 text-[11px] font-semibold sm:text-sm">
+            {title}
+          </h2>
+        </div>
+      </div>
+      <div className="mt-3 grid grid-cols-3 gap-1.5 sm:gap-3">{children}</div>
+    </section>
+  );
+}
+
+function AppCard({
+  id,
+  icon: Icon,
+  title,
+  detail,
+  code,
+}: {
+  id?: string;
+  icon: typeof Monitor;
+  title: string;
+  detail: string;
+  code: string;
+}) {
+  return (
+    <article
+      {...(id ? connectionTarget(id) : {})}
+      className={`${endpointClass} rounded-md p-1.5 sm:p-3`}
+    >
+      <Icon aria-hidden="true" className="size-3 text-blue-700 sm:size-4" />
+      <h3 className="m-0 mt-1 truncate text-[7px] font-semibold sm:text-[10px]">{title}</h3>
+      <p className="m-0 mt-1 line-clamp-2 text-[5px] leading-snug text-slate-500 sm:text-[8px]">
+        {detail}
+      </p>
+      <code className="mt-1 inline-block rounded bg-blue-50 px-1 py-0.5 text-[5px] text-blue-700 sm:text-[7px]">
+        {code}
+      </code>
+    </article>
+  );
+}
+
+function ApiCard({ title, auth, path }: { title: string; auth: string; path: string }) {
+  return (
+    <article className={`${endpointClass} col-span-3 rounded-md p-2 sm:col-span-1 sm:p-3`}>
+      <div className="flex items-center gap-1.5">
+        <ShieldCheck aria-hidden="true" className="size-3 text-violet-700" />
+        <h3 className="m-0 text-[8px] font-semibold sm:text-[10px]">{title}</h3>
+      </div>
+      <code className="mt-1 block truncate text-[6px] text-violet-700 sm:text-[8px]">{path}</code>
+      <p className="m-0 mt-1 text-[6px] text-slate-500 sm:text-[8px]">{auth}</p>
+    </article>
+  );
+}
+19:X
+1e:X
+1e:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"connect","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"System architecture"}],["$","h1",null,{"children":"DOM System Architecture"}],["$","p",null,{"children":"A production-style system map where authored JSX and CSS own the layers while DiaX connects 9 real DOM targets."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1","key":"ezmyqa"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1","key":"e1hn23"}]],"className":"lucide-braces","aria-hidden":"true"}]," ","Connect DOM"]}],["$","li",null,{"children":"intermediate"}],[["$","li","architecture",{"children":"architecture"}],["$","li","connect",{"children":"connect"}],["$","li","dom",{"children":"dom"}],["$","li","responsive",{"children":"responsive"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6","$L7","$L8","$L9","$La","$Lb"]}]}],["$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14","$L15","$L16"],"$L17"]}],"isPartial":"$@18","staleTime":"$19","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$19","varyParams":null},{"rsc":"$L1c","isPartial":"$@1d","staleTime":"$19","varyParams":"$1e"}],"isUpgradeableISRFallback":false,"a":"$@1f","rootVaryParams":null,"needsRuntimeRequest":"$@20"}
+21:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+22:I[87565,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseReader"]
+23:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+24:I[200438,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+25:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+29:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+2a:"$Sreact.suspense"
+2c:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+2d:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+2e:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+2f:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"DOM measurement, target lifecycle and connection geometry."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"JSX, CSS layout, reading order and responsive composition."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"9 DOM targets · 7 relations · 0 manual anchors"}]]}]]}]]}]
+7:["$","section",null,{"className":"showcase-module__5fFjmW__scenarioGuidance","aria-labelledby":"dom-system-architecture-scenario-question","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Question-First Recipe"}],["$","h2",null,{"id":"dom-system-architecture-scenario-question","children":"Which real interface crosses each application boundary, and who owns it?"}],["$","p",null,{"children":"Use Connect because authored DOM and CSS own the layers; let DiaX measure stable targets and route only the declared relations."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioDecisionGrid","children":[["$","section",null,{"aria-labelledby":"dom-system-architecture-use-when","children":[["$","h3",null,{"id":"dom-system-architecture-use-when","children":"Use this shape when"}],["$","ul",null,{"children":[["$","li","Connect an existing responsive JSX or Tailwind system layout without surrendering its composition",{"children":"Connect an existing responsive JSX or Tailwind system layout without surrendering its composition"}],["$","li","Explain browser, edge, service, worker, and storage responsibilities in a product architecture",{"children":"Explain browser, edge, service, worker, and storage responsibilities in a product architecture"}]]}]]}],["$","section",null,{"aria-labelledby":"dom-system-architecture-avoid-when","children":[["$","h3",null,{"id":"dom-system-architecture-avoid-when","children":"Choose another shape when"}],["$","p",null,{"children":"Avoid Connect when the topology itself should decide placement or when the content must remain framework-neutral JSON."}]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioFacts","children":[["$","h3",null,{"children":"Facts the author or agent must know first"}],["$","ol",null,{"children":[["$","li","The architectural layers and their owners",{"children":"The architectural layers and their owners"}],["$","li","The direction of requests, events, and stored data",{"children":"The direction of requests, events, and stored data"}],["$","li","The protocol or contract on every meaningful relation",{"children":"The protocol or contract on every meaningful relation"}],["$","li","The responsive reading order without the edge overlay",{"children":"The responsive reading order without the edge overlay"}],["$","li","The user-visible entry point",{"children":"The user-visible entry point"}]]}]]}],["$","details",null,{"className":"showcase-module__5fFjmW__scenarioPrompt","children":[["$","summary",null,{"children":"Copy-ready agent prompts"}],["$","div",null,{"children":[["$","section",null,{"children":[["$","h3",null,{"children":"English"}],["$","p",null,{"children":"Create reviewed React JSX for a responsive system architecture using @diax/react/connect. Preserve semantic HTML and CSS reading order, centralize the relations, label verified protocols, and do not duplicate topology inside cards."}]]}],["$","section",null,{"lang":"zh-CN","children":[["$","h3",null,{"children":"中文"}],["$","p",null,{"children":"使用 @diax/react/connect 编写经过代码审查的响应式系统架构 React JSX。保留语义化 HTML 和 CSS 阅读顺序，集中声明关系，只标注已确认的协议，不要在卡片内部重复拓扑。"}]]}]]}]]}]]}]
+26:T300e,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import type { DiaxRelation } from "diax";
+import {
+  Cloud,
+  Database,
+  FileCode2,
+  Globe2,
+  Monitor,
+  Server,
+  ShieldCheck,
+  Smartphone,
+  Users,
+} from "lucide-react";
+import type { ReactNode } from "react";
+
+const targets = {
+  externalUser: "user-external",
+  internalUser: "user-internal",
+  mobileUser: "user-mobile",
+  frontend: "frontend-layer",
+  article: "article-detail",
+  backend: "backend-layer",
+  mysql: "storage-mysql",
+  cdn: "storage-cdn",
+  account: "service-account",
+} as const;
+
+const relations = [
+  relation("external-to-frontend", targets.externalUser, targets.frontend, "#38758a", "HTTPS"),
+  relation("internal-to-frontend", targets.internalUser, targets.frontend, "#6d5ba7", "HTTPS"),
+  relation("mobile-to-article", targets.mobileUser, targets.article, "#3567b7", "deep link"),
+  relation("frontend-to-backend", targets.frontend, targets.backend, "#3567b7", "JSON / HTTPS"),
+  relation("backend-to-mysql", targets.backend, targets.mysql, "#6d5ba7", "SQL"),
+  relation("backend-to-cdn", targets.backend, targets.cdn, "#6d5ba7", "object write"),
+  relation("backend-to-account", targets.backend, targets.account, "#6d5ba7", "gRPC"),
+] as const satisfies readonly DiaxRelation<ReactNode>[];
+
+function relation(
+  id: string,
+  from: string,
+  to: string,
+  color: string,
+  label: string,
+): DiaxRelation<ReactNode> {
+  return {
+    id,
+    from,
+    to,
+    color,
+    label: <ProtocolLabel>{label}</ProtocolLabel>,
+    targetMarker: "arrow",
+    gap: 5,
+  };
+}
+
+const actors = [
+  { id: targets.externalUser, title: "External user", detail: "Public access", icon: Globe2 },
+  { id: targets.internalUser, title: "Operations", detail: "Managed publish", icon: Users },
+  { id: targets.mobileUser, title: "Mobile reader", detail: "Article view", icon: Smartphone },
+] as const;
+
+const storage = [
+  { id: targets.mysql, title: "MySQL", detail: "Content & metadata", icon: Database },
+  { id: targets.cdn, title: "Dual-bucket CDN", detail: "HTML & static assets", icon: Cloud },
+  { id: targets.account, title: "Account gRPC", detail: "Identity & access", icon: Users },
+] as const;
+
+const endpointClass =
+  "relative min-w-0 border border-slate-300 bg-white text-slate-900 shadow-[0_8px_22px_rgb(42_56_72_/_0.09)]";
+
+export default function DomSystemArchitecture() {
+  return (
+    <figure
+      data-showcase-corpus="dom-system-architecture"
+      className="w-full max-w-[1120px] overflow-hidden rounded-xl border border-slate-300 bg-[#e8eef1] p-3 text-slate-900 shadow-[0_24px_70px_rgb(31_47_60_/_0.16)] sm:p-6"
+    >
+      <figcaption className="mb-5 flex flex-col justify-between gap-3 border-b border-slate-300 pb-4 sm:flex-row sm:items-end">
+        <div>
+          <p className="m-0 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-[#2d7188]">
+            Real DOM architecture map
+          </p>
+          <h2 className="m-0 mt-1 text-xl font-semibold tracking-[-0.035em] sm:text-3xl">
+            Content delivery system
+          </h2>
+          <p className="m-0 mt-1 text-[10px] leading-relaxed text-slate-600 sm:text-xs">
+            Authored CSS owns the layers. DiaX keeps 7 relationships attached as the page reflows.
+          </p>
+        </div>
+        <dl className="m-0 flex gap-4 font-mono text-[8px] text-slate-600">
+          <div>
+            <dt>Targets</dt>
+            <dd className="m-0 mt-0.5 text-base font-semibold text-slate-900">9</dd>
+          </div>
+          <div>
+            <dt>Relations</dt>
+            <dd className="m-0 mt-0.5 text-base font-semibold text-slate-900">7</dd>
+          </div>
+          <div>
+            <dt>Anchors</dt>
+            <dd className="m-0 mt-0.5 text-base font-semibold text-slate-900">0</dd>
+          </div>
+        </dl>
+      </figcaption>
+
+      <ProtocolLegend />
+
+      <ConnectionSurface
+        relations={relations}
+        aria-label="Content delivery system relationships"
+        className="grid gap-14 overflow-hidden rounded-lg border border-slate-300 bg-[#f5f7f8] p-3 pb-14 [background-image:linear-gradient(rgb(48_71_88_/_0.05)_1px,transparent_1px),linear-gradient(90deg,rgb(48_71_88_/_0.05)_1px,transparent_1px)] [background-size:24px_24px] sm:gap-16 sm:p-6 sm:pb-16"
+      >
+        <section aria-labelledby="audience-title">
+          <BandHeading index="00" eyebrow="Entry points" title="Audience" id="audience-title" />
+          <div className="mx-auto mt-3 grid max-w-2xl grid-cols-3 gap-2 sm:gap-5">
+            {actors.map(({ id, title, detail, icon: Icon }) => (
+              <article
+                key={id}
+                {...connectionTarget(id)}
+                className={`${endpointClass} flex min-h-12 items-center justify-center gap-1 rounded-full px-1.5 py-2 text-center sm:gap-2 sm:px-3`}
+              >
+                <Icon
+                  aria-hidden="true"
+                  className="hidden size-3.5 shrink-0 text-[#2d7188] sm:block"
+                />
+                <span className="min-w-0">
+                  <strong className="block truncate text-[8px] sm:text-[11px]">{title}</strong>
+                  <small className="mt-0.5 block truncate text-[6px] text-slate-500 sm:text-[8px]">
+                    {detail}
+                  </small>
+                </span>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <Layer
+          id={targets.frontend}
+          labelId="frontend-title"
+          index="01"
+          eyebrow="Presentation"
+          title="Frontend applications"
+          icon={Monitor}
+          tone="blue"
+        >
+          <AppCard
+            icon={FileCode2}
+            title="Publishing console"
+            detail="Upload · preview · release"
+            code="React"
+          />
+          <AppCard
+            id={targets.article}
+            icon={Monitor}
+            title="Article detail"
+            detail="Content · comments · sharing"
+            code="React"
+          />
+          <AppCard
+            icon={Smartphone}
+            title="App handoff"
+            detail="Open the native app"
+            code="DOM script"
+          />
+        </Layer>
+
+        <Layer
+          id={targets.backend}
+          labelId="backend-title"
+          index="02"
+          eyebrow="Application"
+          title="Publishing service"
+          icon={Server}
+          tone="violet"
+        >
+          <ApiCard title="Public API" auth="Cookie auth" path="/x/article/content" />
+          <ApiCard title="Operations API" auth="Permit auth" path="/api/content" />
+        </Layer>
+
+        <section
+          className="relative rounded-lg border border-amber-700/30 bg-amber-50/60 p-2.5 sm:p-4"
+          aria-labelledby="storage-title"
+        >
+          <BandHeading
+            index="03"
+            eyebrow="Infrastructure"
+            title="Storage & dependencies"
+            id="storage-title"
+          />
+          <div className="mx-auto mt-3 grid max-w-2xl grid-cols-3 gap-1.5 sm:gap-3">
+            {storage.map(({ id, title, detail, icon: Icon }) => (
+              <article
+                key={id}
+                {...connectionTarget(id)}
+                className={`${endpointClass} rounded-md p-1.5 text-center sm:p-3`}
+              >
+                <Icon aria-hidden="true" className="mx-auto size-3 text-amber-700 sm:size-4" />
+                <h3 className="m-0 mt-1 truncate text-[7px] font-semibold sm:text-[10px]">
+                  {title}
+                </h3>
+                <p className="m-0 mt-1 line-clamp-2 text-[5px] leading-snug text-slate-500 sm:text-[8px]">
+                  {detail}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </ConnectionSurface>
+    </figure>
+  );
+}
+
+function ProtocolLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-slate-300 bg-[#f5f7f8] px-1.5 py-0.5 font-mono text-[7px] font-bold text-slate-600 sm:text-[9px]">
+      {children}
+    </span>
+  );
+}
+
+function ProtocolLegend() {
+  return (
+    <dl
+      aria-label="Architecture protocol legend"
+      className="m-0 mb-4 grid border-y border-slate-300 text-[8px] text-slate-600 sm:grid-cols-3"
+    >
+      <ProtocolFact term="Web boundary" value="HTTPS · deep link" />
+      <ProtocolFact term="Service boundary" value="JSON / HTTPS · gRPC" />
+      <ProtocolFact term="Durable boundary" value="SQL · object write" />
+    </dl>
+  );
+}
+
+function ProtocolFact({ term, value }: { term: string; value: string }) {
+  return (
+    <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-2 px-3 py-2 sm:border-l sm:first:border-l-0">
+      <dt className="font-mono font-bold uppercase tracking-[0.08em] text-[#2d7188]">{term}</dt>
+      <dd className="m-0 text-right">{value}</dd>
+    </div>
+  );
+}
+
+function BandHeading({
+  index,
+  eyebrow,
+  title,
+  id,
+}: {
+  index: string;
+  eyebrow: string;
+  title: string;
+  id: string;
+}) {
+  return (
+    <div className="relative z-10 grid grid-cols-[28px_minmax(0,1fr)] items-center gap-2 sm:grid-cols-[32px_minmax(0,1fr)]">
+      <span className="grid size-7 place-items-center rounded-md border border-slate-300 bg-white font-mono text-[8px] font-bold text-slate-500 sm:size-8">
+        {index}
+      </span>
+      <div>
+        <p className="m-0 font-mono text-[6px] font-bold uppercase tracking-[0.12em] text-slate-500 sm:text-[8px]">
+          {eyebrow}
+        </p>
+        <h2 id={id} className="m-0 mt-0.5 text-[11px] font-semibold sm:text-sm">
+          {title}
+        </h2>
+      </div>
+    </div>
+  );
+}
+
+function Layer({
+  id,
+  labelId,
+  index,
+  eyebrow,
+  title,
+  icon: Icon,
+  tone,
+  children,
+}: {
+  id: string;
+  labelId: string;
+  index: string;
+  eyebrow: string;
+  title: string;
+  icon: typeof Monitor;
+  tone: "blue" | "violet";
+  children: React.ReactNode;
+}) {
+  const toneClass =
+    tone === "blue" ? "border-blue-700/25 bg-blue-50/55" : "border-violet-700/25 bg-violet-50/55";
+  return (
+    <section
+      {...connectionTarget(id)}
+      className={`relative rounded-lg border p-2.5 sm:p-4 ${toneClass}`}
+      aria-labelledby={labelId}
+    >
+      <div className="grid grid-cols-[28px_minmax(0,1fr)] items-center gap-2 sm:grid-cols-[32px_minmax(0,1fr)]">
+        <span className="grid size-7 place-items-center rounded-md border border-current bg-white text-slate-500 sm:size-8">
+          <Icon aria-hidden="true" className="size-3.5" />
+        </span>
+        <div>
+          <p className="m-0 font-mono text-[6px] font-bold uppercase tracking-[0.12em] text-slate-500 sm:text-[8px]">
+            {index} · {eyebrow}
+          </p>
+          <h2 id={labelId} className="m-0 mt-0.5 text-[11px] font-semibold sm:text-sm">
+            {title}
+          </h2>
+        </div>
+      </div>
+      <div className="mt-3 grid grid-cols-3 gap-1.5 sm:gap-3">{children}</div>
+    </section>
+  );
+}
+
+function AppCard({
+  id,
+  icon: Icon,
+  title,
+  detail,
+  code,
+}: {
+  id?: string;
+  icon: typeof Monitor;
+  title: string;
+  detail: string;
+  code: string;
+}) {
+  return (
+    <article
+      {...(id ? connectionTarget(id) : {})}
+      className={`${endpointClass} rounded-md p-1.5 sm:p-3`}
+    >
+      <Icon aria-hidden="true" className="size-3 text-blue-700 sm:size-4" />
+      <h3 className="m-0 mt-1 truncate text-[7px] font-semibold sm:text-[10px]">{title}</h3>
+      <p className="m-0 mt-1 line-clamp-2 text-[5px] leading-snug text-slate-500 sm:text-[8px]">
+        {detail}
+      </p>
+      <code className="mt-1 inline-block rounded bg-blue-50 px-1 py-0.5 text-[5px] text-blue-700 sm:text-[7px]">
+        {code}
+      </code>
+    </article>
+  );
+}
+
+function ApiCard({ title, auth, path }: { title: string; auth: string; path: string }) {
+  return (
+    <article className={`${endpointClass} col-span-3 rounded-md p-2 sm:col-span-1 sm:p-3`}>
+      <div className="flex items-center gap-1.5">
+        <ShieldCheck aria-hidden="true" className="size-3 text-violet-700" />
+        <h3 className="m-0 text-[8px] font-semibold sm:text-[10px]">{title}</h3>
+      </div>
+      <code className="mt-1 block truncate text-[6px] text-violet-700 sm:text-[8px]">{path}</code>
+      <p className="m-0 mt-1 text-[6px] text-slate-500 sm:text-[8px]">{auth}</p>
+    </article>
+  );
+}
+8:["$","$L21",null,{"title":"DOM System Architecture","entryLabel":"Connect DOM","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"dom-system-architecture","children":["$","$L22",null,{"definition":{"steps":[{"id":"enter-through-real-users","title":"Enter through real users","description":"Public, operations, and mobile journeys begin at three explicit DOM targets.","nodeIds":["user-external","user-internal","user-mobile","frontend-layer"],"edgeIds":["external-to-frontend","internal-to-frontend","mobile-to-article"],"evidenceIds":[]},{"id":"cross-the-application-contract","title":"Cross the application contract","description":"The responsive frontend owns composition; the publishing service owns the next application responsibility.","nodeIds":["frontend-layer","backend-layer"],"edgeIds":["frontend-to-backend"],"evidenceIds":[]},{"id":"fan-out-to-durable-boundaries","title":"Fan out to durable boundaries","description":"The backend reaches content storage, immutable delivery, and identity through three authored relations.","nodeIds":["backend-layer","storage-mysql","storage-cdn","service-account"],"edgeIds":["backend-to-mysql","backend-to-cdn","backend-to-account"],"evidenceIds":[]}],"evidence":[]},"children":[["$","$L23",null,{"moduleIds":[345786]}],["$","$L24",null,{}]]}]}],"code":["$","$L25",null,{"files":[{"path":"components/diagrams/dom-system-architecture/dom-system-architecture.tsx","content":"$26"}],"slug":"dom-system-architecture"}]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__proofRegion","aria-label":"Reproducible evidence","children":["$","details",null,{"className":"showcase-module__5fFjmW__proofDisclosure","data-showcase-proof":"dom-system-architecture","data-manual-review":"pending","children":[["$","summary",null,{"children":[["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryTitle","children":[["$","span",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Verification Manifest"}],["$","strong",null,{"children":"Reproducible evidence"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryState","children":[["$","span",null,{"children":"Automated contract"}],["$","span",null,{"children":"Human visual review pending"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofToggle","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__proofBody","children":[["$","p",null,{"className":"showcase-module__5fFjmW__proofBoundary","children":"This receipt binds the committed specimen to its generated registry artifact. It describes a reproducible contract, not the result of the latest CI run or a hardware browser sign-off."}],["$","div",null,{"className":"showcase-module__5fFjmW__proofManifest","children":[["$","section",null,{"aria-labelledby":"dom-system-architecture-integrity-title","children":[["$","h3",null,{"id":"dom-system-architecture-integrity-title","children":"Integrity"}],["$","dl",null,{"className":"showcase-module__5fFjmW__proofIntegrity","children":[["$","div","source",{"children":[["$","dt",null,{"children":"source"}],["$","dd",null,{"children":[["$","span",null,{"children":"registry/examples/dom-system-architecture/dom-system-architecture.tsx"}],["$","code",null,{"translate":"no","data-proof-hash":"source","data-sha256":"accb3c1f3ae160248bce3559686c7fca2a6b2d1466c5a556706b32664788e0e1","title":"accb3c1f3ae160248bce3559686c7fca2a6b2d1466c5a556706b32664788e0e1","children":["sha256:","accb3c1f3ae1...4788e0e1"]}]]}]]}],["$","div","artifact",{"children":[["$","dt",null,{"children":"artifact"}],["$","dd",null,{"children":[["$","span",null,{"children":"public/r/dom-system-architecture.json"}],["$","code",null,{"translate":"no","data-proof-hash":"artifact","data-sha256":"47aa83889cdfd90155f96e752a808f66b8efe1fc7d3828941cf6a6cc81966093","title":"47aa83889cdfd90155f96e752a808f66b8efe1fc7d3828941cf6a6cc81966093","children":["sha256:","47aa83889cdf...81966093"]}]]}]]}]]}]]}],["$","section",null,{"aria-labelledby":"dom-system-architecture-checks-title","children":[["$","h3",null,{"id":"dom-system-architecture-checks-title","children":"Deterministic checks"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofChecks","children":[["$","li","registry-source-contract",{"children":[["$","span",null,{"aria-hidden":"true"}],"Registry source contract"]}],["$","li","artifact-drift-check",{"children":[["$","span",null,{"aria-hidden":"true"}],"Artifact drift check"]}],["$","li","public-entry-boundary",{"children":[["$","span",null,{"aria-hidden":"true"}],"Public entry boundary"]}],["$","li","browser-render",{"children":[["$","span",null,{"aria-hidden":"true"}],"Browser render contract"]}]]}]]}],["$","section",null,{"aria-labelledby":"dom-system-architecture-surface-title","children":[["$","h3",null,{"id":"dom-system-architecture-surface-title","children":"Exercised surface"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Exact public entries"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofEntries","children":[["$","li","@diax/react/connect",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"@diax/react/connect"}]}],["$","li","diax",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"diax"}]}]]}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Browser contract targets"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofBrowsers","aria-label":"Browser contract targets","children":[["$","li","chromium",{"data-proof-browser":"chromium","children":"chromium"}],["$","li","firefox",{"data-proof-browser":"firefox","children":"firefox"}],"$L27"]}]]}],"$L28"]}]]}]]}]}]
+a:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","diax",{"translate":"no","children":"diax"}],["$","li","lucide-react",{"translate":"no","children":"lucide-react"}]]}]]}]
+b:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react/connect","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Connect DOM"]}],["$","strong",null,{"children":"Connect Authored DOM"}],["$","span",null,{"children":"Keep your JSX and CSS layout while DiaX measures and connects exact elements."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","snapshot-fan-in",{"children":["$","$L2",null,{"href":"/showcase/snapshot-fan-in","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"T+0 Snapshot Fan-In"}],["$","span",null,{"children":"16 DOM targets · 15 relations · 5 rich labels"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","html-injection-map",{"children":["$","$L2",null,{"href":"/showcase/html-injection-map","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"HTML Injection Map"}],["$","span",null,{"children":"2 surfaces · 11 DOM targets · 7 relations"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","progressive-rollout",{"children":["$","$L2",null,{"href":"/showcase/progressive-rollout","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Progressive Rollout"}],["$","span",null,{"children":"3 semantic phase targets · 2 rich transitions · responsive reflow"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+c:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+d:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+e:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+f:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+10:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+11:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+12:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+13:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+14:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+15:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+16:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+17:["$","$L29",null,{"children":["$","$2a",null,{"name":"Next.MetadataOutlet","children":"$@2b"}]}]
+1a:["$","$1","h",{"children":[null,["$","$L2c",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L2d",null,{"children":["$","$2a",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"DOM System Architecture — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"A production-style system map where authored JSX and CSS own the layers while DiaX connects 9 real DOM targets."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/dom-system-architecture/"}],["$","meta","3",{"property":"og:title","content":"DOM System Architecture — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"A production-style system map where authored JSX and CSS own the layers while DiaX connects 9 real DOM targets."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/dom-system-architecture/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1c:["$","$1","c",{"children":[null,["$","$L2e",null,{"parallelRouterKey":"children","template":["$","$L2f",null,{}]}]]}]
+20:true
+27:["$","li","webkit",{"data-proof-browser":"webkit","children":"webkit"}]
+28:["$","section",null,{"aria-labelledby":"dom-system-architecture-review-title","children":[["$","h3",null,{"id":"dom-system-architecture-review-title","children":"Human review"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofReviewPending","children":[["$","strong",null,{"children":"Pending"}],"Visual quality, assistive technology and physical browser environments still require an identified reviewer."]}]]}]
+2b:null
+19:300
+19:C
+1f:0
+1b:"$undefined"
+1d:"$undefined"
+18:"$undefined"

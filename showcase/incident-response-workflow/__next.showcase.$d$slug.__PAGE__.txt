@@ -1,0 +1,509 @@
+1:"$Sreact.fragment"
+2:I[890545,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],""]
+3:I[793739,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+4:I[118581,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"OpenInPlaygroundButton"]
+5:T202c,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DiagramFrame, NodeCard } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import type { ReactNode } from "react";
+
+const relations = [
+  relation("assess-isolate", "assess", "isolate", "triage accepted"),
+  relation("isolate-patch", "isolate", "patch", "affected artifact"),
+  relation("isolate-escalate", "isolate", "escalate", "if scope expands", {
+    color: "#a96320",
+    strokeDasharray: "3 3",
+  }),
+  relation("escalate-patch", "escalate", "patch", "owner approval", { color: "#a96320" }),
+  relation("patch-verify", "patch", "verify", "signed patch"),
+  relation("verify-close", "verify", "close", "recovery confirmed", {
+    color: "#47715d",
+    strokeDasharray: "7 4",
+  }),
+] satisfies readonly DiaxRelation<ReactNode>[];
+
+const target = {
+  assess: connectionTarget("assess"),
+  isolate: connectionTarget("isolate"),
+  escalate: connectionTarget("escalate"),
+  patch: connectionTarget("patch"),
+  verify: connectionTarget("verify"),
+  close: connectionTarget("close"),
+};
+
+const compactRunbook = [
+  { id: "assess", owner: "Security", title: "Assess exposure", note: "Accept triage" },
+  { id: "isolate", owner: "Platform", title: "Isolate artifact", note: "Preserve evidence" },
+  {
+    id: "escalate",
+    owner: "Security",
+    title: "Escalate scope",
+    note: "Conditional when impact expands",
+  },
+  { id: "patch", owner: "Platform", title: "Publish signed patch", note: "Owner approved" },
+  { id: "verify", owner: "Release", title: "Verify recovery", note: "Issue receipt" },
+  { id: "close", owner: "Security", title: "Close incident record", note: "Terminal owner" },
+] as const;
+
+export default function IncidentResponseWorkflow() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="incident-response-workflow"
+      eyebrow="Incident runbook · Authored responsibility"
+      title="One response, three accountable lanes"
+      description="The sections remain ordinary runbook DOM. DiaX keeps each handoff attached while the lanes reflow."
+      caption="Conditional escalation and recovery acknowledgement remain named when color or connectors are unavailable."
+      className="w-full max-w-[1120px] [--diax-accent:#a96320] [--diax-frame-bg:#eef2f3] [--diax-frame-radius:2px] [--diax-frame-shadow:none] [--diax-node-bg:#f9fbfb] [--diax-node-border:#aebbc0] [--diax-node-shadow:none] [--diax-node-text:#172126] [--diax-ui-radius:2px]"
+    >
+      <RelationLegend />
+
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Incident response handoffs"
+        className="@container mt-4 hidden gap-14 sm:grid [&_[data-diax-ui-node=card]_[data-diax-ui-part=eyebrow]]:text-[11px]"
+      >
+        <Lane id="incident-security" label="Security" clock="T+00 → T+60">
+          <NodeCard
+            {...target.assess}
+            className="max-w-none @min-[52rem]:col-start-2"
+            size="compact"
+            eyebrow="T+00 · Intake"
+            title="Assess exposure"
+            description="Confirm affected versions and user impact."
+            tone="warning"
+          />
+          <NodeCard
+            {...target.escalate}
+            className="max-w-none @min-[52rem]:col-start-4"
+            size="compact"
+            eyebrow="Conditional"
+            title="Escalate scope"
+            description="Name the accountable owner before expanding containment."
+            tone="danger"
+          />
+          <NodeCard
+            {...target.close}
+            className="max-w-none @min-[52rem]:col-start-5"
+            size="compact"
+            eyebrow="Terminal"
+            title="Close incident record"
+            description="Attach the recovery receipt and remaining follow-up."
+            tone="success"
+          />
+        </Lane>
+
+        <Lane id="incident-platform" label="Platform" clock="T+15 → T+45">
+          <NodeCard
+            {...target.isolate}
+            className="max-w-none @min-[52rem]:col-start-2"
+            size="compact"
+            eyebrow="T+15 · Contain"
+            title="Isolate artifact"
+            description="Quarantine only the affected release and preserve evidence."
+            tone="danger"
+          />
+          <NodeCard
+            {...target.patch}
+            className="max-w-none @min-[52rem]:col-start-4"
+            size="compact"
+            eyebrow="T+45 · Repair"
+            title="Publish signed patch"
+            description="Produce one versioned candidate with provenance."
+            tone="accent"
+          />
+        </Lane>
+
+        <Lane id="incident-release" label="Release" clock="T+60">
+          <NodeCard
+            {...target.verify}
+            className="max-w-none @min-[52rem]:col-start-5"
+            size="compact"
+            eyebrow="T+60 · Recover"
+            title="Verify recovery"
+            description="Replay checks, inspect signals and issue the receipt."
+            tone="success"
+          />
+        </Lane>
+      </ConnectionSurface>
+
+      <ol
+        data-incident-mobile-runbook
+        aria-label="Incident response ordered runbook"
+        className="m-0 mt-4 grid list-none border-y border-[#bdc8cc] p-0 sm:hidden"
+      >
+        {compactRunbook.map((step, index) => (
+          <li
+            key={step.id}
+            data-incident-mobile-step={step.id}
+            className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-3 border-t border-[#d3dcdf] py-3 first:border-t-0"
+          >
+            <span className="font-mono text-[11px] font-bold text-[#a96320]">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span>
+              <strong className="block text-[12px] text-[#172126]">
+                {step.owner} · {step.title}
+              </strong>
+              <small className="mt-1 block text-[11px] leading-4 text-[#5a6970]">
+                {step.note}
+              </small>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </DiagramFrame>
+  );
+}
+
+function Lane({
+  id,
+  label,
+  clock,
+  children,
+}: {
+  id: string;
+  label: string;
+  clock: string;
+  children: ReactNode;
+}) {
+  return (
+    <section
+      aria-labelledby={id}
+      className="grid min-w-0 gap-4 border border-[#bdc8cc] bg-[#f6f8f8] p-3 @min-[52rem]:grid-cols-[8rem_repeat(4,minmax(0,1fr))] @min-[52rem]:gap-x-10"
+    >
+      <header className="flex items-baseline justify-between gap-3 border-b border-[#bdc8cc] pb-2 @min-[52rem]:row-span-2 @min-[52rem]:block @min-[52rem]:border-r @min-[52rem]:border-b-0 @min-[52rem]:pr-3 @min-[52rem]:pb-0">
+        <h2 id={id} className="m-0 font-mono text-[11px] font-bold uppercase tracking-[0.12em]">
+          {label}
+        </h2>
+        <p className="m-0 mt-1 font-mono text-[9px] text-[#66757c]">{clock}</p>
+      </header>
+      {children}
+    </section>
+  );
+}
+
+function RelationLegend() {
+  const items = [
+    { label: "Required handoff", className: "border-[#52666f]" },
+    { label: "Conditional escalation", className: "border-[#a96320] border-dashed" },
+    { label: "Recovery acknowledgement", className: "border-[#47715d] border-dashed" },
+  ];
+  return (
+    <ul
+      aria-label="Incident relation legend"
+      className="m-0 grid list-none border-y border-[#bdc8cc] p-0 text-[10px] text-[#526169] sm:grid-cols-3"
+    >
+      {items.map((item) => (
+        <li key={item.label} className="flex items-center gap-2 px-3 py-2 sm:border-l sm:first:border-l-0">
+          <span aria-hidden="true" className={`w-8 border-t-2 ${item.className}`} />
+          {item.label}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-[#aebbc0] bg-[#f9fbfb] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#43545c]">
+      {children}
+    </span>
+  );
+}
+
+function relation(
+  id: string,
+  from: string,
+  to: string,
+  label: string,
+  style: Pick<Exclude<DiaxRelation<ReactNode>, string>, "color" | "strokeDasharray"> = {},
+): DiaxRelation<ReactNode> {
+  return {
+    id,
+    from,
+    to,
+    label: <RelationLabel>{label}</RelationLabel>,
+    targetMarker: "arrow",
+    gap: 7,
+    ...style,
+  };
+}
+19:X
+1e:X
+1e:C
+0:{"buildId":"25HwY_SA_6Nzt-j_Xd13d","data":[{"rsc":["$","$1","c",{"children":[["$","main",null,{"className":"showcase-module__5fFjmW__detailPage","data-entry":"connect","children":["$","div",null,{"className":"showcase-module__5fFjmW__detailShell","children":[["$","$L2",null,{"href":"/showcase","className":"showcase-module__5fFjmW__detailBack","children":[["$","$L3",null,{"iconNode":[["path",{"d":"m12 19-7-7 7-7","key":"1l729n"}],["path",{"d":"M19 12H5","key":"x3x0zl"}]],"className":"lucide-arrow-left","aria-hidden":"true"}]," Showcase"]}],["$","header",null,{"className":"showcase-module__5fFjmW__detailHeader","children":[["$","div",null,{"className":"showcase-module__5fFjmW__detailTitle","children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Incident response workflow"}],["$","h1",null,{"children":"Incident Response Workflow"}],["$","p",null,{"children":"Three accountable DOM lanes preserve triage, escalation, remediation and recovery handoffs without introducing a workflow mode."}],["$","ul",null,{"className":"showcase-module__5fFjmW__detailTags","aria-label":"Example metadata","children":[["$","li",null,{"children":[["$","$L3",null,{"iconNode":[["path",{"d":"M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1","key":"ezmyqa"}],["path",{"d":"M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1","key":"e1hn23"}]],"className":"lucide-braces","aria-hidden":"true"}]," ","Connect DOM"]}],["$","li",null,{"children":"intermediate"}],[["$","li","connect",{"children":"connect"}],["$","li","incident",{"children":"incident"}],["$","li","responsibility",{"children":"responsibility"}],["$","li","return",{"children":"return"}]]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__detailActions","children":[["$","$L4",null,{"sourceCode":"$5"}],null]}]]}],"$L6","$L7","$L8","$L9","$La","$Lb"]}]}],["$Lc","$Ld","$Le","$Lf","$L10","$L11","$L12","$L13","$L14","$L15","$L16"],"$L17"]}],"isPartial":"$@18","staleTime":"$19","varyParams":null},{"rsc":"$L1a","isPartial":"$@1b","staleTime":"$19","varyParams":null},{"rsc":"$L1c","isPartial":"$@1d","staleTime":"$19","varyParams":"$1e"}],"isUpgradeableISRFallback":false,"a":"$@1f","rootVaryParams":null,"needsRuntimeRequest":"$@20"}
+21:I[472188,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"ShowcaseDetailTabs"]
+22:I[194100,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"PreloadChunks"]
+23:I[80969,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"default"]
+24:I[307818,["/_next/static/chunks/04c7wzh9sh8pa.js","/_next/static/chunks/3h02mb_x4y4ri.js","/_next/static/chunks/2ejuixgcyscb1.js","/_next/static/chunks/00gow_pkodivt.js","/_next/static/chunks/3ls--w1zaxy5h.js","/_next/static/chunks/2e7x7lkmyq7_c.js","/_next/static/chunks/0tyuvv_r62tnn.js","/_next/static/chunks/2z5qlb7wtwutu.js","/_next/static/chunks/1_u2stdaxavi2.js","/_next/static/chunks/3s_e49sur_7h4.js","/_next/static/chunks/1fjanzgj1m6fx.js","/_next/static/chunks/3u4hlfpugn9bm.js","/_next/static/chunks/3uorq77brhtnp.js","/_next/static/chunks/2xarsauo-1336.js","/_next/static/chunks/21p0fm0asm9rt.js","/_next/static/chunks/0sunbgpqi1_l5.js","/_next/static/chunks/0pn9vcqv8ypg4.js"],"CodeViewer"]
+2a:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"OutletBoundary"]
+2b:"$Sreact.suspense"
+2d:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"ViewportBoundary"]
+2e:I[780447,["/_next/static/chunks/34mnlso5vgks6.js"],"MetadataBoundary"]
+2f:I[363674,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+30:I[766327,["/_next/static/chunks/34mnlso5vgks6.js"],"default"]
+:HL["/_next/static/chunks/3oe-90rqnb06f.css","style"]
+6:["$","section",null,{"className":"showcase-module__5fFjmW__ownershipContract","aria-labelledby":"ownership-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Authoring Contract"}],["$","h2",null,{"id":"ownership-title","children":"Know Who Owns Layout Before You Copy"}]]}],["$","dl",null,{"children":[["$","div",null,{"children":[["$","dt",null,{"children":"DiaX Owns"}],["$","dd",null,{"children":"DOM measurement, target lifecycle and connection geometry."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"You Own"}],["$","dd",null,{"children":"JSX, CSS layout, reading order and responsive composition."}]]}],["$","div",null,{"children":[["$","dt",null,{"children":"Verified Shape"}],["$","dd",null,{"children":"3 semantic lanes · 6 stable relations · conditional escalation · responsive source order"}]]}]]}]]}]
+7:["$","section",null,{"className":"showcase-module__5fFjmW__scenarioGuidance","aria-labelledby":"incident-response-workflow-scenario-question","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Question-First Recipe"}],["$","h2",null,{"id":"incident-response-workflow-scenario-question","children":"How do accountable teams hand off an incident without losing recovery state?"}],["$","p",null,{"children":"Use semantic sections for team ownership and Connect only the exact action cards; keep conditional and acknowledgement semantics visible in text and line style."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioDecisionGrid","children":[["$","section",null,{"aria-labelledby":"incident-response-workflow-use-when","children":[["$","h3",null,{"id":"incident-response-workflow-use-when","children":"Use this shape when"}],["$","ul",null,{"children":[["$","li","Explain responsibility changes across security, platform and release teams",{"children":"Explain responsibility changes across security, platform and release teams"}],["$","li","Preserve a readable incident runbook while showing escalation and recovery handoffs",{"children":"Preserve a readable incident runbook while showing escalation and recovery handoffs"}]]}]]}],["$","section",null,{"aria-labelledby":"incident-response-workflow-avoid-when","children":[["$","h3",null,{"id":"incident-response-workflow-avoid-when","children":"Choose another shape when"}],["$","p",null,{"children":"Avoid authored lanes when topology should determine placement or when the only fact is a short linear checklist."}]]}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__scenarioFacts","children":[["$","h3",null,{"children":"Facts the author or agent must know first"}],["$","ol",null,{"children":[["$","li","The artifact or patch passed between teams",{"children":"The artifact or patch passed between teams"}],["$","li","The condition that triggers escalation",{"children":"The condition that triggers escalation"}],["$","li","The evidence required to declare recovery",{"children":"The evidence required to declare recovery"}],["$","li","The team accountable for each action",{"children":"The team accountable for each action"}],["$","li","The terminal owner of the incident record",{"children":"The terminal owner of the incident record"}]]}]]}],["$","details",null,{"className":"showcase-module__5fFjmW__scenarioPrompt","children":[["$","summary",null,{"children":"Copy-ready agent prompts"}],["$","div",null,{"children":[["$","section",null,{"children":[["$","h3",null,{"children":"English"}],["$","p",null,{"children":"Create a responsive incident-response workflow with @diax/react/connect. Use semantic team sections, stable relation IDs, one named escalation condition, one dashed recovery acknowledgement, and a text legend. Preserve DOM reading order and do not add lanes, ports or bend points to the DiaX interface."}]]}],["$","section",null,{"lang":"zh-CN","children":[["$","h3",null,{"children":"中文"}],["$","p",null,{"children":"使用 @diax/react/connect 创建响应式事故响应工作流。使用语义化团队 section、稳定关系 ID、一个明确的升级条件、一个虚线恢复确认和文字图例。保留 DOM 阅读顺序，不要给 DiaX 接口添加 lane、port 或 bend point。"}]]}]]}]]}]]}]
+25:T202c,"use client";
+
+import { ConnectionSurface, connectionTarget } from "@diax/react/connect";
+import { DiagramFrame, NodeCard } from "@diax/ui-react/presentation";
+import type { DiaxRelation } from "diax";
+import type { ReactNode } from "react";
+
+const relations = [
+  relation("assess-isolate", "assess", "isolate", "triage accepted"),
+  relation("isolate-patch", "isolate", "patch", "affected artifact"),
+  relation("isolate-escalate", "isolate", "escalate", "if scope expands", {
+    color: "#a96320",
+    strokeDasharray: "3 3",
+  }),
+  relation("escalate-patch", "escalate", "patch", "owner approval", { color: "#a96320" }),
+  relation("patch-verify", "patch", "verify", "signed patch"),
+  relation("verify-close", "verify", "close", "recovery confirmed", {
+    color: "#47715d",
+    strokeDasharray: "7 4",
+  }),
+] satisfies readonly DiaxRelation<ReactNode>[];
+
+const target = {
+  assess: connectionTarget("assess"),
+  isolate: connectionTarget("isolate"),
+  escalate: connectionTarget("escalate"),
+  patch: connectionTarget("patch"),
+  verify: connectionTarget("verify"),
+  close: connectionTarget("close"),
+};
+
+const compactRunbook = [
+  { id: "assess", owner: "Security", title: "Assess exposure", note: "Accept triage" },
+  { id: "isolate", owner: "Platform", title: "Isolate artifact", note: "Preserve evidence" },
+  {
+    id: "escalate",
+    owner: "Security",
+    title: "Escalate scope",
+    note: "Conditional when impact expands",
+  },
+  { id: "patch", owner: "Platform", title: "Publish signed patch", note: "Owner approved" },
+  { id: "verify", owner: "Release", title: "Verify recovery", note: "Issue receipt" },
+  { id: "close", owner: "Security", title: "Close incident record", note: "Terminal owner" },
+] as const;
+
+export default function IncidentResponseWorkflow() {
+  return (
+    <DiagramFrame
+      data-showcase-corpus="incident-response-workflow"
+      eyebrow="Incident runbook · Authored responsibility"
+      title="One response, three accountable lanes"
+      description="The sections remain ordinary runbook DOM. DiaX keeps each handoff attached while the lanes reflow."
+      caption="Conditional escalation and recovery acknowledgement remain named when color or connectors are unavailable."
+      className="w-full max-w-[1120px] [--diax-accent:#a96320] [--diax-frame-bg:#eef2f3] [--diax-frame-radius:2px] [--diax-frame-shadow:none] [--diax-node-bg:#f9fbfb] [--diax-node-border:#aebbc0] [--diax-node-shadow:none] [--diax-node-text:#172126] [--diax-ui-radius:2px]"
+    >
+      <RelationLegend />
+
+      <ConnectionSurface
+        relations={relations}
+        pathType="orthogonal"
+        aria-label="Incident response handoffs"
+        className="@container mt-4 hidden gap-14 sm:grid [&_[data-diax-ui-node=card]_[data-diax-ui-part=eyebrow]]:text-[11px]"
+      >
+        <Lane id="incident-security" label="Security" clock="T+00 → T+60">
+          <NodeCard
+            {...target.assess}
+            className="max-w-none @min-[52rem]:col-start-2"
+            size="compact"
+            eyebrow="T+00 · Intake"
+            title="Assess exposure"
+            description="Confirm affected versions and user impact."
+            tone="warning"
+          />
+          <NodeCard
+            {...target.escalate}
+            className="max-w-none @min-[52rem]:col-start-4"
+            size="compact"
+            eyebrow="Conditional"
+            title="Escalate scope"
+            description="Name the accountable owner before expanding containment."
+            tone="danger"
+          />
+          <NodeCard
+            {...target.close}
+            className="max-w-none @min-[52rem]:col-start-5"
+            size="compact"
+            eyebrow="Terminal"
+            title="Close incident record"
+            description="Attach the recovery receipt and remaining follow-up."
+            tone="success"
+          />
+        </Lane>
+
+        <Lane id="incident-platform" label="Platform" clock="T+15 → T+45">
+          <NodeCard
+            {...target.isolate}
+            className="max-w-none @min-[52rem]:col-start-2"
+            size="compact"
+            eyebrow="T+15 · Contain"
+            title="Isolate artifact"
+            description="Quarantine only the affected release and preserve evidence."
+            tone="danger"
+          />
+          <NodeCard
+            {...target.patch}
+            className="max-w-none @min-[52rem]:col-start-4"
+            size="compact"
+            eyebrow="T+45 · Repair"
+            title="Publish signed patch"
+            description="Produce one versioned candidate with provenance."
+            tone="accent"
+          />
+        </Lane>
+
+        <Lane id="incident-release" label="Release" clock="T+60">
+          <NodeCard
+            {...target.verify}
+            className="max-w-none @min-[52rem]:col-start-5"
+            size="compact"
+            eyebrow="T+60 · Recover"
+            title="Verify recovery"
+            description="Replay checks, inspect signals and issue the receipt."
+            tone="success"
+          />
+        </Lane>
+      </ConnectionSurface>
+
+      <ol
+        data-incident-mobile-runbook
+        aria-label="Incident response ordered runbook"
+        className="m-0 mt-4 grid list-none border-y border-[#bdc8cc] p-0 sm:hidden"
+      >
+        {compactRunbook.map((step, index) => (
+          <li
+            key={step.id}
+            data-incident-mobile-step={step.id}
+            className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-3 border-t border-[#d3dcdf] py-3 first:border-t-0"
+          >
+            <span className="font-mono text-[11px] font-bold text-[#a96320]">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span>
+              <strong className="block text-[12px] text-[#172126]">
+                {step.owner} · {step.title}
+              </strong>
+              <small className="mt-1 block text-[11px] leading-4 text-[#5a6970]">
+                {step.note}
+              </small>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </DiagramFrame>
+  );
+}
+
+function Lane({
+  id,
+  label,
+  clock,
+  children,
+}: {
+  id: string;
+  label: string;
+  clock: string;
+  children: ReactNode;
+}) {
+  return (
+    <section
+      aria-labelledby={id}
+      className="grid min-w-0 gap-4 border border-[#bdc8cc] bg-[#f6f8f8] p-3 @min-[52rem]:grid-cols-[8rem_repeat(4,minmax(0,1fr))] @min-[52rem]:gap-x-10"
+    >
+      <header className="flex items-baseline justify-between gap-3 border-b border-[#bdc8cc] pb-2 @min-[52rem]:row-span-2 @min-[52rem]:block @min-[52rem]:border-r @min-[52rem]:border-b-0 @min-[52rem]:pr-3 @min-[52rem]:pb-0">
+        <h2 id={id} className="m-0 font-mono text-[11px] font-bold uppercase tracking-[0.12em]">
+          {label}
+        </h2>
+        <p className="m-0 mt-1 font-mono text-[9px] text-[#66757c]">{clock}</p>
+      </header>
+      {children}
+    </section>
+  );
+}
+
+function RelationLegend() {
+  const items = [
+    { label: "Required handoff", className: "border-[#52666f]" },
+    { label: "Conditional escalation", className: "border-[#a96320] border-dashed" },
+    { label: "Recovery acknowledgement", className: "border-[#47715d] border-dashed" },
+  ];
+  return (
+    <ul
+      aria-label="Incident relation legend"
+      className="m-0 grid list-none border-y border-[#bdc8cc] p-0 text-[10px] text-[#526169] sm:grid-cols-3"
+    >
+      {items.map((item) => (
+        <li key={item.label} className="flex items-center gap-2 px-3 py-2 sm:border-l sm:first:border-l-0">
+          <span aria-hidden="true" className={`w-8 border-t-2 ${item.className}`} />
+          {item.label}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function RelationLabel({ children }: { children: ReactNode }) {
+  return (
+    <span className="border border-[#aebbc0] bg-[#f9fbfb] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#43545c]">
+      {children}
+    </span>
+  );
+}
+
+function relation(
+  id: string,
+  from: string,
+  to: string,
+  label: string,
+  style: Pick<Exclude<DiaxRelation<ReactNode>, string>, "color" | "strokeDasharray"> = {},
+): DiaxRelation<ReactNode> {
+  return {
+    id,
+    from,
+    to,
+    label: <RelationLabel>{label}</RelationLabel>,
+    targetMarker: "arrow",
+    gap: 7,
+    ...style,
+  };
+}
+8:["$","$L21",null,{"title":"Incident Response Workflow","entryLabel":"Connect DOM","preview":["$","div",null,{"className":"showcase-module__5fFjmW__detailSpecimen","data-showcase-specimen":"incident-response-workflow","children":[["$","$L22",null,{"moduleIds":[994005]}],["$","$L23",null,{}]]}],"code":["$","$L24",null,{"files":[{"path":"components/diagrams/incident-response-workflow/incident-response-workflow.tsx","content":"$25"}],"slug":"incident-response-workflow"}]}]
+9:["$","section",null,{"className":"showcase-module__5fFjmW__proofRegion","aria-label":"Reproducible evidence","children":["$","details",null,{"className":"showcase-module__5fFjmW__proofDisclosure","data-showcase-proof":"incident-response-workflow","data-manual-review":"pending","children":[["$","summary",null,{"children":[["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryTitle","children":[["$","span",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Verification Manifest"}],["$","strong",null,{"children":"Reproducible evidence"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofSummaryState","children":[["$","span",null,{"children":"Automated contract"}],["$","span",null,{"children":"Human visual review pending"}]]}],["$","span",null,{"className":"showcase-module__5fFjmW__proofToggle","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__proofBody","children":[["$","p",null,{"className":"showcase-module__5fFjmW__proofBoundary","children":"This receipt binds the committed specimen to its generated registry artifact. It describes a reproducible contract, not the result of the latest CI run or a hardware browser sign-off."}],["$","div",null,{"className":"showcase-module__5fFjmW__proofManifest","children":[["$","section",null,{"aria-labelledby":"incident-response-workflow-integrity-title","children":[["$","h3",null,{"id":"incident-response-workflow-integrity-title","children":"Integrity"}],["$","dl",null,{"className":"showcase-module__5fFjmW__proofIntegrity","children":[["$","div","source",{"children":[["$","dt",null,{"children":"source"}],["$","dd",null,{"children":[["$","span",null,{"children":"registry/examples/incident-response-workflow/incident-response-workflow.tsx"}],["$","code",null,{"translate":"no","data-proof-hash":"source","data-sha256":"2ee91f0468ebb3f5c85a929876b93adbcf814b1e4e547b32ba907d42218fa48c","title":"2ee91f0468ebb3f5c85a929876b93adbcf814b1e4e547b32ba907d42218fa48c","children":["sha256:","2ee91f0468eb...218fa48c"]}]]}]]}],["$","div","artifact",{"children":[["$","dt",null,{"children":"artifact"}],["$","dd",null,{"children":[["$","span",null,{"children":"public/r/incident-response-workflow.json"}],["$","code",null,{"translate":"no","data-proof-hash":"artifact","data-sha256":"6fcd28e1d40dce01e4351c42593093c2259a5a3d2d3e4974073a5d1535a4c57c","title":"6fcd28e1d40dce01e4351c42593093c2259a5a3d2d3e4974073a5d1535a4c57c","children":["sha256:","6fcd28e1d40d...35a4c57c"]}]]}]]}]]}]]}],["$","section",null,{"aria-labelledby":"incident-response-workflow-checks-title","children":[["$","h3",null,{"id":"incident-response-workflow-checks-title","children":"Deterministic checks"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofChecks","children":[["$","li","registry-source-contract",{"children":[["$","span",null,{"aria-hidden":"true"}],"Registry source contract"]}],["$","li","artifact-drift-check",{"children":[["$","span",null,{"aria-hidden":"true"}],"Artifact drift check"]}],["$","li","public-entry-boundary",{"children":[["$","span",null,{"aria-hidden":"true"}],"Public entry boundary"]}],["$","li","browser-render",{"children":[["$","span",null,{"aria-hidden":"true"}],"Browser render contract"]}]]}]]}],["$","section",null,{"aria-labelledby":"incident-response-workflow-surface-title","children":[["$","h3",null,{"id":"incident-response-workflow-surface-title","children":"Exercised surface"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Exact public entries"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofEntries","children":[["$","li","@diax/react/connect",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"@diax/react/connect"}]}],["$","li","@diax/ui-react/presentation",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"@diax/ui-react/presentation"}]}],["$","li","diax",{"children":["$","code",null,{"translate":"no","data-proof-public-entry":true,"children":"diax"}]}]]}],["$","p",null,{"className":"showcase-module__5fFjmW__proofLabel","children":"Browser contract targets"}],["$","ul",null,{"className":"showcase-module__5fFjmW__proofBrowsers","aria-label":"Browser contract targets","children":["$L26","$L27","$L28"]}]]}],"$L29"]}]]}]]}]}]
+a:["$","section",null,{"className":"showcase-module__5fFjmW__dependencies","aria-labelledby":"dependencies-title","children":[["$","div",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Runtime Boundary"}],["$","h2",null,{"id":"dependencies-title","children":"Dependencies"}]]}],["$","ul",null,{"children":[["$","li","@diax/react",{"translate":"no","children":"@diax/react"}],["$","li","@diax/ui-react",{"translate":"no","children":"@diax/ui-react"}],["$","li","diax",{"translate":"no","children":"diax"}]]}]]}]
+b:["$","section",null,{"className":"showcase-module__5fFjmW__nextSteps","aria-labelledby":"showcase-next-title","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"Continue the Workflow"}],["$","h2",null,{"id":"showcase-next-title","children":"Turn This Study Into Your Own Diagram"}],["$","p",null,{"children":"Learn the authoring contract, then compare nearby shapes before starting from zero."}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__nextStepsGrid","children":[["$","$L2",null,{"href":"/docs/react/connect","className":"showcase-module__5fFjmW__guideCard","children":[["$","span",null,{"className":"showcase-module__5fFjmW__guideIcon","children":["$","$L3",null,{"iconNode":[["path",{"d":"M12 7v14","key":"1akyts"}],["path",{"d":"M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z","key":"ruj8y"}]],"className":"lucide-book-open","aria-hidden":"true"}]}],["$","span",null,{"className":"showcase-module__5fFjmW__guideCopy","children":[["$","small",null,{"children":["01 · Documentation · ","Connect DOM"]}],["$","strong",null,{"children":"Connect Authored DOM"}],["$","span",null,{"children":"Keep your JSX and CSS layout while DiaX measures and connects exact elements."}]]}],["$","$L3",null,{"iconNode":[["path",{"d":"M5 12h14","key":"1ays0h"}],["path",{"d":"m12 5 7 7-7 7","key":"xquz4c"}]],"className":"lucide-arrow-right","aria-hidden":"true"}]]}],["$","div",null,{"className":"showcase-module__5fFjmW__relatedStudies","children":[["$","header",null,{"children":[["$","p",null,{"className":"showcase-module__5fFjmW__eyebrow","children":"02 · Compare Nearby Shapes"}],["$","h3",null,{"children":"Related Studies"}]]}],["$","ul",null,{"children":[["$","li","html-injection-map",{"children":["$","$L2",null,{"href":"/showcase/html-injection-map","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"HTML Injection Map"}],["$","span",null,{"children":"2 surfaces · 11 DOM targets · 7 relations"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","agent-review-sequence",{"children":["$","$L2",null,{"href":"/showcase/agent-review-sequence","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"Agent Review Sequence"}],["$","span",null,{"children":"4 participants · 6 ordered messages · 12 measured row endpoints · responsive transcript"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}],["$","li","dom-system-architecture",{"children":["$","$L2",null,{"href":"/showcase/dom-system-architecture","children":[["$","span",null,{"children":[["$","small",null,{"children":"Connect DOM"}],["$","strong",null,{"children":"DOM System Architecture"}],["$","span",null,{"children":"9 DOM targets · 7 relations · 0 manual anchors"}]]}],["$","$L3",null,{"iconNode":"$b:props:children:1:props:children:0:props:children:2:props:iconNode","className":"lucide-arrow-right","aria-hidden":"true"}]]}]}]]}]]}]]}]]}]
+c:["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/3oe-90rqnb06f.css","precedence":"next"}]
+d:["$","script","script-0",{"src":"/_next/static/chunks/2z5qlb7wtwutu.js","async":true}]
+e:["$","script","script-1",{"src":"/_next/static/chunks/1_u2stdaxavi2.js","async":true}]
+f:["$","script","script-2",{"src":"/_next/static/chunks/3s_e49sur_7h4.js","async":true}]
+10:["$","script","script-3",{"src":"/_next/static/chunks/1fjanzgj1m6fx.js","async":true}]
+11:["$","script","script-4",{"src":"/_next/static/chunks/3u4hlfpugn9bm.js","async":true}]
+12:["$","script","script-5",{"src":"/_next/static/chunks/3uorq77brhtnp.js","async":true}]
+13:["$","script","script-6",{"src":"/_next/static/chunks/2xarsauo-1336.js","async":true}]
+14:["$","script","script-7",{"src":"/_next/static/chunks/21p0fm0asm9rt.js","async":true}]
+15:["$","script","script-8",{"src":"/_next/static/chunks/0sunbgpqi1_l5.js","async":true}]
+16:["$","script","script-9",{"src":"/_next/static/chunks/0pn9vcqv8ypg4.js","async":true}]
+17:["$","$L2a",null,{"children":["$","$2b",null,{"name":"Next.MetadataOutlet","children":"$@2c"}]}]
+1a:["$","$1","h",{"children":[null,["$","$L2d",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#ffffff","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#171717","media":"(prefers-color-scheme: dark)"}],["$","meta","4",{"name":"color-scheme","content":"light dark"}]]}],["$","div",null,{"hidden":true,"children":["$","$L2e",null,{"children":["$","$2b",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Incident Response Workflow — DiaX Showcase"}],["$","meta","1",{"name":"description","content":"Three accountable DOM lanes preserve triage, escalation, remediation and recovery handoffs without introducing a workflow mode."}],["$","link","2",{"rel":"canonical","href":"http://localhost:3000/showcase/incident-response-workflow/"}],["$","meta","3",{"property":"og:title","content":"Incident Response Workflow — DiaX Showcase"}],["$","meta","4",{"property":"og:description","content":"Three accountable DOM lanes preserve triage, escalation, remediation and recovery handoffs without introducing a workflow mode."}],["$","meta","5",{"property":"og:url","content":"http://localhost:3000/showcase/incident-response-workflow/"}],["$","meta","6",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","7",{"name":"twitter:title","content":"DiaX — Connect real DOM. Keep your components."}],["$","meta","8",{"name":"twitter:description","content":"DOM-native visual explanations with explicit layout ownership."}],["$","meta","9",{"name":"twitter:image","content":"http://localhost:3000/twitter-image.png?twitter-image.3o4p4eejeic4j.png"}],["$","meta","10",{"name":"twitter:image:alt","content":"DiaX — Connect real DOM. Keep your components. Diagram can compute layout; Connect can follow your CSS.\n"}],["$","meta","11",{"name":"twitter:image:type","content":"image/png"}],["$","meta","12",{"name":"twitter:image:width","content":"1280"}],["$","meta","13",{"name":"twitter:image:height","content":"640"}]]}]}]}],null]}]
+1c:["$","$1","c",{"children":[null,["$","$L2f",null,{"parallelRouterKey":"children","template":["$","$L30",null,{}]}]]}]
+20:true
+26:["$","li","chromium",{"data-proof-browser":"chromium","children":"chromium"}]
+27:["$","li","firefox",{"data-proof-browser":"firefox","children":"firefox"}]
+28:["$","li","webkit",{"data-proof-browser":"webkit","children":"webkit"}]
+29:["$","section",null,{"aria-labelledby":"incident-response-workflow-review-title","children":[["$","h3",null,{"id":"incident-response-workflow-review-title","children":"Human review"}],["$","p",null,{"className":"showcase-module__5fFjmW__proofReviewPending","children":[["$","strong",null,{"children":"Pending"}],"Visual quality, assistive technology and physical browser environments still require an identified reviewer."]}]]}]
+2c:null
+19:300
+19:C
+1f:0
+1b:"$undefined"
+1d:"$undefined"
+18:"$undefined"
