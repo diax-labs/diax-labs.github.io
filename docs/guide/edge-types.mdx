@@ -1,0 +1,293 @@
+# Edge Types (/docs/guide/edge-types)
+
+
+
+
+
+Animation Presets [#animation-presets]
+
+DiaX includes 5 built-in edge animation presets that bring your diagrams to life:
+
+| Preset            | Effect                      | Best for                       |
+| ----------------- | --------------------------- | ------------------------------ |
+| `flow`            | Flowing dots along the path | Data flow, pipelines           |
+| `pulse`           | Pulsing glow effect         | Active connections, heartbeats |
+| `shimmer`         | Shimmering highlight        | Loading states, processing     |
+| `reverse-flow`    | Dots flowing in reverse     | Feedback loops, returns        |
+| `reverse-shimmer` | Reverse shimmer effect      | Reverse processing             |
+
+<DiagramPreview
+  name="animated-edges"
+  title="Animation presets"
+  code="`<FlowDiagram
+nodes={[
+  { id: 'a', content: 'flow' },
+  { id: 'b', content: 'pulse' },
+  { id: 'c', content: 'shimmer' },
+  { id: 'd', content: 'reverse-flow' },
+  { id: 'e', content: 'target' },
+]}
+relations={[
+  { from: 'a', to: 'e', animate: 'flow' },
+  { from: 'b', to: 'e', animate: 'pulse' },
+  { from: 'c', to: 'e', animate: 'shimmer' },
+  { from: 'd', to: 'e', animate: 'reverse-flow' },
+]}
+centered density=&#x22;spacious&#x22;
+/>`"
+>
+  <FlowDiagram
+    nodes="[
+    { id: 'a', content: 'flow' },
+    { id: 'b', content: 'pulse' },
+    { id: 'c', content: 'shimmer' },
+    { id: 'd', content: 'reverse-flow' },
+    { id: 'e', content: 'target' },
+  ]"
+    relations="[
+    { from: 'a', to: 'e', animate: 'flow' },
+    { from: 'b', to: 'e', animate: 'pulse' },
+    { from: 'c', to: 'e', animate: 'shimmer' },
+    { from: 'd', to: 'e', animate: 'reverse-flow' },
+  ]"
+    density="spacious"
+  />
+</DiagramPreview>
+
+Usage [#usage]
+
+Apply animations via the string DSL or object form:
+
+```ts
+// [!code word:animate]
+// Object form — animate property
+const relations = [
+  { from: 'a', to: 'b', animate: 'flow' },
+  { from: 'b', to: 'c', animate: 'pulse', color: '#4CAF50' },
+  { from: 'c', to: 'd', animate: 'shimmer' },
+];
+```
+
+<Callout type="info">
+  Edge animations are powered by CSS and injected via `injectEdgeStyles()` from
+  the core engine. Framework bindings handle this automatically.
+</Callout>
+
+***
+
+Path Types [#path-types]
+
+DiaX supports 3 edge path algorithms:
+
+Bezier (default) [#bezier-default]
+
+Smooth curved paths — the default and most visually appealing option:
+
+```ts
+// Default — no need to specify
+<FlowDiagram nodes={nodes} relations={relations} />
+
+// Explicit
+// [!code word:pathType]
+<FlowDiagram nodes={nodes} relations={relations} pathType="bezier" />
+```
+
+Straight [#straight]
+
+Direct straight lines between nodes — clean and minimal:
+
+```ts
+// [!code word:pathType]
+<FlowDiagram nodes={nodes} relations={relations} pathType="straight" />
+```
+
+Orthogonal [#orthogonal]
+
+Right-angle paths that follow a grid — ideal for technical/architectural diagrams:
+
+```ts
+// [!code word:pathType]
+<FlowDiagram nodes={nodes} relations={relations} pathType="orthogonal" />
+```
+
+A rich relation can override the Diagram default. This is useful when one authored view combines a
+straight primary pipeline with a curved feedback relation:
+
+```tsx
+<FlowDiagram
+  nodes={nodes}
+  pathType="straight"
+  relations={[
+    { from: 'build', to: 'deploy' },
+    { from: 'deploy', to: 'review', pathType: 'bezier' },
+  ]}
+/>
+```
+
+<DiagramPreview
+  title="Path type: orthogonal"
+  code="`<FlowDiagram
+nodes={[
+  { id: 'a', content: 'API' },
+  { id: 'b', content: 'Auth' },
+  { id: 'c', content: 'DB' },
+]}
+relations={['a->b', 'b->c']}
+pathType=&#x22;orthogonal&#x22;
+centered density=&#x22;spacious&#x22;
+/>`"
+>
+  <FlowDiagram
+    nodes="[
+    { id: 'a', content: 'API' },
+    { id: 'b', content: 'Auth' },
+    { id: 'c', content: 'DB' },
+  ]"
+    relations="['a->b', 'b->c']"
+    pathType="orthogonal"
+    density="spacious"
+  />
+</DiagramPreview>
+
+***
+
+Custom Edge Labels [#custom-edge-labels]
+
+Edge labels are rendered automatically when you provide a `label` in the relation:
+
+```ts
+const relations = [
+  'gw->|gRPC|auth', // string DSL with label
+  { from: 'auth', to: 'db', label: 'SQL' }, // object form with label
+];
+```
+
+For framework-specific custom label rendering (custom JSX/template for labels), see:
+
+* [React Edge Types](/docs/react/edges)
+* [Vue Edge Types](/docs/vue/edges)
+* [Svelte Edge Types](/docs/svelte/edges)
+* [Solid Edge Types](/docs/solid/edges)
+
+***
+
+Edge Styling [#edge-styling]
+
+Customize edge appearance with these properties:
+
+| Property      | Type     | Default       | Description                      |
+| ------------- | -------- | ------------- | -------------------------------- |
+| `strokeColor` | `string` | Theme default | Color of the edge line           |
+| `strokeWidth` | `number` | `1.5`         | Width of the edge line           |
+| `arrowSize`   | `number` | `6`           | Size of the arrowhead            |
+| `curvature`   | `number` | `0.25`        | Bezier curve strength (0.01–2.0) |
+
+These can be set as props on the diagram component (applies to all edges) or per-edge via the object form.
+
+Curvature [#curvature]
+
+The `curvature` property controls how curved bezier edge paths are:
+
+```tsx
+relations={[
+  { from: 'a', to: 'b', curvature: 0.1 },  // Nearly straight
+  { from: 'a', to: 'c', curvature: 0.5 },  // Moderate curve
+  { from: 'a', to: 'd', curvature: 1.5 },  // Very curved
+]}
+```
+
+Values range from `0.01` (nearly straight) to `2.0` (extreme curve). Default is `0.25`.
+
+***
+
+Marker Shapes [#marker-shapes]
+
+DiaX supports **14 marker shapes** for edge endpoints. Set markers per-edge using `sourceMarker` and `targetMarker`:
+
+```tsx
+relations={[
+  { from: 'a', to: 'b', targetMarker: 'triangle' },                     // Default filled marker
+  { from: 'b', to: 'c', sourceMarker: 'circle', targetMarker: 'diamond' },
+  { from: 'c', to: 'd', sourceMarker: 'crowfoot-many', targetMarker: 'crowfoot-one' }, // ER-style
+]}
+```
+
+Standard Markers [#standard-markers]
+
+| Shape             | Description                              |
+| ----------------- | ---------------------------------------- |
+| `"arrow"`         | Open chevron formed by two stroked lines |
+| `"triangle"`      | Filled triangle — default target marker  |
+| `"triangle-open"` | Open/unfilled triangle                   |
+| `"diamond"`       | Filled diamond                           |
+| `"diamond-open"`  | Open diamond                             |
+| `"circle"`        | Filled circle                            |
+| `"circle-open"`   | Open circle                              |
+| `"cross"`         | Cross/plus mark                          |
+| `"bar"`           | Vertical bar                             |
+| `"none"`          | No marker                                |
+
+Crow's Foot Markers (ER Diagrams) [#crows-foot-markers-er-diagrams]
+
+| Shape                     | Meaning      | Usage                    |
+| ------------------------- | ------------ | ------------------------ |
+| `"crowfoot-one"`          | Exactly one  | 1:1 relationships        |
+| `"crowfoot-many"`         | Many         | 1:N relationships        |
+| `"crowfoot-one-or-zero"`  | Zero or one  | Optional relationships   |
+| `"crowfoot-many-or-zero"` | Zero or many | Optional N relationships |
+
+Use crow's foot markers for ER (entity-relationship) diagrams to visually represent cardinality.
+
+***
+
+Next Steps [#next-steps]
+
+* [DSL Syntax](/docs/guide/dsl) — Complete relation DSL reference
+* [Themes](/docs/guide/themes) — Built-in themes and CSS variables
+
+Interactive Edges [#interactive-edges]
+
+> **Framework Specifics**: See how custom edge rendering works in [React](/docs/react/edges), [Vue](/docs/vue/edges), [Solid](/docs/solid/edges), and [Svelte](/docs/svelte/edges).
+
+Diagram edges are often too thin (e.g., 1px to 2px wide) to reliably hover or interact with using a mouse.
+
+Invisible Hitboxes [#invisible-hitboxes]
+
+When a rich relation provides edge event handlers, DiaX adds a 24px transparent **hitbox** beside the
+visible path. Clickable edges are keyboard focusable and respond to Enter and Space. Give every
+clickable edge a localized `ariaLabel`; otherwise DiaX falls back to `Connection from {from} to {to}`.
+
+```tsx
+const relations = [{
+  from: 'build',
+  to: 'deploy',
+  ariaLabel: 'Open deployment details',
+  events: { onClick: () => openDeployment() },
+}];
+```
+
+Highlight on Hover [#highlight-on-hover]
+
+`highlightOnHover` is node-driven: hovering a node dims unrelated nodes and edges while illuminating
+its exact upstream and downstream relation occurrences. A shortcut between two highlighted nodes
+does not light up unless traversal actually reaches it from or toward the hovered node. Edge events
+are independent and opt-in.
+
+Just pass the prop:
+
+```tsx
+// [!code word:highlightOnHover]
+<FlowDiagram nodes={nodes} relations={relations} highlightOnHover={true} />
+```
+
+***
+
+<Cards>
+  <Card title="DSL Syntax" href="/docs/guide/dsl" description="String shortcuts and typed edge objects" />
+
+  <Card title="Themes" href="/docs/guide/themes" description="Built-in themes and CSS variable customization" />
+
+  <Card title="Layout Modes" href="/docs/guide/layout-modes" description="Flow, Mindmap, and ELK layouts" />
+
+  <Card title="API Reference" href="/docs/reference" description="Core engine edge path computation APIs" />
+</Cards>

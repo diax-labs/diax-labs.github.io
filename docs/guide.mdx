@@ -1,0 +1,230 @@
+# Getting Started (/docs/guide)
+
+
+
+
+
+Start from the job [#start-from-the-job]
+
+DiaX is a DOM-native diagram runtime. Your content remains real HTML and framework components;
+DiaX supplies automatic placement or connection geometry at an explicit ownership seam.
+
+<Callout type="info">
+  **DiaX connects real DOM. You explicitly choose who owns layout.**
+</Callout>
+
+| What you already have                                   | Start with               | Layout owner                                                                |
+| ------------------------------------------------------- | ------------------------ | --------------------------------------------------------------------------- |
+| Nodes and relations                                     | **Diagram**              | DiaX places nodes and routes edges                                          |
+| JSX, Tailwind or semantic HTML with the right placement | **Connect DOM**          | Your CSS places content; DiaX connects it                                   |
+| Mermaid source                                          | **Mermaid Import**       | Mermaid supplies topology; DiaX renders the supported subset as DOM         |
+| Markdown or MDX fences in a build pipeline              | **MDX Integration**      | Remark transforms supported source and reports invalid fences through VFile |
+| AI-generated content                                    | **Agent-first Workflow** | Choose Diagram JSON or reviewed Connect JSX, then validate the built result |
+| A topology but no visual design system                  | **UI Primitives**        | DiaX places styled DOM presentation primitives                              |
+
+<Cards>
+  <Card title="Diagram" href="/docs/react" description="Render nodes and relations with automatic layout" />
+
+  <Card title="Connect DOM" href="/docs/react/connect" description="Draw relations over existing JSX and responsive CSS" />
+
+  <Card title="Mermaid Import" href="/docs/guide/mermaid" description="Convert supported Mermaid families into real DOM" />
+
+  <Card title="Markdown & MDX" href="/docs/guide/mdx-guide" description="Transform supported fences with build and live-preview diagnostics" />
+
+  <Card title="AI & Agents" href="/docs/guide/agent-workflow" description="Move from a communication question to a validated, built and reviewable artifact" />
+
+  <Card title="UI Primitives" href="/docs/ui-react" description="Use ready-made DOM components for common diagram vocabulary" />
+</Cards>
+
+Fastest path: Diagram [#fastest-path-diagram]
+
+Use Diagram when topology is already data and DiaX should place it. Pick your framework, select its
+package, and pass `nodes` plus `relations`. During the unpublished preview, the package panel gives
+you the repository workflow instead of a registry command that cannot succeed.
+
+<Steps>
+  Prepare your framework adapter [#prepare-your-framework-adapter]
+
+  <Tabs groupId="framework" items="['React', 'Vue', 'Solid', 'Svelte', 'Vanilla JS']">
+    <Tab value="React">
+      <InstallTabs packages="['@diax/react']" description="React bindings (includes the Core engine)" />
+    </Tab>
+
+    <Tab value="Vue">
+      <InstallTabs packages="['@diax/vue']" description="Vue 3 bindings" />
+    </Tab>
+
+    <Tab value="Svelte">
+      <InstallTabs packages="['@diax/svelte']" description="Svelte bindings" />
+    </Tab>
+
+    <Tab value="Solid">
+      <InstallTabs packages="['@diax/solid']" description="SolidJS bindings" />
+    </Tab>
+
+    <Tab value="Vanilla JS">
+      <InstallTabs packages="['@diax/vanilla']" description="Imperative DOM adapter" />
+    </Tab>
+  </Tabs>
+
+  Render the same topology [#render-the-same-topology]
+
+  <Tabs groupId="framework" items="['React', 'Vue', 'Solid', 'Svelte', 'Vanilla JS']">
+    <Tab value="React">
+      ```tsx contract
+      import { FlowDiagram } from '@diax/react';
+
+      export function CheckoutFlow() {
+        return (
+          <FlowDiagram
+            nodes={[
+              { id: 'browser', content: 'Browser' },
+              { id: 'api', content: 'API Server' },
+              { id: 'db', content: 'Database' },
+            ]}
+            relations={['browser->|HTTPS|api', 'api->|SQL|db']}
+          />
+        );
+      }
+      ```
+    </Tab>
+
+    <Tab value="Vue">
+      ```vue contract
+      <script setup lang="ts">
+      import { FlowDiagram } from '@diax/vue';
+
+      const nodes = [
+        { id: 'browser', content: 'Browser' },
+        { id: 'api', content: 'API Server' },
+        { id: 'db', content: 'Database' },
+      ];
+      const relations = ['browser->|HTTPS|api', 'api->|SQL|db'];
+      </script>
+
+      <template><FlowDiagram :nodes="nodes" :relations="relations" /></template>
+      ```
+    </Tab>
+
+    <Tab value="Svelte">
+      ```svelte contract
+      <script lang="ts">
+      import { FlowDiagram } from '@diax/svelte';
+
+      const nodes = [
+        { id: 'browser', content: 'Browser' },
+        { id: 'api', content: 'API Server' },
+        { id: 'db', content: 'Database' },
+      ];
+      const relations = ['browser->|HTTPS|api', 'api->|SQL|db'];
+      </script>
+
+      <FlowDiagram {nodes} {relations} />
+      ```
+    </Tab>
+
+    <Tab value="Solid">
+      ```tsx contract solid
+      import { FlowDiagram } from '@diax/solid';
+
+      export function CheckoutFlow() {
+        return (
+          <FlowDiagram
+            nodes={[
+              { id: 'browser', content: 'Browser' },
+              { id: 'api', content: 'API Server' },
+              { id: 'db', content: 'Database' },
+            ]}
+            relations={['browser->|HTTPS|api', 'api->|SQL|db']}
+          />
+        );
+      }
+      ```
+    </Tab>
+
+    <Tab value="Vanilla JS">
+      ```html
+      <div id="diagram"></div>
+      <script type="module">
+        import { createDiagram } from '@diax/vanilla';
+
+        createDiagram(document.querySelector('#diagram'), {
+          nodes: [
+            { id: 'browser', content: 'Browser' },
+            { id: 'api', content: 'API Server' },
+            { id: 'db', content: 'Database' },
+          ],
+          relations: ['browser->|HTTPS|api', 'api->|SQL|db'],
+        });
+      </script>
+      ```
+    </Tab>
+  </Tabs>
+</Steps>
+
+<DiagramPreview
+  title="Expected result"
+  code="`<FlowDiagram
+nodes={[
+  { id: 'browser', content: 'Browser' },
+  { id: 'api', content: 'API Server' },
+  { id: 'db', content: 'Database' },
+]}
+relations={['browser->|HTTPS|api', 'api->|SQL|db']}
+/>`"
+>
+  <FlowDiagram
+    nodes="[
+    { id: 'browser', content: 'Browser' },
+    { id: 'api', content: 'API Server' },
+    { id: 'db', content: 'Database' },
+  ]"
+    relations="['browser->|HTTPS|api', 'api->|SQL|db']"
+  />
+</DiagramPreview>
+
+The framework adapter hides parsing, validation, layout, DOM measurement and edge rendering behind
+one interface. Move to hooks, stores or Core primitives only when your renderer genuinely needs that
+control.
+
+Already own the layout? [#already-own-the-layout]
+
+Do not rebuild a report or dashboard as diagram nodes. Keep the authored DOM and use the isolated
+React Connect entry to mark the exact endpoints:
+
+```tsx contract
+import { ConnectionSurface, connectionTarget } from '@diax/react/connect';
+
+export function DecisionReport() {
+  return (
+    <ConnectionSurface relations={[{ from: 'claim', to: 'evidence' }]}>
+      <article {...connectionTarget('claim')}>Conversion improved.</article>
+      <aside {...connectionTarget('evidence')}>Experiment results</aside>
+    </ConnectionSurface>
+  );
+}
+```
+
+[Read the Connect guide →](/docs/react/connect)
+
+Generating with AI? [#generating-with-ai]
+
+Use validated JSON for untrusted runtime output. Use JSX or MDX only in a trusted, reviewed code
+workflow. The Agent-first guide connects classification, validation, built preview, review and
+delivery without adding a new runtime mode.
+
+[Follow the Agent-first workflow →](/docs/guide/agent-workflow)
+
+Next steps [#next-steps]
+
+<Cards>
+  <Card title="Customize Diagram nodes" href="/docs/react/custom-rendering" description="Use JSX content, renderNode or an allowlisted nodeTypes registry" />
+
+  <Card title="Author a static JSX story" href="/docs/react/jsx-composition" description="Use sibling DiaxNode and DiaxEdge declarations without restating arrays" />
+
+  <Card title="Choose edge behavior" href="/docs/guide/edge-types" description="Labels, anchors, markers, interaction and path styles" />
+
+  <Card title="Check framework parity" href="/docs/guide/feature-parity" description="See the current high-level and advanced capabilities by adapter" />
+
+  <Card title="Review visual quality" href="/docs/guide/visual-constitution" description="Use one evidence-aware design contract across Docs, Showcase, Playground and UI recipes" />
+</Cards>

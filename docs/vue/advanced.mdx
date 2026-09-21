@@ -1,0 +1,173 @@
+# Advanced (/docs/vue/advanced)
+
+
+
+Highlight on Hover [#highlight-on-hover]
+
+```vue
+<script setup lang="ts">
+import { useDiagram } from '@diax/vue';
+
+const { nodes, highlightedNodes, highlightedEdgeIds, containerStyle } = useDiagram({
+  nodes: [...],
+  relations: [...],
+  highlightOnHover: true,
+});
+
+// Forward both sets when composing useEdgeRenderer yourself.
+void highlightedNodes;
+void highlightedEdgeIds;
+</script>
+
+<template>
+  <div :style="containerStyle">
+    <div
+      v-for="node in nodes"
+      :key="node.id"
+      v-bind="node.bindProps"
+      :class="{
+        'opacity-25': node.bindProps['data-flow-state'] === 'dimmed',
+        'ring-2 ring-indigo-500':
+          node.bindProps['data-flow-state'] === 'highlighted',
+      }"
+    >
+      {{ node.data.content }}
+    </div>
+  </div>
+</template>
+```
+
+***
+
+Centralized Topology and Template Presentation [#centralized-topology-and-template-presentation]
+
+Vue keeps topology in `:nodes` and `:relations`, then uses scoped slots for framework-native
+presentation. React adds an optional `@diax/react/jsx` authoring Adapter for small static TSX
+definitions; dynamic data still uses the same centralized nodes and relations as Vue.
+
+| Mode                                            | Best for                                            |
+| ----------------------------------------------- | --------------------------------------------------- |
+| **Data-driven** (`:nodes` + `:relations` props) | AI output, JSON APIs, dynamic data, simple diagrams |
+| **Scoped slots** (`#node`)                      | Complex custom content and per-node styling         |
+
+Combine both approaches for maximum flexibility:
+
+```vue
+<script setup lang="ts">
+import { FlowDiagram } from '@diax/vue';
+
+const nodes = [
+  { id: 'fe', type: 'frontend', content: 'Frontend' },
+  { id: 'api', type: 'backend', content: 'API Server' },
+  { id: 'db', type: 'database', content: 'PostgreSQL' },
+];
+
+const relations = ['fe->|gRPC|api', 'api->|SQL|db'];
+</script>
+
+<template>
+  <FlowDiagram :nodes="nodes" :relations="relations" density="spacious">
+    <template #node="{ node, state }">
+      <div
+        class="flex items-center gap-2 px-4 py-3 rounded-xl"
+        :class="{
+          'bg-blue-500/10 border border-blue-500/20': node.type === 'frontend',
+          'bg-emerald-500/10 border border-emerald-500/20':
+            node.type === 'backend',
+          'bg-amber-500/10 border border-amber-500/20':
+            node.type === 'database',
+          'opacity-25': state === 'dimmed',
+          'ring-2 ring-indigo-500': state === 'highlighted',
+        }"
+      >
+        {{ node.content }}
+      </div>
+    </template>
+  </FlowDiagram>
+</template>
+```
+
+***
+
+DOM ID Namespaces [#dom-id-namespaces]
+
+Use `namespace` to prevent resolved DOM IDs from colliding across diagrams:
+
+```vue
+<script setup lang="ts">
+import { useDiagram } from '@diax/vue';
+
+const frontend = useDiagram({
+  nodes: [...],
+  relations: ['gw->bff'],
+  namespace: 'fe',
+});
+
+const backend = useDiagram({
+  nodes: [...],
+  relations: ['svc->db'],
+  namespace: 'be',
+});
+</script>
+```
+
+Node IDs become `namespace::nodeId` in the DOM. Each built-in renderer measures only its own
+diagram container, so it does not draw an edge between separate canvases. Keep connected topology
+inside one diagram. DOM-first Connect is public from `@diax/react/connect`, but a Vue Connect adapter
+is not available yet.
+
+***
+
+Mindmap Layout [#mindmap-layout]
+
+Use `layout: 'mindmap'` for center-outward radial diagrams:
+
+```vue
+<script setup lang="ts">
+import { useDiagram } from '@diax/vue';
+
+const { nodes, containerStyle } = useDiagram({
+  nodes: [
+    { id: 'core', content: 'Platform' },
+    { id: 'fe', content: 'Frontend' },
+    { id: 'be', content: 'Backend' },
+    { id: 'infra', content: 'Infrastructure' },
+    { id: 'auth', content: 'Auth' },
+    { id: 'db', content: 'Database' },
+  ],
+  relations: ['core->fe', 'core->be', 'core->infra', 'be->auth', 'be->db'],
+  layout: 'mindmap',
+});
+</script>
+
+<template>
+  <div :style="containerStyle">
+    <div v-for="node in nodes" :key="node.id" v-bind="node.bindProps">
+      <div
+        class="px-4 py-2 rounded-xl border border-white/8 bg-gradient-to-b from-white/6 to-white/2"
+      >
+        {{ node.data.content }}
+      </div>
+    </div>
+  </div>
+</template>
+```
+
+Or use the `<Mindmap>` component directly:
+
+```vue
+<script setup lang="ts">
+import { Mindmap } from '@diax/vue';
+</script>
+
+<template>
+  <Mindmap
+    :nodes="[
+      { id: 'core', content: 'Platform' },
+      { id: 'fe', content: 'Frontend' },
+      { id: 'be', content: 'Backend' },
+    ]"
+    :relations="['core->fe', 'core->be']"
+  />
+</template>
+```

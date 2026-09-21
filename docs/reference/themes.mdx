@@ -1,0 +1,87 @@
+# Themes & Styles (/docs/reference/themes)
+
+
+
+**Audience:** application authors and adapter authors.\
+&#x2A;*Runtime:** theme conversion is server-safe; injection functions require the browser.\
+&#x2A;*Imports:** `diax/themes`, `diax`, or `diax/styles.css`.
+
+Visual code is an explicit dependency [#visual-code-is-an-explicit-dependency]
+
+The headless `diax` root does not import built-in theme presets. Import them from the dedicated
+entry so nonvisual consumers do not load theme data:
+
+```ts contract
+import { resolveTheme, themes, themeToCSS, themeToStyle } from 'diax/themes';
+
+const github = resolveTheme('github');
+const css = themeToCSS(themes.github);
+const darkStyle = themeToStyle(themes.github, 'dark');
+```
+
+Built-in names are `linear`, `light`, `notion`, and `github`.
+
+Custom theme values [#custom-theme-values]
+
+```ts contract
+import type { DiaxTheme } from 'diax/themes';
+
+const midnight: DiaxTheme = {
+  name: 'midnight',
+  light: {
+    '--diax-node-bg': '#f8fafc',
+    '--diax-node-text': '#0f172a',
+  },
+  dark: {
+    '--diax-node-bg': '#0f172a',
+    '--diax-node-text': '#f8fafc',
+  },
+};
+```
+
+Custom themes are values passed to a component or helper. DiaX does not maintain a global mutable
+theme registry.
+
+Delivery choices [#delivery-choices]
+
+Framework component [#framework-component]
+
+Pass a built-in name or theme value through the adapter's `theme` prop. This is the normal
+application path.
+
+Static stylesheet [#static-stylesheet]
+
+```css
+@import 'diax/styles.css';
+```
+
+Use the stylesheet when your integration wants explicit CSS delivery instead of runtime injection.
+
+Custom adapter [#custom-adapter]
+
+```ts
+import { injectThemeStyles, themes } from 'diax/themes';
+import { injectEdgeStyles } from 'diax';
+
+injectThemeStyles(themes.github);
+injectEdgeStyles();
+```
+
+`injectThemeStyles()`, `injectEdgeStyles()`, and `injectStaggerStyles()` mutate the document
+and must run only in the browser. Official adapters own the edge-style lifecycle; application code
+should not call these functions a second time without a custom-renderer reason.
+
+UI Primitives [#ui-primitives]
+
+`@diax/ui-react/styles.css` styles the optional DOM presentation primitives with low-specificity
+selectors and DiaX variables. It does not belong in Core and is not loaded by `@diax/react`.
+
+```css
+@import '@diax/ui-react/styles.css';
+```
+
+Related [#related]
+
+* [UI Primitives](/docs/ui-react)
+* [Theme guide](/docs/guide/themes)
+* [Package Entry Points](/docs/reference/package-entry-points)

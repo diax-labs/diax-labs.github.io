@@ -1,0 +1,222 @@
+# React Guide (/docs/react)
+
+
+
+
+
+<InstallTabs packages="['@diax/react']" description="React bindings (peer dependency: react >= 18)" />
+
+<Callout type="warn">
+  **Next.js / SSR**: DiaX uses DOM measurement for edge rendering. In Next.js
+  App Router, add `'use client'` at the top of any file that imports from
+  `@diax/react`. The shell may be prerendered, while pixel edges appear after
+  browser hydration and measurement. See the
+  [dedicated SSR guide](/docs/react/ssr) for more details.
+</Callout>
+
+Choose the Layout Owner First [#choose-the-layout-owner-first]
+
+| Job                  | Import                | Layout owner | Use when                                                       |
+| -------------------- | --------------------- | ------------ | -------------------------------------------------------------- |
+| Dynamic/data Diagram | `@diax/react`         | DiaX         | Nodes and relations already exist as data                      |
+| Static JSX Diagram   | `@diax/react/jsx`     | DiaX         | You are hand-authoring a visual story in TSX                   |
+| Connect              | `@diax/react/connect` | Your DOM/CSS | JSX/Tailwind already owns placement and only needs connections |
+
+These are separate loading and ownership seams. JSX authoring still becomes the same Diagram
+Definition; it is not a mode switch. Optional entries are deliberately not re-exported from
+`@diax/react`, so a data Diagram consumer evaluates neither the JSX extractor nor Connect runtime.
+
+Progressive Diagram API [#progressive-diagram-api]
+
+DiaX provides three levels of control. Choose based on your needs:
+
+| Layer | API                              | Best for                               |
+| ----- | -------------------------------- | -------------------------------------- |
+| 1     | `<FlowDiagram>` / `<Mindmap>`    | Quick usage, AI output, prototyping    |
+| 2     | `<FlowDiagram renderNode={...}>` | Custom styling with your design system |
+| 3     | `useDiagram()` hook              | Full headless control, library authors |
+
+***
+
+Quick Start [#quick-start]
+
+The simplest way to use DiaX — just pass nodes and relations:
+
+```tsx contract
+import { FlowDiagram } from '@diax/react';
+
+function MyDiagram() {
+  return (
+    <FlowDiagram
+      nodes={[
+        { id: 'client', content: 'Browser' },
+        { id: 'api', content: 'API Server' },
+        { id: 'db', content: 'Database' },
+      ]}
+      relations={['client->|HTTPS|api', 'api->|SQL|db']}
+      density="comfortable"
+    />
+  );
+}
+```
+
+<DiagramPreview
+  title="Quick Start — zero config"
+  code="`<FlowDiagram
+nodes={[
+  { id: 'client', content: 'Browser' },
+  { id: 'api', content: 'API Server' },
+  { id: 'db', content: 'Database' },
+]}
+relations={[
+  'client->|HTTPS|api',
+  'api->|SQL|db',
+]}
+density=&#x22;comfortable&#x22;
+/>`"
+>
+  <FlowDiagram
+    nodes="[
+    { id: 'client', content: 'Browser' },
+    { id: 'api', content: 'API Server' },
+    { id: 'db', content: 'Database' },
+  ]"
+    relations="['client->|HTTPS|api', 'api->|SQL|db']"
+    density="comfortable"
+  />
+</DiagramPreview>
+
+Hand-author a static visual story [#hand-author-a-static-visual-story]
+
+When the topology is written directly in the component rather than produced by data, use the JSX
+leaf. Keep nodes and edges as siblings:
+
+```tsx
+import { DiaxEdge, DiaxNode, FlowDiagram } from '@diax/react/jsx';
+
+<FlowDiagram>
+  <DiaxNode id="brief"><BriefCard /></DiaxNode>
+  <DiaxNode id="decision"><DecisionCard /></DiaxNode>
+  <DiaxEdge from="brief" to="decision" label="supports" />
+</FlowDiagram>
+```
+
+If `services` and `links` are already arrays, do not map them back into marker JSX. Use
+`<FlowDiagram nodes={services} relations={links} />` from `@diax/react` directly. See
+[JSX Authoring](/docs/react/jsx-composition) for the complete rule set.
+
+Connect Existing JSX and Tailwind [#connect-existing-jsx-and-tailwind]
+
+Use the dedicated leaf when the visual is primarily an authored report, comparison, code walkthrough
+or application UI. Keep relations centralized and mark the exact DOM elements that should be measured:
+
+```tsx
+'use client';
+
+import { ConnectionSurface, connectionTarget } from '@diax/react/connect';
+
+const relations = [
+  {
+    from: 'brief',
+    to: 'decision',
+    label: <span className="rounded-full bg-indigo-600 px-2 py-1 text-white">approved</span>,
+    sourceAnchor: 'right',
+    targetAnchor: 'left',
+  },
+];
+
+export function DecisionReport() {
+  return (
+    <ConnectionSurface
+      relations={relations}
+      className="grid gap-16 md:grid-cols-2"
+      onDiagnostics={diagnostics => console.log(diagnostics)}
+    >
+      <section {...connectionTarget('brief')} className="rounded-2xl border p-6">
+        <h3>AI brief</h3>
+        <p>Ordinary semantic DOM, responsive CSS and your design system stay intact.</p>
+      </section>
+      <article {...connectionTarget('decision')} className="rounded-2xl bg-emerald-50 p-6">
+        <h3>Decision</h3>
+        <button type="button">Open evidence</button>
+      </article>
+    </ConnectionSurface>
+  );
+}
+```
+
+The nearest Surface owns the target-ID scope. A custom Target component must forward the object from
+`connectionTarget(id)` to one real DOM element. Content resize, responsive reflow, images and Web
+Fonts are observed automatically; there is no manual `refresh()` interface. Portals and relations
+across separate Surfaces are intentionally unsupported.
+
+See [Connect authored DOM](/docs/react/connect) for the complete API, diagnostics, constraints and
+responsive composition patterns.
+
+Inspect Runnable Diagram Studies [#inspect-runnable-diagram-studies]
+
+These examples start from nodes and relations, then let DiaX own placement, routing and label
+clearance. Open each study to compare the live DOM with its registry source.
+
+<ShowcaseStudies slugs="['ci-pipeline', 'decision-tree', 'microservices-arch']" />
+
+Density [#density]
+
+Control spacing with the `density` prop:
+
+| Value           | Description                             |
+| --------------- | --------------------------------------- |
+| `"compact"`     | Tight spacing, good for inline diagrams |
+| `"comfortable"` | Default, balanced spacing               |
+| `"spacious"`    | Wide spacing, good for presentations    |
+
+Direction [#direction]
+
+```tsx
+<FlowDiagram direction="horizontal" />         // Left to right (default)
+<FlowDiagram direction="vertical" />            // Top to bottom
+<FlowDiagram direction="horizontal-reverse" />  // Right to left
+<FlowDiagram direction="vertical-reverse" />    // Bottom to top
+```
+
+| Value                  | Description                    |
+| ---------------------- | ------------------------------ |
+| `"horizontal"`         | Left to right (default)        |
+| `"vertical"`           | Top to bottom                  |
+| `"horizontal-reverse"` | Right to left (RTL flows)      |
+| `"vertical-reverse"`   | Bottom to top (upstream flows) |
+
+Layout Algorithms [#layout-algorithms]
+
+Use the dedicated component for each layout type:
+
+```tsx
+import { FlowDiagram, Mindmap } from '@diax/react';
+
+<FlowDiagram nodes={...} relations={...} />  // DAG layout
+<Mindmap nodes={...} relations={...} />       // Center-outward radial
+```
+
+***
+
+
+
+Next Steps [#next-steps]
+
+<Cards>
+  <Card title="Connect Authored DOM" href="/docs/react/connect" description="Draw relations over existing JSX, Tailwind and semantic HTML" />
+
+  <Card title="Custom Rendering" href="/docs/react/custom-rendering" description="Customize node rendering with renderNode, nodeTypes, and node states" />
+
+  <Card title="JSX Authoring" href="/docs/react/jsx-composition" description="Choose static JSX declarations or dynamic data without duplicate ceremony" />
+
+  <Card title="Headless Hooks" href="/docs/react/hooks" description="Full control with useDiagram hook" />
+
+  <Card title="Edge Types" href="/docs/react/edges" description="DSL syntax, animations, path types, and custom labels" />
+
+  <Card title="Advanced" href="/docs/react/advanced" description="DOM ID namespaces and node type registry" />
+
+  <Card title="Next.js & SSR" href="/docs/react/ssr" description="Using DiaX with Next.js App Router and server-side rendering" />
+
+  <Card title="Props Reference" href="/docs/react/props" description="Complete data, JSX marker and Relation props reference" />
+</Cards>

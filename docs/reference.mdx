@@ -1,0 +1,83 @@
+# API Reference (/docs/reference)
+
+
+
+Start at the right depth [#start-at-the-right-depth]
+
+DiaX exposes low-level graph, geometry, measurement, and rendering atoms so framework adapters and
+custom renderers do not need to fork the engine. Most applications should still begin with one
+high-level framework interface.
+
+| You are building                         | Start here                                                   | Runtime                          |
+| ---------------------------------------- | ------------------------------------------------------------ | -------------------------------- |
+| A data-driven diagram                    | [Framework adapter](/docs/react)                             | DOM measurement in the browser   |
+| Connections over existing JSX/CSS        | [React Connect](/docs/react/connect)                         | Browser-only edge surface        |
+| An AI or server-side validation pipeline | [Authoring Model](/docs/reference/authoring-model)           | Server-safe                      |
+| A custom renderer or framework adapter   | [Core Interface](/docs/reference/core-interface)             | Core is server-safe              |
+| Custom paths, markers, or interaction    | [Edge Rendering](/docs/reference/edge-rendering)             | Geometry is pure; events use DOM |
+| A custom measurement owner               | [Measurement](/docs/reference/measurement)                   | Browser-only                     |
+| A bundle or federation integration       | [Package Entry Points](/docs/reference/package-entry-points) | Boundary-specific                |
+
+<Callout type="info">
+  **Progressive disclosure is intentional.** Public does not mean recommended for every
+  application. Low-level interfaces are primarily for adapter authors and custom renderers.
+</Callout>
+
+Recommended Core interface [#recommended-core-interface]
+
+`computeLayout` is the deepest general-purpose Core module: it validates definitions, resolves
+namespaces, parses relations, runs layout, and returns framework-neutral bindings.
+
+```ts contract
+import { computeLayout } from 'diax';
+
+const result = computeLayout({
+  nodes: [
+    { id: 'browser', content: 'Browser' },
+    { id: 'api', content: 'API' },
+  ],
+  relations: [{ from: 'browser', to: 'api', label: 'HTTPS' }],
+  layout: 'flow',
+  direction: 'horizontal',
+});
+
+result.nodeBindings;
+result.parsedEdges;
+result.containerStyle;
+```
+
+Framework applications should normally let `FlowDiagram`, `Mindmap`, or the matching adapter call
+this function. Call Core directly for validation pipelines, non-React adapters, or a custom
+renderer.
+
+Reference map [#reference-map]
+
+<Cards>
+  <Card title="Authoring Model" href="/docs/reference/authoring-model" description="Nodes, relations, parsing, AST, builder, validation, and diagnostics" />
+
+  <Card title="Core Interface" href="/docs/reference/core-interface" description="computeLayout, computeHighlight, inputs, outputs, and failure behavior" />
+
+  <Card title="Graph & Layout" href="/docs/reference/graph-layout" description="Built-in layout algorithms, traversal, registry, and direction helpers" />
+
+  <Card title="Edge Rendering" href="/docs/reference/edge-rendering" description="Paths, anchors, markers, rendering data, interaction, and accessibility" />
+
+  <Card title="Measurement" href="/docs/reference/measurement" description="Observers, DOM rectangles, bounds, and namespaces" />
+
+  <Card title="Themes & Styles" href="/docs/reference/themes" description="Explicit visual entry points and style injection" />
+
+  <Card title="Package Entry Points" href="/docs/reference/package-entry-points" description="Imports, audiences, SSR conditions, and tree-shaking boundaries" />
+</Cards>
+
+Stability vocabulary [#stability-vocabulary]
+
+| Label               | Meaning                                                                 |
+| ------------------- | ----------------------------------------------------------------------- |
+| **Most users**      | Recommended high-level interface with product-level contract coverage   |
+| **Advanced**        | Stable atom for a real custom renderer or integration need              |
+| **Adapter authors** | Framework-neutral primitive; expect to own lifecycle and rendering glue |
+| **Browser-only**    | Reads DOM geometry or dispatches native events; do not call during SSR  |
+| **Experimental**    | May change before 1.0; the page states the current limitation           |
+
+DiaX is pre-1.0. The package boundary and maturity label are part of each interface contract; a
+symbol being exported from Core does not imply that applications should assemble the entire
+rendering pipeline themselves.

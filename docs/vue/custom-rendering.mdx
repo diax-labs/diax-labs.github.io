@@ -1,0 +1,120 @@
+# Custom Rendering (/docs/vue/custom-rendering)
+
+
+
+Custom Rendering [#custom-rendering]
+
+Use the `#node` scoped slot to customize how nodes look while keeping all layout logic:
+
+```vue
+<script setup lang="ts">
+import { FlowDiagram } from '@diax/vue';
+
+const nodes = [
+  { id: 'a', content: 'Start' },
+  { id: 'b', content: 'Process' },
+  { id: 'c', content: 'End' },
+];
+
+const relations = ['a->b', 'b->c'];
+</script>
+
+<template>
+  <FlowDiagram
+    :nodes="nodes"
+    :relations="relations"
+    highlight-on-hover
+  >
+    <template #node="{ node, state }">
+      <div
+        class="px-4 py-2 rounded-xl border"
+        :class="{
+          'ring-2 ring-blue-500': state === 'highlighted',
+          'opacity-25': state === 'dimmed',
+        }"
+      >
+        {{ node.content }}
+      </div>
+    </template>
+  </FlowDiagram>
+</template>
+```
+
+TypeScript Generics & Strong Typing [#typescript-generics--strong-typing]
+
+DiaX Vue bindings support strict generic payload inference. Pass specific types to safely use `node.data.content` anywhere:
+
+```vue
+<script setup lang="ts">
+import { useDiagram } from '@diax/vue';
+
+interface ServerData {
+  ip: string;
+  uptime: number;
+}
+
+const { nodes } = useDiagram<ServerData>({
+  nodes: [{ id: 'web1', content: { ip: '10.0.0.1', uptime: 99.9 } }],
+    relations: []
+});
+</script>
+
+<template>
+  <div v-for="node in nodes" :key="node.id">
+    <!-- Strictly typed! -->
+    {{ node.data.content.ip }} - {{ node.data.content.uptime }}%
+  </div>
+</template>
+```
+
+Node States [#node-states]
+
+The `state` value in the scoped slot tells you the current interaction state:
+
+| State           | When              | Suggested style  |
+| --------------- | ----------------- | ---------------- |
+| `undefined`     | Default           | Normal           |
+| `"highlighted"` | On hover path     | Ring/glow effect |
+| `"dimmed"`      | Not on hover path | Reduced opacity  |
+
+Node Type Registry (`nodeTypes`) [#node-type-registry-nodetypes]
+
+Define reusable node renderers by type, then reference them in the nodes array:
+
+```vue
+<script setup lang="ts">
+import { FlowDiagram } from '@diax/vue';
+import { h } from 'vue';
+
+const nodes = [
+  { id: 'gw', type: 'gateway', content: 'API Gateway' },
+  { id: 'auth', type: 'service', content: 'Auth Service' },
+  { id: 'user', type: 'service', content: 'User Service' },
+];
+
+const relations = ['gw->auth', 'gw->user'];
+
+const nodeTypes = {
+  gateway: (node: { content: string }) => h(
+    'div',
+    { class: 'rounded-xl border border-indigo-500/20 bg-indigo-500/10 px-5 py-3' },
+    `⬡ ${node.content}`,
+  ),
+  service: (node: { content: string }) => h(
+    'div',
+    { class: 'rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-4 py-2' },
+    `● ${node.content}`,
+  ),
+};
+</script>
+
+<template>
+  <FlowDiagram
+    :nodes="nodes"
+    :relations="relations"
+    :node-types="nodeTypes"
+  />
+</template>
+```
+
+**Resolution order**: `#node` slot > `nodeTypes[node.type]` > default renderer.

@@ -1,0 +1,224 @@
+# Themes (/docs/guide/themes)
+
+
+
+
+
+Overview [#overview]
+
+DiaX uses CSS custom properties (variables) for theming. The `DefaultNodeRenderer` in `<FlowDiagram>` reads these variables, so you can customize the entire look by setting CSS variables on a parent element, or simply pass the `theme` prop.
+
+Built-in Themes [#built-in-themes]
+
+| Theme    | Description                               | Best for                        |
+| -------- | ----------------------------------------- | ------------------------------- |
+| `linear` | Dark, Linear-inspired aesthetic (default) | Dark backgrounds, presentations |
+| `light`  | Clean light theme                         | Light backgrounds, docs         |
+| `notion` | Simple black & white                      | Notion-style pages              |
+| `github` | GitHub Actions workflow style             | GitHub-adjacent contexts        |
+
+<DiagramPreview
+  title="Theme: light"
+  code="`<FlowDiagram
+theme=&#x22;light&#x22;
+nodes={[
+  { id: 'a', content: 'Design' },
+  { id: 'b', content: 'Develop' },
+  { id: 'c', content: 'Ship' },
+]}
+relations={['a->b', 'b->c']}
+centered density=&#x22;spacious&#x22;
+/>`"
+>
+  <FlowDiagram
+    theme="light"
+    nodes="[
+    { id: 'a', content: 'Design' },
+    { id: 'b', content: 'Develop' },
+    { id: 'c', content: 'Ship' },
+  ]"
+    relations="['a->b', 'b->c']"
+    density="spacious"
+  />
+</DiagramPreview>
+
+<DiagramPreview
+  title="Theme: notion"
+  code="`<FlowDiagram
+theme=&#x22;notion&#x22;
+nodes={[
+  { id: 'a', content: 'Design' },
+  { id: 'b', content: 'Develop' },
+  { id: 'c', content: 'Ship' },
+]}
+relations={['a->b', 'b->c']}
+centered density=&#x22;spacious&#x22;
+/>`"
+>
+  <FlowDiagram
+    theme="notion"
+    nodes="[
+    { id: 'a', content: 'Design' },
+    { id: 'b', content: 'Develop' },
+    { id: 'c', content: 'Ship' },
+  ]"
+    relations="['a->b', 'b->c']"
+    density="spacious"
+  />
+</DiagramPreview>
+
+<DiagramPreview
+  title="Theme: github"
+  code="`<FlowDiagram
+theme=&#x22;github&#x22;
+nodes={[
+  { id: 'a', content: 'Design' },
+  { id: 'b', content: 'Develop' },
+  { id: 'c', content: 'Ship' },
+]}
+relations={['a->b', 'b->c']}
+centered density=&#x22;spacious&#x22;
+/>`"
+>
+  <FlowDiagram
+    theme="github"
+    nodes="[
+    { id: 'a', content: 'Design' },
+    { id: 'b', content: 'Develop' },
+    { id: 'c', content: 'Ship' },
+  ]"
+    relations="['a->b', 'b->c']"
+    density="spacious"
+  />
+</DiagramPreview>
+
+Usage [#usage]
+
+With Theme Presets [#with-theme-presets]
+
+```tsx
+import { FlowDiagram } from '@diax/react';
+
+// Recommended: use the theme prop directly
+<FlowDiagram theme="light" nodes={nodes} relations={relations} />;
+```
+
+```tsx
+// Notion theme
+<FlowDiagram
+  nodes={nodes}
+  relations={relations}
+  theme="notion"
+  density="spacious"
+/>
+
+// GitHub theme
+<FlowDiagram
+  nodes={nodes}
+  relations={relations}
+  theme="github"
+  density="spacious"
+/>
+```
+
+Or generate CSS:
+
+```ts
+import { themes, themeToCSS } from 'diax/themes';
+const css = themeToCSS(themes.light, '.my-diagram');
+```
+
+CSS Variables Reference [#css-variables-reference]
+
+| Variable              | Default (linear)                 | Description      |
+| --------------------- | -------------------------------- | ---------------- |
+| `--diax-font`         | `"Inter", system-ui, sans-serif` | Font family      |
+| `--diax-node-bg`      | `linear-gradient(...)`           | Node background  |
+| `--diax-node-text`    | `#EDEDEF`                        | Node text color  |
+| `--diax-node-border`  | `rgba(255,255,255,0.08)`         | Node border      |
+| `--diax-node-shadow`  | `0 2px 8px rgba(0,0,0,0.3)...`   | Node shadow      |
+| `--diax-edge-color`   | `currentColor`                   | Edge stroke      |
+| `--diax-label-text`   | `#8A8F98`                        | Label text       |
+| `--diax-label-bg`     | `#0a0a0c`                        | Label background |
+| `--diax-label-border` | `rgba(255,255,255,0.06)`         | Label border     |
+| `--diax-accent`       | `#5E6AD2`                        | Accent color     |
+
+Custom Themes [#custom-themes]
+
+A custom theme is a visual contract, not only a node palette. Always set an edge color and the label
+canvas it must sit on for both color schemes. DiaX cannot infer a readable stroke from a brand color;
+the maintainer and browser contracts target at least `3:1` edge-to-label-canvas contrast. If your host
+uses a different canvas behind the SVG, check that pair too.
+
+```ts title="custom-theme.ts"
+import type { DiaxTheme } from 'diax/themes';
+
+const myTheme: DiaxTheme = {
+  name: 'my-brand',
+  light: {
+    '--diax-node-bg': '#ffffff',
+    '--diax-node-text': '#111827',
+    '--diax-edge-color': '#334155',
+    '--diax-label-bg': '#ffffff',
+  },
+  dark: {
+    '--diax-node-bg': '#111827',
+    '--diax-node-text': '#f9fafb',
+    '--diax-edge-color': '#e2e8f0',
+    '--diax-label-bg': '#0f172a',
+  },
+};
+```
+
+Do not use a translucent white edge as a dark-mode fallback. It can be geometrically present while
+becoming indistinguishable from a light host surface. Verify the result in the real browser after
+fonts and rich labels settle, especially when `highlightOnHover` dims unrelated edges.
+
+Pass the value directly—custom names are not stored in global mutable state:
+
+```tsx
+<FlowDiagram
+  theme={myTheme}
+  nodes={nodes}
+  relations={relations}
+/>
+```
+
+For manual DOM integration, resolve and inject explicitly:
+
+```ts
+import { injectThemeStyles, resolveTheme } from 'diax/themes';
+
+const theme = resolveTheme('github');
+if (theme) {
+  injectThemeStyles(theme);
+  container.dataset.diaxTheme = theme.name;
+}
+```
+
+The framework adapters perform this step automatically when you pass a `theme` prop.
+
+Dark Mode Toggle [#dark-mode-toggle]
+
+```css title="globals.css"
+@media (prefers-color-scheme: dark) {
+  :root {
+    --diax-node-bg: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.02)
+    );
+    --diax-node-text: #ededef;
+  }
+}
+```
+
+***
+
+<Cards>
+  <Card title="Edge Types" href="/docs/guide/edge-types" description="Animation presets and edge styling" />
+
+  <Card title="Layout Modes" href="/docs/guide/layout-modes" description="Flow, Mindmap, and ELK layouts" />
+
+  <Card title="API Reference" href="/docs/reference" description="themes, resolveTheme, and CSS conversion" />
+</Cards>

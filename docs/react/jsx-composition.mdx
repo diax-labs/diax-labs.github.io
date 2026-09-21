@@ -1,0 +1,144 @@
+# JSX Authoring (/docs/react/jsx-composition)
+
+
+
+
+
+Choose the authoring shape from the source [#choose-the-authoring-shape-from-the-source]
+
+JSX markers and `nodes` / `relations` are two authoring adapters for the same Diagram Definition.
+They share validation, layout, measurement and edge rendering; neither is a separate runtime mode.
+
+| Source                                                                 | Recommended interface    | Why                                        |
+| ---------------------------------------------------------------------- | ------------------------ | ------------------------------------------ |
+| Hand-authored architecture, report or teaching diagram                 | `@diax/react/jsx`        | Content and topology stay locally readable |
+| API response, state, generated collection or frequently changing graph | `@diax/react` data props | The data is already the definition         |
+| Existing JSX/Tailwind layout whose placement must not change           | `@diax/react/connect`    | Your DOM/CSS remains the layout owner      |
+
+<Callout type="warn">
+  Do not map an existing node array back into `<DiaxNode>` and an edge array back into
+  `<DiaxEdge>`. That only repeats the same structure in a noisier form. Pass the arrays directly.
+</Callout>
+
+```tsx
+// Dynamic data: keep it as data.
+import { FlowDiagram } from '@diax/react';
+
+<FlowDiagram nodes={services} relations={links} />;
+```
+
+Static JSX definitions [#static-jsx-definitions]
+
+Use sibling declarations when the diagram itself is authored as a visual story. Node children stay
+ordinary React DOM, while edges remain first-class relations instead of being hidden inside a node.
+
+```tsx contract
+'use client';
+
+import { DiaxEdge, DiaxNode, FlowDiagram } from '@diax/react/jsx';
+
+function CheckoutArchitecture() {
+  return (
+    <FlowDiagram direction="horizontal" density="spacious">
+      <DiaxNode id="browser">
+        <article className="rounded-2xl border p-4">
+          <small>Client</small>
+          <strong>Checkout</strong>
+        </article>
+      </DiaxNode>
+
+      <DiaxNode id="payments">
+        <article><small>Service</small><strong>Payments</strong></article>
+      </DiaxNode>
+
+      <DiaxNode id="ledger">
+        <article><small>Database</small><strong>PostgreSQL</strong></article>
+      </DiaxNode>
+
+      <DiaxEdge
+        from="browser"
+        to="payments"
+        label={<span>HTTPS</span>}
+        targetMarker="triangle"
+      />
+      <DiaxEdge
+        from="payments"
+        to="ledger"
+        label="commit"
+        pathType="orthogonal"
+        style="dashed"
+      />
+    </FlowDiagram>
+  );
+}
+```
+
+<DiagramPreview
+  title="Static JSX definition"
+  code="`'use client';
+
+import { DiaxEdge, DiaxNode, FlowDiagram } from '@diax/react/jsx';
+
+<FlowDiagram density=&#x22;spacious&#x22;>
+<DiaxNode id=&#x22;gateway&#x22;>
+  <div className=&#x22;rounded-xl border border-indigo-400/20 bg-indigo-500/10 px-4 py-3&#x22;>
+    <span className=&#x22;text-xs text-indigo-300&#x22;>EDGE</span>
+    <strong className=&#x22;block&#x22;>API Gateway</strong>
+  </div>
+</DiaxNode>
+<DiaxNode id=&#x22;auth&#x22;><strong>Auth Service</strong></DiaxNode>
+<DiaxNode id=&#x22;db&#x22;><code>PostgreSQL</code></DiaxNode>
+<DiaxEdge from=&#x22;gateway&#x22; to=&#x22;auth&#x22; label=&#x22;gRPC&#x22; />
+<DiaxEdge from=&#x22;auth&#x22; to=&#x22;db&#x22; pathType=&#x22;orthogonal&#x22; />
+</FlowDiagram>`"
+>
+  <JSXAuthoringPreview />
+</DiagramPreview>
+
+`DiaxEdge` exposes the complete shared Relation vocabulary: labels, anchors, marker shapes,
+animation, events, hit targets, path overrides and accessibility names. The old `dashed` boolean is
+retained temporarily; new code uses `style="dashed"`.
+
+Composition rules [#composition-rules]
+
+* `DiaxNode` and `DiaxEdge` are siblings. A relation does not belong to either endpoint.
+* A node's children are opaque presentation content; DiaX never scans inside them for topology.
+* Fragments, conditions and small inline lists are supported, but arrays that already represent the
+  whole graph should use data props directly.
+* Unknown top-level JSX produces `UNSUPPORTED_DEFINITION_CHILD`; it is never silently discarded.
+* A component that returns markers cannot be expanded safely because it may contain Hooks,
+  Context, Suspense or side effects. Keep declarations visible at the Diagram call site.
+* The data entry and JSX entry cannot be mixed. Choose one source for each Diagram.
+
+Next.js and React Server Components [#nextjs-and-react-server-components]
+
+Construct the complete marker tree inside one file marked `'use client'`. Do not create
+`DiaxNode` / `DiaxEdge` elements in a Server Component and pass them through an RSC boundary; React
+serializes component references across that boundary and the synchronous Definition Adapter cannot
+inspect them. When topology originates on the server, pass a JSON-safe data Definition to
+`@diax/react` instead.
+
+Dynamic JSX content without marker loops [#dynamic-jsx-content-without-marker-loops]
+
+Dynamic topology does not mean plain text nodes. Put any React content directly in the data:
+
+```tsx
+import { FlowDiagram } from '@diax/react';
+
+const nodes = services.map(service => ({
+  id: service.id,
+  content: <ServiceCard service={service} />,
+}));
+
+<FlowDiagram nodes={nodes} relations={links} />;
+```
+
+Use `nodeTypes` for allowlisted server or AI data, or `renderNode` when one renderer owns the full
+presentation policy. Runtime AI output should remain JSON-safe and validated; only trusted,
+code-reviewed generation should emit executable TSX.
+
+Loading behavior [#loading-behavior]
+
+`@diax/react/jsx` is a real build entry. It does not load Connect, Mermaid, Notebook or optional UI
+presets. Conversely, `@diax/react` does not contain the JSX extractor. The two entries converge only
+after authoring input has become the same `nodes + relations` definition.

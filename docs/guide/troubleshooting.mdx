@@ -1,0 +1,151 @@
+# Troubleshooting (/docs/guide/troubleshooting)
+
+
+
+1\. Nodes Render but Edges Don't Appear [#1-nodes-render-but-edges-dont-appear]
+
+**Cause**: The framework has not successfully passed DOM identifiers, or SVG container styles are misplaced.
+
+**Solution**:
+If building headless without the built-in component wrapper, check the following:
+
+* Are you spreading `bindProps` correctly at the ROOT of each wrapper item for `data-diax-node` injection?
+* Without `data-diax-node={id}`, the resize observer CANNOT map elements to the graph engine!
+
+```tsx
+// INCORRECT ❌
+<div><div {...node.bindProps}>{node.content}</div></div> // [!code --]
+
+// CORRECT ✅
+<div {...node.bindProps}><div>{node.content}</div></div> // [!code ++]
+```
+
+2\. Edges Are Floating Inside My Node [#2-edges-are-floating-inside-my-node]
+
+**Cause**: By default, edges wrap to the bounding border box. If you set margins or paddings on the root `<div {...bindProps}>`, DiaX reads those as part of the total DOM width.
+
+**Solution**: Only apply inner-content padding on a child `div` wrapped inside the bound element.
+
+3\. Hydration Error or Missing SSR Output [#3-hydration-error-or-missing-ssr-output]
+
+**Cause**: The server and first client render received different topology/content, the application
+read browser-only state during render, or the bundler selected the wrong framework package
+condition. DOM measurement itself is deferred until mount and should not require removing SSR.
+
+**Solution**:
+
+* keep the first nodes, relations, IDs and rendered content deterministic;
+* in Next.js, import `@diax/react` from a Client Component and pass JSON-safe data across RSC;
+* for Solid and Svelte, let the resolver choose the package's server/browser or Svelte conditions;
+* for Vue, preserve the SSR shell and start application browser SDKs after mount;
+* use `ClientOnly`, `ssr: false`, or route-level SSR disablement only when application-owned content
+  is intentionally browser-only.
+
+Final pixel paths appear after hydration; that is expected and is different from a hydration error.
+See [Framework Parity](/docs/guide/feature-parity) and the adapter's SSR page for current evidence.
+
+4\. Edge Animations Not Playing [#4-edge-animations-not-playing]
+
+**Cause**: The `injectEdgeStyles()` function hasn't been called, or your bundler is tree-shaking it away.
+
+**Solution**: The built-in `<FlowDiagram>` and `<Mindmap>` components call this automatically. If you're using the headless `useDiagram()` hook with a custom SVG renderer, ensure `injectEdgeStyles()` is called once at mount:
+
+```tsx
+import { injectEdgeStyles } from 'diax';
+
+useEffect(() => {
+  injectEdgeStyles();
+}, []);
+```
+
+5\. Theme Not Applying / CSS Variables Not Set [#5-theme-not-applying--css-variables-not-set]
+
+**Cause**: Manual theme integration requires both `injectThemeStyles()` from `diax/themes` and the correct `data-diax-theme` attribute.
+
+**Solution**: Use the built-in `<FlowDiagram theme="notion">` which handles this automatically. For headless usage, call `injectThemeStyles(theme)` and set the `data-diax-theme` attribute on the container.
+
+6\. Stagger Animation Not Working [#6-stagger-animation-not-working]
+
+**Cause**: Stagger mode changes the `measureMode` internally to `"auto"`. If you've overridden `measureMode` to `"resize"`, stagger columns won't re-measure correctly.
+
+**Solution**: Let DiaX auto-select `measureMode` when using stagger, or explicitly set `measureMode="auto"`.
+
+7\. ResizeObserver Loop Error in Console [#7-resizeobserver-loop-error-in-console]
+
+**Cause**: A `ResizeObserver` callback, in DiaX or host code, wrote layout-affecting state while the
+browser was still delivering resize notifications. The resulting size change could not be delivered
+in the same update cycle. Treat the warning as a scheduling defect until the producer is identified;
+filtering it can hide stale edge or label geometry.
+
+**Solution**:
+
+* reproduce it with the exact framework, browser and rich DOM content;
+* keep observer callbacks read-only, deduplicate equal measurements and commit layout state in a
+  later animation frame;
+* disconnect observers and cancel pending frames when the diagram unmounts;
+* if the warning remains with a current DiaX release, capture the smallest fixture and browser name
+  in a bug report instead of filtering the console event.
+
+Official adapter browser contracts enlarge and restore rich labels in Chromium, Firefox and WebKit
+and fail when this warning is emitted.
+
+8\. Experimental ELK Layout Does Not Complete [#8-experimental-elk-layout-does-not-complete]
+
+**Cause**: `elkLayout().computeLayoutPlan()` is asynchronous. A large graph may be expensive, and a
+deployment that moves ELK to a Worker must allow that worker in its CSP.
+
+**Solution**:
+
+* catch and render errors from the returned Promise;
+* add an application timeout for user-supplied or unbounded graphs;
+* if your application runs ELK in a Worker, verify the Worker CSP and deployment URL;
+* pass the resulting plan to React `DiagramEdges`, or consume it with
+  `computeEdgePathsFromLayoutPlan` in a custom renderer;
+* use legacy `computeLayout()` only when intentionally accepting lossy grid quantization.
+
+9\. Mermaid Syntax Parsing Fails [#9-mermaid-syntax-parsing-fails]
+
+**Cause**: `parseMermaid()` from `@diax/mermaid` recognizes six diagram families, but implements a
+documented subset of each family's syntax. Mermaid directives such as click handlers, styling and
+unsupported constructs are not executed or silently approximated.
+
+**Solution**: Inspect the returned `diagnostics`; render only when `result.ast` is non-null. If the
+source relies on an unsupported family or feature, render it with Mermaid itself or rewrite that
+part using DiaX's typed topology and DOM renderers. See the [Mermaid guide](/docs/guide/mermaid) for
+the supported subset and fidelity limits.
+
+The DiaX Playground applies this policy directly: JSON mode checks definition structure and Core
+graph diagnostics before rendering, while Mermaid mode preserves the importer's source location and
+hint. The error panel names the exact subject and offers one supported next edit. It deliberately
+does not suggest bend points, coordinates, or a multi-step automatic rewrite.
+
+10\. TypeScript Errors After Upgrade [#10-typescript-errors-after-upgrade]
+
+**Cause**: DiaX uses strict TypeScript with `readonly` modifiers on output interfaces (`ComputedEdgePath`, `HighlightResult`, etc.). If you're mutating these objects, TS will report errors.
+
+**Solution**: Clone the object before mutating:
+
+```ts
+import { computeEdgePaths } from 'diax/layout-plan';
+
+// INCORRECT ❌
+const path = computeEdgePaths(edges, rects, layoutMap)[0];
+path.labelX = 100; // Error: readonly property // [!code --]
+
+// CORRECT ✅
+const path = { ...computeEdgePaths(edges, rects, layoutMap)[0], labelX: 100 }; // [!code ++]
+```
+
+11\. Bundle Size Larger Than Expected [#11-bundle-size-larger-than-expected]
+
+**Cause**: Importing `@diax/mermaid`, `@diax/ui-react/mermaid`, or a product surface such as
+`@diax/notebook` adds capability-specific dependencies.
+
+**Solution**: The core `diax` package has no runtime dependencies. Run `pnpm size:check` in the repository for current build-artifact measurements.
+For minimal bundles:
+
+* Import only what you need: `import { computeLayout } from 'diax'`
+* Import measured automatic routing from `diax/layout-plan`; use `diax/edge-geometry` for authored DOM placement
+* Import DOM presets from `@diax/ui-react`; use `/mermaid` only when text parsing is required
+* Lazy-load `@diax/ui-react/mermaid` when Mermaid is an optional user-selected mode
+* Check your bundler's output with `pnpm size` to verify

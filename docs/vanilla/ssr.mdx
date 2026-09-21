@@ -1,0 +1,45 @@
+# SSR & Frameworks (/docs/vanilla/ssr)
+
+
+
+Server-Side Rendering (SSR) [#server-side-rendering-ssr]
+
+DiaX intrinsically requires a DOM environment because its layout engine relies on the native `getBoundingClientRect` to calculate precise routing points for SVG edges.
+
+If you are using `@diax/vanilla` within an SSR environment (like Next.js, Nuxt, Node servers, etc.), you must ensure that diagram initialization **strictly runs on the client-side** after hydration:
+
+```javascript
+if (typeof window !== 'undefined') {
+  // Safe to import and create diagram
+  import('@diax/vanilla').then(({ createDiagram }) => {
+    const container = document.getElementById('diagram-root');
+    const diagram = createDiagram(container, {
+      nodes: [...],
+      relations: [...]
+    });
+  });
+}
+```
+
+Cleanup in Framework Runtimes [#cleanup-in-framework-runtimes]
+
+If you are wrapping `createDiagram` inside a framework component (e.g. wrapping Vanilla within an Angular or Web Component lifecycle), make sure to call `diagram.destroy()` when the component unmounts to prevent memory leaks from internal `ResizeObservers`.
+
+```javascript
+// Example: Custom Web Component Integration
+class DiamondDiagram extends HTMLElement {
+  connectedCallback() {
+    this.diagram = createDiagram(this, {
+      nodes: [{ id: '1', content: 'Node' }],
+      relations: []
+    });
+  }
+
+  disconnectedCallback() {
+    // Critical: Clean up resize observers
+    if (this.diagram) {
+      this.diagram.destroy();
+    }
+  }
+}
+```

@@ -1,0 +1,138 @@
+# Custom Rendering (/docs/solid/custom-rendering)
+
+
+
+Custom Rendering [#custom-rendering]
+
+Use `renderNode` to customize how nodes look while keeping all layout logic. Both arguments are
+Solid Accessors; call `node()` and `state()` inside JSX so highlight and data updates patch the
+existing authored DOM instead of replacing it:
+
+```tsx
+import { FlowDiagram } from '@diax/solid';
+
+<FlowDiagram
+  nodes={nodes}
+  relations={relations}
+  renderNode={(node, state) => (
+    <div
+      class={`px-4 py-2 rounded-xl border ${
+        state() === 'highlighted' ? 'ring-2 ring-blue-500' : ''
+      } ${state() === 'dimmed' ? 'opacity-25' : ''}`}
+    >
+      {node().content}
+    </div>
+  )}
+/>
+```
+
+Accessor typing [#accessor-typing]
+
+The renderer contract is framework-native and can be named explicitly when you share renderers:
+
+```tsx
+import type { DiaxNode } from 'diax';
+import type { NodeState } from '@diax/solid';
+import type { Accessor, JSX } from 'solid-js';
+
+type NodeRenderer = (
+  node: Accessor<DiaxNode<string | JSX.Element>>,
+  state: Accessor<NodeState>,
+) => JSX.Element;
+
+const renderServer: NodeRenderer = (node, state) => (
+  <div data-state={state()}>{node().content}</div>
+);
+```
+
+Node States [#node-states]
+
+The value returned by `state()` tells you the current interaction state:
+
+| State           | When              | Suggested style  |
+| --------------- | ----------------- | ---------------- |
+| `undefined`     | Default           | Normal           |
+| `"highlighted"` | On hover path     | Ring/glow effect |
+| `"dimmed"`      | Not on hover path | Reduced opacity  |
+
+Node Type Registry (`nodeTypes`) [#node-type-registry-nodetypes]
+
+Define reusable node renderers by type, then reference them in the nodes array:
+
+```tsx
+import { FlowDiagram } from '@diax/solid';
+import type { DiaxNode } from 'diax';
+import type { NodeState } from '@diax/solid';
+import type { Accessor, JSX } from 'solid-js';
+
+type NodeRenderer = (
+  node: Accessor<DiaxNode<string | JSX.Element>>,
+  state: Accessor<NodeState>,
+) => JSX.Element;
+
+const nodeTypes: Record<string, NodeRenderer> = {
+  gateway: (node, state) => (
+    <div class="px-5 py-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300">
+      ⬡ {node().content}
+    </div>
+  ),
+  service: (node, state) => (
+    <div class="px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+      ● {node().content}
+    </div>
+  ),
+};
+
+function Architecture() {
+  return (
+    <FlowDiagram
+      nodes={[
+        { id: 'gw', type: 'gateway', content: 'API Gateway' },
+        { id: 'auth', type: 'service', content: 'Auth Service' },
+        { id: 'user', type: 'service', content: 'User Service' },
+      ]}
+      relations={['gw->auth', 'gw->user']}
+      nodeTypes={nodeTypes}
+    />
+  );
+}
+```
+
+**Resolution order**: `renderNode` > `nodeTypes[node.type]` > default renderer.
+
+Stagger Animation [#stagger-animation]
+
+Add entrance animation that staggers nodes layer by layer:
+
+```tsx
+<FlowDiagram stagger />        {/* Default 120ms delay between layers */}
+<FlowDiagram stagger={200} />  {/* Custom 200ms delay */}
+```
+
+Stagger works with both `<FlowDiagram>` and `<Mindmap>`. You can combine it with reactive signals:
+
+```tsx
+import { createSignal } from 'solid-js';
+import { FlowDiagram } from '@diax/solid';
+
+function AnimatedDiagram() {
+  const [staggerDelay, setStaggerDelay] = createSignal(120);
+
+  return (
+    <div>
+      <input
+        type="range"
+        min={50}
+        max={500}
+        value={staggerDelay()}
+        onInput={(e) => setStaggerDelay(Number(e.currentTarget.value))}
+      />
+      <FlowDiagram
+        nodes={nodes}
+        relations={relations}
+        stagger={staggerDelay()}
+      />
+    </div>
+  );
+}
+```

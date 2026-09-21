@@ -1,0 +1,110 @@
+# Advanced (/docs/solid/advanced)
+
+
+
+Mindmap [#mindmap]
+
+Use the `<Mindmap>` component or `layout: 'mindmap'` for center-outward radial diagrams:
+
+Using the Mindmap Component [#using-the-mindmap-component]
+
+```tsx
+import { Mindmap } from '@diax/solid';
+
+function TechRadar() {
+  return (
+    <Mindmap
+      nodes={[
+        { id: 'platform', content: 'Platform' },
+        { id: 'frontend', content: 'Frontend' },
+        { id: 'backend', content: 'Backend' },
+        { id: 'infra', content: 'Infrastructure' },
+        { id: 'react', content: 'React' },
+        { id: 'node', content: 'Node.js' },
+      ]}
+      relations={[
+        'platform->frontend',
+        'platform->backend',
+        'platform->infra',
+        'frontend->react',
+        'backend->node',
+      ]}
+      density="comfortable"
+    />
+  );
+}
+```
+
+Using useDiagram with Mindmap Layout [#using-usediagram-with-mindmap-layout]
+
+```tsx
+import { useDiagram } from '@diax/solid';
+import { For } from 'solid-js';
+
+function TechRadar() {
+  const { nodes, containerStyle } = useDiagram({
+    nodes: [
+      { id: 'platform', content: 'Platform' },
+      { id: 'frontend', content: 'Frontend' },
+      { id: 'backend', content: 'Backend' },
+      { id: 'infra', content: 'Infrastructure' },
+      { id: 'react', content: 'React' },
+      { id: 'node', content: 'Node.js' },
+    ],
+    relations: [
+      'platform->frontend',
+      'platform->backend',
+      'platform->infra',
+      'frontend->react',
+      'backend->node',
+    ],
+    layout: 'mindmap',
+  });
+
+  return (
+    <div style={containerStyle()}>
+      <For each={nodes()}>
+        {(node) => (
+          <div data-diax-node={node.resolvedId} style={node.style}>
+            <div class="px-4 py-2 rounded-xl border border-white/8">
+              {node.data.content}
+            </div>
+          </div>
+        )}
+      </For>
+    </div>
+  );
+}
+```
+
+***
+
+DOM ID Namespaces [#dom-id-namespaces]
+
+Use `namespace` to prevent resolved DOM IDs from colliding when several diagrams share a page:
+
+```tsx
+import { FlowDiagram } from '@diax/solid';
+
+function NamespacedDiagrams() {
+  return (
+    <div class="flex gap-8">
+      <FlowDiagram
+        namespace="fe"
+        nodes={frontendNodes}
+        relations={['gw->bff']}
+      />
+      <FlowDiagram
+        namespace="be"
+        nodes={backendNodes}
+        relations={['svc->db']}
+      />
+    </div>
+  );
+}
+```
+
+Node IDs become `namespace::nodeId` in the DOM. Each built-in renderer measures only its own
+diagram container, so it does not draw an edge between these two canvases. Keep connected topology
+inside one diagram. DOM-first Connect is public from `@diax/react/connect`, but a Solid Connect
+adapter is not available yet.

@@ -1,0 +1,157 @@
+# useDiagram Hook (/docs/solid/hooks)
+
+
+
+Headless Hook — useDiagram [#headless-hook--usediagram]
+
+The SolidJS binding uses `createSignal` and `createMemo` for fine-grained reactivity:
+
+```tsx
+import { useDiagram } from '@diax/solid';
+
+function MyDiagram() {
+  const { nodes, edges, layoutMap, containerStyle, setHovered } = useDiagram({
+    // [!code highlight]
+    nodes: [
+      { id: 'a', content: 'Start' },
+      { id: 'b', content: 'Process' },
+      { id: 'c', content: 'End' },
+    ],
+    relations: ['a->b', 'b->c'],
+  });
+
+  return (
+    <div style={containerStyle()}>
+      <For each={nodes()}>
+        {(node) => (
+          <div
+            data-diax-node={node.resolvedId}
+            style={node.style}
+            onMouseEnter={() => setHovered(node.id)}
+            onMouseLeave={() => setHovered(null)}
+          >
+            <div class="px-4 py-2 rounded-xl border border-white/8">
+              {node.data.content}
+            </div>
+          </div>
+        )}
+      </For>
+    </div>
+  );
+}
+```
+
+Interactivity & Accessibility [#interactivity--accessibility]
+
+Solid's `useDiagram` return bindings provide explicit properties for interactive styling and
+supplemental accessibility metadata:
+
+```tsx
+<For each={nodes()}>
+  {(node) => (
+    <div
+      id={node.resolvedId}
+      data-diax-node={node.resolvedId}
+      style={node.style}
+      aria-flowto={node.ariaFlowTo}
+      data-flow-state={node.flowState}
+      onMouseEnter={() => setHovered(node.data.id)}
+      onMouseLeave={() => setHovered(null)}
+    >
+      <div class="px-4 py-2 rounded-xl">{node.data.content}</div>
+    </div>
+  )}
+</For>
+```
+
+* **ariaFlowTo**: Exposes serialized downstream DOM IDs as supplemental relationship metadata. Preserve `id={node.resolvedId}` so every reference resolves; do not assume a screen reader will navigate it as a graph command.
+* **flowState**: Matches `"highlighted"` or `"dimmed"` when hover paths are active, allowing easy reactive styling.
+
+Reactive Options [#reactive-options]
+
+Pass an accessor function for reactive options — the diagram re-computes automatically when the signal updates:
+
+```tsx
+import { createSignal } from 'solid-js';
+import { useDiagram } from '@diax/solid';
+
+const [options, setOptions] = createSignal({
+  nodes: [...],
+  relations: [...],
+});
+
+const { nodes } = useDiagram(options);
+// Updates automatically when options change
+```
+
+Return Values [#return-values]
+
+<TypeTable
+  type="{
+  'nodes()': {
+    description: 'Bound nodes with style and data',
+    type: 'DiagramNodeBinding[]',
+  },
+  'edges()': { description: 'Parsed edges', type: 'ParsedRelation[]' },
+  'layout()': {
+    description: 'Layout computation result',
+    type: 'LayoutResult',
+  },
+  'layoutMap()': {
+    description: 'ID → LayoutNode map',
+    type: 'Map<string, LayoutNode>',
+  },
+  'containerStyle()': {
+    description: 'CSS Grid styles',
+    type: 'Record<string, string>',
+  },
+  'highlightedNodes()': {
+    description: 'Highlighted node set',
+    type: 'Set<string> | null',
+  },
+  'highlightedEdgeIds()': {
+    description: 'Exact highlighted relation occurrences',
+    type: 'Set<string> | null',
+  },
+  setHovered: {
+    description: 'Set hovered node',
+    type: '(id: string | null) => void',
+  },
+}"
+/>
+
+All return values suffixed with `()` are Solid **Accessors** — call them to read their current value. Solid's fine-grained reactivity ensures only the affected DOM nodes re-render when data changes.
+
+Reactive themes [#reactive-themes]
+
+Theme selection is ordinary Solid state. DiaX does not add a second state abstraction around
+`createSignal`; pass the current value to the diagram and let it own CSS injection:
+
+```tsx
+import { createSignal } from 'solid-js';
+import { FlowDiagram, type ThemeInput } from '@diax/solid';
+
+function App() {
+  const [theme, setTheme] = createSignal<ThemeInput>('linear');
+
+  return (
+    <div class="p-8">
+      <button onClick={() => setTheme(theme() === 'light' ? 'linear' : 'light')}>
+        Toggle Theme
+      </button>
+
+      <FlowDiagram nodes={...} relations={...} theme={theme()} />
+    </div>
+  );
+}
+```
+
+For a manual CSS-variable object outside a diagram, import `resolveTheme` and `themeToStyle` from
+the explicit `diax/themes` leaf instead of loading that policy through the Solid root.
+
+Independent payload types [#independent-payload-types]
+
+The headless primitive accepts `useDiagram<NodeContent, EdgeLabel, GroupLabel>()`. The corresponding
+node, edge, and group Accessors retain each payload type without converting them to a universal
+value. Prefer inference and use explicit arguments only when an empty definition or a reusable
+Accessor cannot provide enough context.

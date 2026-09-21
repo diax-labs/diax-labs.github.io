@@ -1,0 +1,256 @@
+# Mermaid Import (/docs/guide/mermaid)
+
+
+
+
+
+What DiaX supports [#what-diax-supports]
+
+DiaX treats Mermaid as an input format, not as a renderer replacement. Mermaid defines topology;
+DiaX converts the supported graph families into a typed AST and renders the nodes as real DOM.
+
+| Mermaid family      | Header                             | DiaX preset       |
+| ------------------- | ---------------------------------- | ----------------- |
+| Flowchart           | `flowchart` / `graph`              | `FlowNode`        |
+| Class diagram       | `classDiagram`                     | `ClassNode`       |
+| State diagram       | `stateDiagram` / `stateDiagram-v2` | `StateNode`       |
+| ER diagram          | `erDiagram`                        | `EntityNode`      |
+| Requirement diagram | `requirementDiagram`               | `RequirementNode` |
+| Mindmap             | `mindmap`                          | `MindmapNode`     |
+
+<Callout type="warn">
+  This is a supported Mermaid subset, not full Mermaid compatibility. Sequence, Gantt, Pie,
+  Timeline, Sankey and other families require different domain models and layouts.
+</Callout>
+
+Render Mermaid as styled DOM [#render-mermaid-as-styled-dom]
+
+Install the React preset and parser packages, then import the preset stylesheet once:
+
+<InstallTabs packages="['@diax/ui-react', '@diax/react', '@diax/mermaid']" description="Styled DOM presets plus the optional Mermaid importer" />
+
+The `@diax/ui-react` root contains only DOM presets. Mermaid compositions live at the explicit
+`@diax/ui-react/mermaid` subpath, and `@diax/mermaid` is an optional peer. This keeps the parser out
+of primitive-only installations and native ESM/module-federation entries. These packages are
+ESM-only; CommonJS `require()` is not a declared export.
+
+```css title="app.css"
+@import '@diax/ui-react/styles.css';
+```
+
+```tsx title="architecture.tsx" contract
+import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+export function Architecture() {
+  return (
+    <SmartMermaidDiagram
+      chart={`
+        flowchart LR
+          browser[Browser] --> api[API]
+          api --> db[(Postgres)]
+      `}
+    />
+  );
+}
+```
+
+`SmartMermaidDiagram` detects the supported family, parses it once, selects the matching preset
+renderer and displays an accessible error when parsing fails.
+
+If Mermaid is an optional mode rather than initial page content, load the leaf entry on first use.
+The subpath provides a default export specifically for `React.lazy`:
+
+```tsx title="lazy-mermaid.tsx" contract
+import { lazy, Suspense } from 'react';
+
+const SmartMermaidDiagram = lazy(() => import('@diax/ui-react/mermaid'));
+
+export function OptionalMermaid({ chart }: { chart: string }) {
+  return (
+    <Suspense fallback={<p role="status">Loading diagram…</p>}>
+      <SmartMermaidDiagram chart={chart} />
+    </Suspense>
+  );
+}
+```
+
+Declare the lazy component at module scope so its identity and cached import remain stable. Render it
+only after the feature is selected; rendering it immediately creates another chunk but does not
+delay its request. In Next.js, place the dynamic declaration in a Client Component when using
+client-only options.
+
+Mix Mermaid topology with application DOM [#mix-mermaid-topology-with-application-dom]
+
+Keep topology in Mermaid and override presentation through stable Mermaid node IDs:
+
+The following block focuses on the `renderNode` callback. `ServiceCard` and `DatabaseStatus` are
+application-owned components, so this is a teaching fragment rather than a standalone module.
+
+```tsx title="live-architecture.tsx"
+import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+<SmartMermaidDiagram
+  chart={`
+    flowchart LR
+      browser[Browser] --> api[API] --> db[(Postgres)]
+  `}
+  renderNode={(node, { state, defaultNode }) => {
+    if (node.id === 'api') {
+      return (
+        <ServiceCard
+          service="payments"
+          healthy
+          highlighted={state === 'highlighted'}
+        />
+      );
+    }
+
+    if (node.id === 'db') {
+      return <DatabaseStatus database="orders" />;
+    }
+
+    return defaultNode;
+  }}
+/>
+```
+
+The contract is deliberately narrow:
+
+* `chart` is the only topology source.
+* Mermaid IDs are stable DOM override points.
+* `renderNode` changes presentation, not graph structure.
+* `defaultNode` preserves the built-in renderer for nodes you do not replace.
+* Do not mix `chart` with JSX children that add another set of nodes or edges.
+
+Inspect the Import Path [#inspect-the-import-path]
+
+The runnable study keeps Mermaid as the topology source, then exposes the resulting diagram as real
+DOM with inspectable source and an explicit ownership contract.
+
+<ShowcaseStudies slugs="['mermaid-import']" />
+
+Parse without React [#parse-without-react]
+
+Use the high-level importer when you need the normalized AST, diagnostics or your own renderer:
+
+```ts title="parse-mermaid.ts" contract
+import { parseMermaid } from '@diax/mermaid';
+
+const source = `flowchart LR
+  browser[Browser] --> api[API]
+  api --> database[(Database)]`;
+const result = parseMermaid(source);
+
+if (!result.ast) {
+  for (const diagnostic of result.diagnostics) {
+    console.error(
+      diagnostic.code,
+      diagnostic.location,
+      diagnostic.message,
+      diagnostic.hint,
+    );
+  }
+  throw new Error('Invalid Mermaid input');
+}
+
+console.log(result.diagramType); // "flowchart", "classDiagram", ...
+console.log(result.ast.nodes);
+console.log(result.ast.edges);
+console.log(result.ast.groups); // flowchart subgraphs, when present
+```
+
+The following type is a reference shape. Use the exported result types in application code rather
+than copying this teaching fragment:
+
+```ts title="result-shape.ts"
+type MermaidParseResult = {
+  diagramType: MermaidDiagramType | null;
+  ast: DiaxAST<string> | null;
+  diagnostics: MermaidDiagnostic[];
+};
+```
+
+The importer does not guess a different parser when it sees an unsupported header. For example,
+`sequenceDiagram` produces an `UNSUPPORTED_DIAGRAM_TYPE` diagnostic with the header location and
+a caller-actionable repair hint. Mermaid diagnostics use the same `severity`, `message`, `location`
+and `hint` contract as Core diagnostics.
+
+This is specifically an importer boundary, not a claim that DiaX cannot express chronological
+protocols. React users can author semantic participant columns and message rows with the
+[Connect sequence recipe](/docs/react/connect#sequence-style-protocols-without-a-sequence-mode).
+
+Flowchart-only compatibility interface [#flowchart-only-compatibility-interface]
+
+Existing applications that rely on the old `{ nodes, relations }` flowchart result can migrate
+without ambiguity:
+
+```ts contract
+import {
+  parseMermaidFlowchart,
+  parseMermaidFlowchartBlock,
+} from '@diax/mermaid';
+
+const { nodes, relations } = parseMermaidFlowchart(`
+  flowchart LR
+    A[Start] --> B[Finish]
+`);
+```
+
+The explicit name prevents a flowchart-only parser from being mistaken for the multi-family
+importer. New code should prefer `parseMermaid()` or `SmartMermaidDiagram`.
+
+Error handling [#error-handling]
+
+The React entry provides a visible default error, an observability callback and a custom fallback:
+
+This callback-only fragment assumes application-owned `generatedSource`, `reportDiagramError`, and
+`DiagramError` bindings:
+
+```tsx
+import type { MermaidDiagnostic } from '@diax/mermaid';
+
+<SmartMermaidDiagram
+  chart={generatedSource}
+  onError={(error) => reportDiagramError(error)}
+  fallback={(error) => {
+    const diagnostic = error.cause as MermaidDiagnostic | undefined;
+    return (
+      <DiagramError
+        title="Diagram could not be rendered"
+        hint={diagnostic?.hint}
+      >
+        {error.message}
+      </DiagramError>
+    );
+  }}
+/>
+```
+
+This matters for AI-generated diagrams: invalid output must be diagnosable and testable rather than
+turning into an unexplained blank region. `error.cause` contains the original
+`MermaidDiagnostic`, including its stable code, source location and repair hint.
+
+Current fidelity limits [#current-fidelity-limits]
+
+The importer preserves basic topology, labels, direction, supported edge markers and flowchart
+subgraph containment, but some Mermaid semantics remain intentionally limited:
+
+* Subgraphs render as derived rectangular boundaries in the React composition. Compound routing,
+  collapsed groups and group ports are not yet preserved.
+* `style`, `classDef`, `click` and `linkStyle` are not equivalent to application DOM behavior.
+* Composite states and other advanced state semantics are not fully modeled.
+* Class, ER, requirement and mindmap structured metadata are still being deepened for lossless DOM
+  presets.
+* Final SVG edge paths require client-side DOM measurement, even when topology and Grid placement
+  are server-rendered.
+
+Use the compatibility limits above when deciding whether to import Mermaid or author DiaX topology
+directly. Unsupported Mermaid families should remain on Mermaid or use a domain-specific renderer.
+
+<Cards>
+  <Card title="UI presets" href="/docs/ui-react" description="Styled DOM nodes for six supported graph families" />
+
+  <Card title="SmartMermaidDiagram" href="/docs/ui-react/smart-mermaid" description="Live examples, node overrides and error behavior" />
+
+  <Card title="MDX integration" href="/docs/guide/mdx-guide" description="Turn fenced Mermaid blocks into DiaX components" />
+</Cards>

@@ -1,0 +1,85 @@
+# Props Reference (/docs/react/props)
+
+
+
+Props Reference [#props-reference]
+
+`<FlowDiagram>` / `<Mindmap>` Props [#flowdiagram--mindmap-props]
+
+Import these data-driven components from `@diax/react`. Dynamic topology stays in `nodes` and
+`relations`; this entry does not accept marker children.
+
+<TypeTable
+  type="{
+  nodes: { description: 'Node definitions; content may be arbitrary JSX', type: 'readonly DiaxNode[]', default: '—' },
+  relations: { description: 'Centralized relation definitions', type: 'readonly DiaxRelation[]', default: '—' },
+  groups: { description: 'Semantic group boundaries; parentId enables nesting', type: 'readonly DiaxGroup[]', default: '—' },
+  direction: { description: 'Layout direction', type: &#x22;'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse'&#x22;, default: &#x22;'horizontal'&#x22; },
+  density: { description: 'Spacing', type: &#x22;'compact' | 'comfortable' | 'spacious'&#x22;, default: &#x22;'comfortable'&#x22; },
+  centered: { description: 'Center nodes in cells', type: 'boolean', default: 'false' },
+  align: { description: 'Align nodes within grid cells', type: &#x22;'start' | 'center' | 'end'&#x22;, default: &#x22;'start'&#x22; },
+  highlightOnHover: { description: 'Highlight path on hover', type: 'boolean', default: 'false' },
+  stagger: { description: 'Stagger entrance animation', type: 'boolean | number', default: 'false' },
+  measureMode: { description: 'DOM measurement strategy', type: &#x22;'resize' | 'auto' | 'continuous'&#x22;, default: &#x22;'resize'&#x22; },
+  theme: { description: 'Theme preset or object', type: &#x22;'linear' | 'light' | 'notion' | 'github' | DiaxTheme&#x22;, default: '—' },
+  namespace: { description: 'Resolved DOM ID namespace', type: 'string', default: '—' },
+  nodeTypes: { description: 'Node type registry', type: 'Record<string, (node, state) => ReactNode>', default: '—' },
+  renderNode: { description: 'Custom node renderer', type: '(node, state) => ReactNode', default: '—' },
+  renderEdgeLabel: { description: 'Custom edge label renderer', type: '(label) => ReactNode', default: '—' },
+  pathType: { description: 'Edge path type', type: &#x22;'bezier' | 'straight' | 'orthogonal'&#x22;, default: &#x22;'bezier'&#x22; },
+  strokeColor: { description: 'Edge color; inherits currentColor when unthemed', type: 'string', default: &#x22;'var(--diax-edge-color, currentColor)'&#x22; },
+  strokeWidth: { description: 'Edge width', type: 'number', default: '1' },
+  arrowSize: { description: 'Arrow marker size', type: 'number', default: '6' },
+}"
+/>
+
+Definitions are treated as immutable authoring values. Arrays created with `as const`, memoized
+selectors or readonly application state can be passed directly; DiaX does not require callers to
+clone them into mutable arrays.
+
+`<DiaxNode>` Props [#diaxnode-props]
+
+Import the JSX-authored `FlowDiagram`, `Mindmap`, `DiaxNode` and `DiaxEdge` from
+`@diax/react/jsx`. Use this form for static visual stories; pass existing arrays to the root data
+entry instead of mapping them into marker components.
+
+<TypeTable
+  type="{
+  id: { description: 'Unique node ID (required)', type: 'string', default: '—' },
+  type: { description: 'Node type for nodeTypes registry', type: 'string', default: '—' },
+  position: { description: 'Override auto-layout position', type: '{ col?: number; row?: number }', default: '—' },
+  children: { description: 'Node content', type: 'ReactNode', default: '—' },
+}"
+/>
+
+`<DiaxEdge>` Props [#diaxedge-props]
+
+`DiaxEdgeProps` is derived from the shared Core `DiaxEdge<ReactNode>` type. JSX and data definitions
+therefore expose the same rich Relation controls.
+
+<TypeTable
+  type="{
+  from: { description: 'Source node ID (required)', type: 'string', default: '—' },
+  to: { description: 'Target node ID (required)', type: 'string', default: '—' },
+  label: { description: 'Edge label', type: 'ReactNode', default: '—' },
+  style: { description: 'Line style', type: &#x22;'solid' | 'dashed'&#x22;, default: &#x22;'solid'&#x22; },
+  color: { description: 'Edge color', type: 'string', default: '—' },
+  bidirectional: { description: 'Bidirectional arrow', type: 'boolean', default: '—' },
+  animate: { description: 'Animation preset', type: 'AnimationPreset', default: '—' },
+  sourceAnchor: { description: 'Override source attachment side', type: 'Anchor', default: 'auto' },
+  targetAnchor: { description: 'Override target attachment side', type: 'Anchor', default: 'auto' },
+  sourceMarker: { description: 'Source marker shape or config', type: 'MarkerShape | MarkerConfig', default: &#x22;'none'&#x22; },
+  targetMarker: { description: 'Target marker shape or config', type: 'MarkerShape | MarkerConfig', default: &#x22;'triangle'&#x22; },
+  pathType: { description: 'Per-edge path override', type: &#x22;'bezier' | 'straight' | 'orthogonal'&#x22;, default: 'diagram default' },
+  strokeWidth: { description: 'Per-edge stroke width', type: 'number', default: 'diagram default' },
+  strokeDasharray: { description: 'Custom SVG dash pattern', type: 'string', default: '—' },
+  className: { description: 'Class name on the visible SVG path', type: 'string', default: '—' },
+  gap: { description: 'Gap between path and node borders', type: 'number', default: '0' },
+  curvature: { description: 'Bezier curvature factor', type: 'number', default: '0.4' },
+  order: { description: 'SVG rendering order', type: 'number', default: 'source order' },
+  hitSlop: { description: 'Interactive hit-target width', type: 'number', default: '24' },
+  events: { description: 'Click, hover and context-menu handlers', type: 'DiaxEdgeEvents', default: '—' },
+  ariaLabel: { description: 'Accessible name for an interactive edge', type: 'string', default: 'generated fallback' },
+  dashed: { description: 'Deprecated compatibility alias; use style=&#x22;dashed&#x22;', type: 'boolean', default: '—' },
+}"
+/>

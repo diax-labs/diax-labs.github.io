@@ -1,0 +1,131 @@
+# Headless Composables (/docs/vue/composables)
+
+
+
+Headless: useDiagram Composable [#headless-usediagram-composable]
+
+For full headless control, use the `useDiagram` composable directly:
+
+```vue
+<script setup lang="ts">
+import { useDiagram } from '@diax/vue';
+
+const { nodes, edges, layoutMap, containerStyle } = useDiagram({ // [!code highlight]
+  nodes: [
+    { id: 'a', content: 'Start' },
+    { id: 'b', content: 'Process' },
+    { id: 'c', content: 'End' },
+  ],
+  relations: ['a->b', 'b->c'],
+});
+</script>
+
+<template>
+  <div :style="containerStyle">
+    <div
+      v-for="node in nodes"
+      :key="node.id"
+      v-bind="node.bindProps" // [!code highlight]
+    >
+      <div class="px-4 py-2 rounded-xl border border-white/8 bg-gradient-to-b from-white/6 to-white/2">
+        {{ node.data.content }}
+      </div>
+    </div>
+    <!-- Edge rendering via SVG overlay (same pattern as React) -->
+  </div>
+</template>
+```
+
+Understanding `node.bindProps` [#understanding-nodebindprops]
+
+When rendering nodes manually in Vue, you must spread `node.bindProps` exclusively onto the wrapper DOM element:
+
+```vue
+<div v-for="node in nodes" :key="node.id" v-bind="node.bindProps">
+  <!-- Custom Content -->
+</div>
+```
+
+The `bindProps` object automates:
+
+1. **Grid Placement**: `style.gridColumn` and `style.gridRow` logic to align the node visually.
+2. **Measurement Binding**: `data-diax-node` ID tags used by internal sizing hooks.
+3. **Accessibility**: `aria-flowto` is added explicitly indicating next step relationships.
+4. **Interactivity Hooks**: Mouse enter/leave events triggering `highlightOnHover` actions.
+
+Reactive Options [#reactive-options]
+
+You can pass a `ref` as options for fully reactive updates:
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useDiagram } from '@diax/vue';
+
+const options = ref({
+  nodes: [
+    { id: 'a', content: 'Start' },
+    { id: 'b', content: 'End' },
+  ],
+  relations: ['a->b'],
+  direction: 'horizontal' as const,
+});
+
+const { nodes, containerStyle } = useDiagram(options);
+
+// Reactively update
+function addNode() {
+  options.value = {
+    ...options.value,
+    nodes: [...options.value.nodes, { id: 'c', content: 'New Node' }],
+    relations: [...options.value.relations, 'b->c'],
+  };
+}
+</script>
+```
+
+Reactive themes [#reactive-themes]
+
+Theme selection is ordinary Vue state. DiaX intentionally does not wrap `ref()` with a parallel
+`useTheme` interface; pass the value to the diagram and let the diagram own CSS injection:
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { FlowDiagram, type ThemeInput } from '@diax/vue';
+
+const theme = ref<ThemeInput>('linear');
+
+function toggle() {
+  theme.value = theme.value === 'light' ? 'linear' : 'light';
+}
+</script>
+
+<template>
+  <div class="p-8">
+    <button @click="toggle">Toggle Theme</button>
+    <FlowDiagram :nodes="nodes" :relations="relations" :theme="theme" />
+  </div>
+</template>
+```
+
+For a manual CSS-variable object outside a diagram, import `resolveTheme` and `themeToStyle` from
+the explicit `diax/themes` leaf instead of loading that policy through the Vue root.
+
+Independent payload types [#independent-payload-types]
+
+The composable is typed as `useDiagram<NodeContent, EdgeLabel, GroupLabel>()`. Its node, edge, and
+group refs preserve those types independently. Ordinary object literals and typed refs infer the
+payloads; explicit arguments are only needed when an empty array removes inference context. String
+relation shorthand remains part of the parsed edge-label union.
+
+Image Export [#image-export]
+
+`@diax/vue` does not currently export a `useExport` composable. DiaX diagrams combine ordinary DOM
+nodes and an SVG edge layer, so serializing only the SVG cannot preserve the complete diagram.
+
+For now, bind a template ref to a wrapper you own and integrate a DOM-capture library at the
+application boundary. Pin fonts, background colors and asset loading in that integration and test
+the resulting image in the browsers you support. The Playground now verifies complete DOM + SVG
+PNG/SVG export as an opt-in product workflow, but that implementation is not a stable framework
+interface. See [Export DOM Visuals](/docs/guide/exporting).

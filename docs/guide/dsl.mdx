@@ -1,0 +1,155 @@
+# DSL Syntax (/docs/guide/dsl)
+
+
+
+
+
+String DSL [#string-dsl]
+
+DiaX supports a mermaid-like string DSL for defining relations between nodes:
+
+```text title="DSL Quick Reference"
+a->b          Solid arrow
+a-->b         Dashed arrow
+a<->b         Bidirectional solid
+a<-->b        Bidirectional dashed
+a->|label|b   Arrow with label
+a-->|label|b  Dashed arrow with label
+```
+
+<DiagramPreview
+  title="String DSL — All arrow types"
+  code="`<FlowDiagram
+nodes={[
+  { id: 'a', content: 'A' },
+  { id: 'b', content: 'B' },
+  { id: 'c', content: 'C' },
+  { id: 'd', content: 'D' },
+  { id: 'e', content: 'E' },
+  { id: 'f', content: 'F' },
+]}
+relations={[
+  'a->b',             // solid
+  'b-->c',            // dashed
+  'c<->d',            // bidirectional
+  'd->|label|e',      // labeled
+  'e-->|dashed|f',    // dashed + labeled
+]}
+density=&#x22;spacious&#x22;
+/>`"
+>
+  <FlowDiagram
+    nodes="[
+    { id: 'a', content: 'A' },
+    { id: 'b', content: 'B' },
+    { id: 'c', content: 'C' },
+    { id: 'd', content: 'D' },
+    { id: 'e', content: 'E' },
+    { id: 'f', content: 'F' },
+  ]"
+    relations="['a->b', 'b-->c', 'c<->d', 'd->|label|e', 'e-->|dashed|f']"
+    density="spacious"
+  />
+</DiagramPreview>
+
+Examples [#examples]
+
+```ts
+const relations = [
+  'src->build', // solid arrow
+  'build-->test', // dashed arrow
+  'api<->db', // bidirectional
+  'gw->|gRPC|auth', // labeled arrow
+];
+```
+
+***
+
+Object Form [#object-form]
+
+For full control over edge styling, use typed objects:
+
+```ts
+const relations = [
+  { from: 'a', to: 'b', style: 'dashed', color: '#5E6AD2', animate: 'flow' },
+  { from: 'b', to: 'c', label: 'next', bidirectional: true },
+];
+```
+
+Object Properties [#object-properties]
+
+| Property        | Type                  | Description                     |
+| --------------- | --------------------- | ------------------------------- |
+| `from`          | `string`              | Source node ID (required)       |
+| `to`            | `string`              | Target node ID (required)       |
+| `label`         | `string`              | Edge label text                 |
+| `style`         | `'solid' \| 'dashed'` | Line style (default: `'solid'`) |
+| `color`         | `string`              | Edge color (CSS color value)    |
+| `animate`       | `string`              | Animation preset name           |
+| `bidirectional` | `boolean`             | Show arrows on both ends        |
+
+***
+
+Mixing Styles [#mixing-styles]
+
+You can mix string DSL and object form in the same `relations` array:
+
+```ts
+const relations = [
+  'a->b', // string DSL
+  { from: 'b', to: 'c', animate: 'flow' }, // object form
+  'c->|deploy|d', // string with label
+  { from: 'd', to: 'e', style: 'dashed', color: '#4CAF50' },
+];
+```
+
+The parser automatically detects the format and handles both transparently.
+
+<DiagramPreview
+  title="Mixed styles — string DSL + object form"
+  code="`<FlowDiagram
+nodes={[
+  { id: 'a', content: 'Source' },
+  { id: 'b', content: 'Build' },
+  { id: 'c', content: 'Test' },
+  { id: 'd', content: 'Stage' },
+  { id: 'e', content: 'Prod' },
+]}
+relations={[
+  'a->b',
+  { from: 'b', to: 'c', animate: 'flow' },
+  'c->|deploy|d',
+  { from: 'd', to: 'e', style: 'dashed', color: '#4CAF50' },
+]}
+centered density=&#x22;spacious&#x22;
+/>`"
+>
+  <FlowDiagram
+    nodes="[
+    { id: 'a', content: 'Source' },
+    { id: 'b', content: 'Build' },
+    { id: 'c', content: 'Test' },
+    { id: 'd', content: 'Stage' },
+    { id: 'e', content: 'Prod' },
+  ]"
+    relations="[
+    'a->b',
+    { from: 'b', to: 'c', animate: 'flow' },
+    'c->|deploy|d',
+    { from: 'd', to: 'e', style: 'dashed', color: '#4CAF50' },
+  ]"
+    density="spacious"
+  />
+</DiagramPreview>
+
+***
+
+<Cards>
+  <Card title="Edge Types" href="/docs/guide/edge-types" description="Animation presets, path types, and custom labels" />
+
+  <Card title="Themes" href="/docs/guide/themes" description="Built-in themes and CSS variable customization" />
+
+  <Card title="Layout Modes" href="/docs/guide/layout-modes" description="Flow, Mindmap, and ELK layouts" />
+
+  <Card title="API Reference" href="/docs/reference" description="Core engine parser API" />
+</Cards>

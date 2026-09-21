@@ -1,0 +1,263 @@
+# Layout Modes (/docs/guide/layout-modes)
+
+
+
+
+
+Overview [#overview]
+
+DiaX ships two synchronous component layouts plus an experimental asynchronous ELK `LayoutPlan`
+adapter. Pick the built-in mode that matches ordinary application data; choose ELK when preserving
+its stronger pixel placement, ports, route sections, and labels justifies async layout.
+
+| Layout      | Component                      | Best for                                                 | Algorithm                       |
+| ----------- | ------------------------------ | -------------------------------------------------------- | ------------------------------- |
+| **Flow**    | `<FlowDiagram>`                | Ordinary DAG pipelines, architectures, state transitions | Layered grid + planned routes   |
+| **Mindmap** | `<Mindmap>`                    | Topic maps, brainstorms, hierarchies                     | Center-outward radial           |
+| **ELK**     | `computeLayoutPlan` + renderer | Dense transitions, strict ports, exact edge sections     | ELK.js, opt-in and asynchronous |
+
+Chronological participant/message sequences are not a third Core layout mode. In React, author the
+participant columns and message rows as semantic DOM, then use
+[Connect](/docs/react/connect#sequence-style-protocols-without-a-sequence-mode) for the measured
+message rails and a narrow-screen transcript.
+
+***
+
+Flow Layout [#flow-layout]
+
+The default. Computes a directed acyclic graph (DAG), stabilizes layer order, places disconnected
+components in separate bands, and plans long, parallel, feedback, and labeled routes around measured
+DOM nodes. Supports all four directions: `horizontal`, `vertical`, `horizontal-reverse`, and
+`vertical-reverse`.
+
+<DiagramPreview
+  name="ci-pipeline"
+  title="CI/CD Pipeline — Flow Layout"
+  code="`<FlowDiagram
+nodes={[
+  { id: 'src', content: 'Code Push' },
+  { id: 'lint', content: 'Lint' },
+  { id: 'test', content: 'Test' },
+  { id: 'build', content: 'Build' },
+  { id: 'deploy', content: 'Deploy' },
+]}
+relations={[
+  'src->lint', 'src->test',
+  'lint->build', 'test->build',
+  'build->deploy',
+]}
+centered stagger density=&#x22;spacious&#x22;
+/>`"
+>
+  <FlowDiagram
+    nodes="[
+    { id: 'src', content: 'Code Push' },
+    { id: 'lint', content: 'Lint' },
+    { id: 'test', content: 'Test' },
+    { id: 'build', content: 'Build' },
+    { id: 'deploy', content: 'Deploy' },
+  ]"
+    relations="[
+    'src->lint',
+    'src->test',
+    'lint->build',
+    'test->build',
+    'build->deploy',
+  ]"
+    density="spacious"
+  />
+</DiagramPreview>
+
+**When to use Flow:**
+
+* Pipelines, CI/CD, data processing
+* Service architectures (API → Auth → DB)
+* Any directed flow from source to sink
+
+***
+
+Mindmap Layout [#mindmap-layout]
+
+Places the root node at the center and branches outward radially. The node with the highest degree automatically becomes the root.
+
+<DiagramPreview
+  name="mindmap"
+  title="Platform Mindmap — Radial Layout"
+  code="`<Mindmap
+nodes={[
+  { id: 'core', content: 'Platform' },
+  { id: 'fe', content: 'Frontend' },
+  { id: 'be', content: 'Backend' },
+  { id: 'infra', content: 'Infrastructure' },
+  { id: 'react', content: 'React' },
+  { id: 'vue', content: 'Vue' },
+  { id: 'api', content: 'API' },
+  { id: 'db', content: 'Database' },
+]}
+relations={[
+  'core->fe', 'core->be', 'core->infra',
+  'fe->react', 'fe->vue',
+  'be->api', 'be->db',
+]}
+density=&#x22;comfortable&#x22;
+/>`"
+>
+  <Mindmap
+    nodes="[
+    { id: 'core', content: 'Platform' },
+    { id: 'fe', content: 'Frontend' },
+    { id: 'be', content: 'Backend' },
+    { id: 'infra', content: 'Infrastructure' },
+    { id: 'react', content: 'React' },
+    { id: 'vue', content: 'Vue' },
+    { id: 'api', content: 'API' },
+    { id: 'db', content: 'Database' },
+  ]"
+    relations="[
+    'core->fe',
+    'core->be',
+    'core->infra',
+    'fe->react',
+    'fe->vue',
+    'be->api',
+    'be->db',
+  ]"
+    density="comfortable"
+  />
+</DiagramPreview>
+
+**When to use Mindmap:**
+
+* Topic exploration and brainstorming
+* Technology stacks and ecosystems
+* Organizational hierarchies (centered)
+* Any tree-like structure radiating from a hub
+
+***
+
+ELK Layout (Advanced) [#elk-layout-advanced]
+
+For graphs that need stronger ordering and routing, `@diax/layout-elk` asynchronously returns the
+same engine-neutral `LayoutPlan` used by DiaX's measured renderer seam. It is not a `layout` string
+on `FlowDiagram`, so ELK is never loaded accidentally.
+
+<Callout type="warn">
+  Experimental: React `DiagramEdges` can consume a complete external plan today. Other adapters
+  measure labels and retain prior routes for the built-in planner, but do not yet expose external
+  plan rendering.
+</Callout>
+
+<InstallTabs packages="['@diax/layout-elk']" description="Experimental ELK.js LayoutPlan adapter" />
+
+```tsx
+import { elkLayout } from '@diax/layout-elk';
+import { parseRelations, type DiaxNode, type NodeRect } from 'diax';
+
+const nodes: DiaxNode<string>[] = [
+  { id: 'gateway', content: 'API Gateway' },
+  { id: 'service', content: 'Orders Service' },
+];
+const relations = [
+  { id: 'gateway-service', from: 'gateway', to: 'service', label: 'HTTPS' },
+];
+const edges = parseRelations(relations);
+const nodeSizes = new Map<string, Pick<NodeRect, 'width' | 'height'>>([
+  ['gateway', { width: 160, height: 56 }],
+  ['service', { width: 160, height: 56 }],
+]);
+const labelSizes = new Map([
+  ['gateway-service', { width: 64, height: 24 }],
+]);
+
+const plan = await elkLayout({ algorithm: 'layered', direction: 'horizontal' })
+  .computeLayoutPlan(nodes, edges, { nodeSizes, labelSizes });
+```
+
+**When to use ELK:**
+
+* Highly congested rank transitions and complex fan-in/fan-out
+* Strict or numerous ports whose ordering affects crossings
+* Preserving orthogonal edge sections and label coordinates
+* Accepting an asynchronous, opt-in layout boundary
+
+<Callout type="warn">
+  Compound groups now reserve exclusive row bands in the built-in flow layout, while ELK preserves
+  native compound bounds in `LayoutPlan.groups`. Both plans derive ordered group entry/exit ports;
+  collapse behavior, authored portals, and nested Connect surfaces remain outside the current
+  interface.
+</Callout>
+
+See the [ELK Layout guide](/docs/guide/layout-elk) for full API details.
+
+***
+
+Decision Guide [#decision-guide]
+
+Not sure which to pick? Here's a quick decision tree:
+
+<DiagramPreview
+  title="Which layout should I use?"
+  code="`<FlowDiagram
+nodes={[
+  { id: 'start', content: 'What shape is your data?' },
+  { id: 'directed', content: 'Directed flow? (A→B→C)' },
+  { id: 'radial', content: 'Hub with branches?' },
+  { id: 'complex', content: 'Dense transitions or strict ports?' },
+  { id: 'flow', content: '✅ FlowDiagram' },
+  { id: 'mindmap', content: '✅ Mindmap' },
+  { id: 'elk', content: '✅ ELK Layout' },
+]}
+relations={[
+  'start->directed', 'start->radial', 'start->complex',
+  'directed->flow', 'radial->mindmap', 'complex->elk',
+]}
+centered density=&#x22;spacious&#x22;
+/>`"
+>
+  <FlowDiagram
+    nodes="[
+    { id: 'start', content: 'What shape is your data?' },
+    { id: 'directed', content: 'Directed flow? (A→B→C)' },
+    { id: 'radial', content: 'Hub with branches?' },
+    { id: 'complex', content: 'Dense transitions or strict ports?' },
+    { id: 'flow', content: '✅ FlowDiagram' },
+    { id: 'mindmap', content: '✅ Mindmap' },
+    { id: 'elk', content: '✅ ELK Layout' },
+  ]"
+    relations="[
+    'start->directed',
+    'start->radial',
+    'start->complex',
+    'directed->flow',
+    'radial->mindmap',
+    'complex->elk',
+  ]"
+    density="spacious"
+  />
+</DiagramPreview>
+
+***
+
+Framework Support [#framework-support]
+
+Flow and Mindmap are integrated across every supported framework. ELK is always an explicit
+asynchronous pre-computation step, not a third component layout mode. React can render the complete
+plan directly; other adapters currently use the compatibility bridge or a custom renderer.
+
+| Layout  |                    React                    |                       Vue                      |                         Svelte                        |                      Solid                     |                 Vanilla                |
+| ------- | :-----------------------------------------: | :--------------------------------------------: | :---------------------------------------------------: | :--------------------------------------------: | :------------------------------------: |
+| Flow    |               `<FlowDiagram>`               |         `<FlowDiagram>` / `useDiagram`         |         `<FlowDiagram>` / `createFlowDiagram`         |         `<FlowDiagram>` / `useDiagram`         |             `createDiagram`            |
+| Mindmap |                 `<Mindmap>`                 | `<Mindmap>` / `useDiagram({layout:'mindmap'})` | `<Mindmap>` / `createFlowDiagram({layout:'mindmap'})` | `<Mindmap>` / `useDiagram({layout:'mindmap'})` |   `createDiagram({layout:'mindmap'})`  |
+| ELK     | Complete plan via `DiagramEdges layoutPlan` |     Compatibility bridge / custom renderer     |         Compatibility bridge / custom renderer        |     Compatibility bridge / custom renderer     | Compatibility bridge / custom renderer |
+
+***
+
+<Cards>
+  <Card title="DSL Syntax" href="/docs/guide/dsl" description="How to define relations between nodes" />
+
+  <Card title="Edge Types" href="/docs/guide/edge-types" description="Animation presets, path types, and labels" />
+
+  <Card title="ELK Layout" href="/docs/guide/layout-elk" description="Advanced layout with ELK.js" />
+
+  <Card title="Themes" href="/docs/guide/themes" description="Customize diagram appearance" />
+</Cards>

@@ -1,0 +1,132 @@
+# FlowNode (/docs/ui-react/flowchart)
+
+
+
+
+
+Overview [#overview]
+
+`FlowNode` renders flow diagram nodes with configurable shapes via the `variant` prop.
+
+Variants [#variants]
+
+| Variant    | Shape                  | Use Case          |
+| ---------- | ---------------------- | ----------------- |
+| `default`  | Rounded rectangle      | General steps     |
+| `decision` | Diamond (rotated)      | Yes/No branches   |
+| `terminal` | Stadium/pill           | Start/End         |
+| `database` | Cylinder top           | Databases, stores |
+| `process`  | Sharp rectangle        | Processing steps  |
+| `io`       | Parallelogram (skewed) | Input/Output      |
+
+All Variants [#all-variants]
+
+<DiagramPreview
+  title="FlowNode — 6 shape variants"
+  code="`import { FlowNode } from '@diax/ui-react';
+
+<div className=&#x22;flex flex-wrap gap-4 items-center&#x22;>
+<FlowNode variant=&#x22;default&#x22;>Default</FlowNode>
+<FlowNode variant=&#x22;decision&#x22;>Decision</FlowNode>
+<FlowNode variant=&#x22;terminal&#x22;>Terminal</FlowNode>
+<FlowNode variant=&#x22;database&#x22;>Database</FlowNode>
+<FlowNode variant=&#x22;process&#x22;>Process</FlowNode>
+<FlowNode variant=&#x22;io&#x22;>I/O</FlowNode>
+</div>`"
+>
+  <div className="flex flex-wrap gap-4 items-center">
+    <FlowNode variant="default">
+      Default
+    </FlowNode>
+
+    <FlowNode variant="decision">
+      Decision
+    </FlowNode>
+
+    <FlowNode variant="terminal">
+      Terminal
+    </FlowNode>
+
+    <FlowNode variant="database">
+      Database
+    </FlowNode>
+
+    <FlowNode variant="process">
+      Process
+    </FlowNode>
+
+    <FlowNode variant="io">
+      I/O
+    </FlowNode>
+  </div>
+</DiagramPreview>
+
+Highlighted & Dimmed States [#highlighted--dimmed-states]
+
+<DiagramPreview
+  title="Interactive states"
+  code="`<div className=&#x22;flex flex-wrap gap-4 items-center&#x22;>
+<FlowNode>Normal</FlowNode>
+<FlowNode highlighted>Highlighted</FlowNode>
+<FlowNode dimmed>Dimmed</FlowNode>
+</div>`"
+>
+  <div className="flex flex-wrap gap-4 items-center">
+    <FlowNode>
+      Normal
+    </FlowNode>
+
+    <FlowNode>
+      Highlighted
+    </FlowNode>
+
+    <FlowNode>
+      Dimmed
+    </FlowNode>
+  </div>
+</DiagramPreview>
+
+With FlowDiagram + nodeTypes [#with-flowdiagram--nodetypes]
+
+<DiagramPreview
+  title="CI Pipeline with typed nodes"
+  code="`import { FlowDiagram } from '@diax/react';
+import { flowNodeRenderer } from '@diax/ui-react';
+
+<FlowDiagram
+nodes={[
+  { id: 'start', type: 'terminal', content: 'Start' },
+  { id: 'check', type: 'decision', content: 'Tests pass?' },
+  { id: 'db', type: 'database', content: 'Save results' },
+  { id: 'end', type: 'terminal', content: 'Done' },
+]}
+relations={['start->check', 'check->|yes|db', 'db->end']}
+nodeTypes={{
+  terminal: flowNodeRenderer('terminal'),
+  decision: flowNodeRenderer('decision'),
+  database: flowNodeRenderer('database'),
+}}
+density=&#x22;spacious&#x22;
+centered
+/>`"
+>
+  <FlowDiagram
+    nodes="[
+    { id: 'start', type: 'terminal', content: 'Start' },
+    { id: 'check', type: 'decision', content: 'Tests pass?' },
+    { id: 'db', type: 'database', content: 'Save results' },
+    { id: 'end', type: 'terminal', content: 'Done' },
+  ]"
+    relations="['start->check', 'check->|yes|db', 'db->end']"
+    density="spacious"
+  />
+</DiagramPreview>
+
+Props [#props]
+
+| Prop          | Type          | Default     | Description                 |
+| ------------- | ------------- | ----------- | --------------------------- |
+| `variant`     | `FlowVariant` | `"default"` | Shape variant               |
+| `highlighted` | `boolean`     | `false`     | Accent ring + scale         |
+| `dimmed`      | `boolean`     | `false`     | Reduced opacity             |
+| `className`   | `string`      | —           | Additional Tailwind classes |

@@ -1,0 +1,99 @@
+# Performance (/docs/guide/performance)
+
+
+
+Re-render Strategies [#re-render-strategies]
+
+DiaX computes topology layout and routing in JavaScript. DOM measurement and final SVG rendering
+remain on the main thread. The current packages do not silently create a Web Worker.
+
+Because DiaX utilizes standard CSS Grid for positioning nodes rather than `absolute/transform` values, browser layout recalculation is extremely batched and highly performant.
+
+Node Count Guidelines [#node-count-guidelines]
+
+| Node Count | Performance        | Recommendation                                                                      |
+| ---------- | ------------------ | ----------------------------------------------------------------------------------- |
+| 1–50       | Instant            | Default settings, no optimization needed                                            |
+| 50–200     | Fast               | Consider `measureMode="resize"` (default)                                           |
+| 200–500    | Good               | Use `measureMode="resize"`, avoid `highlightOnHover` for all nodes                  |
+| 500+       | Measure long tasks | Consider the explicit ELK adapter; worker execution is not yet a built-in interface |
+
+The built-in planner uses linear rank assignment followed by a fixed number of stable
+crossing-minimization sweeps. Layer ordering uses an inversion count instead of comparing every
+edge pair. Obstacle-aware gate selection only scores routes from the same rank transition, and only
+while that transition contains at most 16 already-planned routes. Denser transitions keep a
+deterministic obstacle-aware gate without unbounded pairwise scoring.
+
+This is a bounded visual heuristic, not a promise that every planner stage has one universal
+complexity or millisecond figure. Measure representative graphs in your own browser and device
+class. If a few rank transitions are exceptionally dense, or the graph needs compound boundaries
+and strict port ordering, use the explicit ELK adapter.
+
+Worker evaluation [#worker-evaluation]
+
+`pnpm perf:layout:worker` compares main-thread execution with a warm Node worker and separately
+measures definition, measured-geometry, `LayoutPlan` clone, and final render costs. Representative
+local Node 22 runs on 2026-07-24, after bounded obstacle-gate routing was enabled, found:
+
+| Fixture                   |      Main total | Warm worker round trip | Final render after worker | Plan returned to main |
+| ------------------------- | --------------: | ---------------------: | ------------------------: | --------------------: |
+| 500 nodes / 1,000 edges   |   about 70–71ms |          about 63–68ms |               about 3–4ms |                 656KB |
+| 1,000 nodes / 2,000 edges | about 135–139ms |        about 133–142ms |                 about 4ms |                1.30MB |
+
+The warm-worker round trip excludes the final main-thread SVG geometry render shown in the next
+column. At 500 nodes it can move the layout long task off the main thread while ending at roughly
+the same total latency; at 1,000 nodes the measured end-to-end path is slower. It also adds
+clone/memory cost. DiaX therefore does not expose `worker: true` today. A future worker adapter must
+be a separately loaded leaf, reuse a warm worker, discard stale versioned results, and prove browser
+long-task improvement. Its messages must contain only serializable IDs, endpoints and measured
+numbers—not React nodes or event callbacks. Connect must remain independent from it.
+
+The Measure Mode Cost [#the-measure-mode-cost]
+
+During initialization or node resizing, DiaX relies on DOM dimension measurements to place SVG edges exactly at the node boundary.
+
+If using the default config, `measureMode` is `"resize"` (backed by a native `ResizeObserver`).
+
+```tsx
+<FlowDiagram measureMode="resize" /> // [!code highlight]
+```
+
+If your node styles load lazily (e.g. late fonts, images without strict dimensions), the node size will pop, making edges appear misaligned initially.
+You can bump the engine to `"auto"` which binds `MutationObserver` alongside `animationend` hooks for highly dynamic internal content.
+
+Using `"continuous"` binds a `requestAnimationFrame` polling loop. It can keep endpoints attached
+during active motion, but it does not improve graph ordering or edge routing and it consumes CPU
+for as long as it is enabled. &#x2A;*Only use continuous while a node is actively being dragged, then
+return to `"resize"` or `"auto"`.**
+
+MeasureMode Decision Guide [#measuremode-decision-guide]
+
+| Mode           | Observer                              | CPU     | Best For                             |
+| -------------- | ------------------------------------- | ------- | ------------------------------------ |
+| `"resize"`     | ResizeObserver                        | Lowest  | Static diagrams, SSR pages           |
+| `"auto"`       | + MutationObserver + animation events | Medium  | Stagger animations, dynamic content  |
+| `"continuous"` | + requestAnimationFrame loop          | Highest | Drag interactions, real-time updates |
+
+Stagger Animation Performance [#stagger-animation-performance]
+
+When `stagger` is enabled, DiaX auto-upgrades `measureMode` to `"auto"` to capture animation-end events. The stagger overhead is proportional to the number of columns (not nodes):
+
+* Each column triggers one `setTimeout` + one re-measure
+* For a 10-column diagram with 100ms stagger delay: \~1s total animation time
+
+SSR Initialization [#ssr-initialization]
+
+If rendering on the server, the backend doesn't possess HTML DOM metrics. Diagram calculations are strictly bypassed until the first `useEffect / onMount`.
+
+To avoid layout shift, define strict `min-height / min-width` on your nodes using CSS so that the layout pre-computes without waiting for asynchronous font loading.
+
+Bundle Size Optimization [#bundle-size-optimization]
+
+The core `diax` package is tree-shakeable. If you only need layout computation without edge rendering:
+
+```ts
+// Imports the Core Diagram computation interface without React or Mermaid.
+import { computeLayout } from 'diax';
+```
+
+For the full breakdown of package sizes, see the [Packages section](/) on the homepage.

@@ -1,0 +1,178 @@
+# Agent-first Workflow (/docs/guide/agent-workflow)
+
+
+
+Start with the explanation the reader needs, not with a package or diagram family. DiaX gives an
+agent a bounded path from intent to a reproducible web artifact while the application keeps control
+of trust, presentation and delivery.
+
+```text
+question
+  -> choose layout owner and trust boundary
+  -> generate one bounded first artifact
+  -> validate the exact authoring path
+  -> repair diagnosed subjects only
+  -> inspect the exact built preview
+  -> review at the final use size
+  -> export or share with artifact truth
+```
+
+This is one handoff journey across existing interfaces. It is not a new mode, workflow API or DiaX
+CLI.
+
+1\. State the communication job [#1-state-the-communication-job]
+
+Give the agent the audience, the question the visual must answer and the destination. "Explain why
+the launch decision is supported" is actionable. "Make an architecture diagram" leaves hierarchy,
+evidence and reading order unspecified.
+
+Then choose one existing recipe in the [AI Cookbook](/docs/guide/ai-cookbook). Reuse an existing
+semantic Presentation role only when it matches the content; do not invent a component type for each
+noun in the prompt.
+
+2\. Choose layout owner and trust boundary [#2-choose-layout-owner-and-trust-boundary]
+
+These are separate decisions:
+
+| Source and job                                     | Layout owner            | Trust boundary               | Generate                                    |
+| -------------------------------------------------- | ----------------------- | ---------------------------- | ------------------------------------------- |
+| Topology is data                                   | DiaX Diagram            | Untrusted runtime input      | Constrained JSON with object relations      |
+| Reviewed report, comparison or product composition | Application CSS         | Trusted repository source    | Connect JSX/HTML with centralized relations |
+| Existing supported Mermaid source                  | DiaX after import       | Text parser diagnostics      | Mermaid text, then import                   |
+| Reviewed Markdown build                            | Host MDX/build pipeline | Executable repository source | MDX plus build diagnostics                  |
+
+Do not add manual positions to Diagram output or ask generated data to repair bend points. Do not
+compile arbitrary model-produced JSX or MDX at an untrusted runtime boundary. The
+[AI Integration guide](/docs/guide/ai-integration) contains the complete parsing and allowlist
+contract.
+
+3\. Bound the first artifact [#3-bound-the-first-artifact]
+
+A useful first candidate normally has one primary reading path, 8–12 primary items or fewer, and
+only branches that explain the question. This is authoring guidance, not a runtime limit. Start
+smaller when the answer is smaller.
+
+Require stable, short semantic IDs. Keep relation data centralized. Ask for a complete candidate,
+but not for a complete universe: ornamental clusters, vendor identity, edge styling and secondary
+metadata can follow after the structure proves useful.
+
+4\. Validate the path that will ship [#4-validate-the-path-that-will-ship]
+
+Validation depends on the authoring boundary:
+
+* JSON: validate the parsed `unknown` value against an application schema, then run
+  `validateDiagram()` for graph diagnostics.
+* Connect JSX or trusted MDX: type-check and build the real host, then verify every relation target is
+  present in the rendered DOM.
+* Mermaid: keep importer diagnostics and reject unsupported families or syntax instead of guessing.
+* Remark: surface structured VFile diagnostics in live preview and fail the production build under
+  the host's selected strict policy.
+
+This small boundary is safe to reuse after application-level structural validation:
+
+```ts contract
+import {
+  DiaxValidationError,
+  type DiaxEdge,
+  type DiaxNode,
+  validateDiagram,
+} from 'diax';
+
+export interface AcceptedDiagram {
+  nodes: DiaxNode<string>[];
+  relations: DiaxEdge<string>[];
+}
+
+export function acceptDiagram(candidate: AcceptedDiagram): AcceptedDiagram {
+  const diagnostics = validateDiagram(candidate.nodes, candidate.relations);
+  if (diagnostics.some(diagnostic => diagnostic.severity === 'error')) {
+    throw new DiaxValidationError(diagnostics);
+  }
+  return candidate;
+}
+```
+
+Do not pass arbitrary parsed JSON directly to this function. Structural limits, allowlists and
+resource policy remain application responsibilities.
+
+5\. Repair only diagnosed subjects [#5-repair-only-diagnosed-subjects]
+
+Return diagnostic `code`, `path`, `message` and `hint` to the agent. Preserve valid IDs and content,
+change the smallest invalid subject, then run the same validation again with a small retry limit.
+
+DiaX's Playground and first-success benchmark derive a private repair protocol from those same
+public diagnostics. For each diagnostic code it records four product-level facts: what valid work
+must be preserved, the exact repair scope, one supported action and the validation stage to retry.
+This keeps interactive guidance and agent evaluation consistent without adding repair policy to the
+public `DiaxDiagnostic` interface. Applications can follow the same discipline with their own domain
+rules; they should continue treating `hint` as the portable public suggestion.
+
+Do not replace a graph because one endpoint is missing. Do not expose dummy nodes, waypoints or
+routing knobs as repair controls. If the composition is wrong rather than invalid, revise the
+communication structure or choose the correct layout owner.
+
+Repair in dependency order so a later visual symptom is not patched over an earlier structural
+cause:
+
+1. schema, IDs, missing endpoints and unsupported input;
+2. node or group overlap and the wrong layout owner;
+3. paths through unrelated nodes and backward endpoint direction;
+4. crossings, shared corridors, group-border runs and cramped route rhythm;
+5. label clearance, clipping and final reading-size legibility.
+
+The last three stages are maintainer/golden-artifact evidence from the private browser receipt, not
+runtime authoring options. An agent should revise topology or composition and rerender; it should not
+invent a bend point merely to silence one visual finding.
+
+6\. Inspect the exact built preview [#6-inspect-the-exact-built-preview]
+
+Source that compiles is not yet the artifact. Preview the package entries, fonts, CSS and framework
+host that will actually render it. The Playground's **Live**, **Updating** and **Last good** states
+make this distinction explicit: only **Live** represents the current source revision committed and
+painted in the preview iframe.
+
+[Open the Playground →](/playground)
+
+When the artifact depends on a consumer application, build that application. A fixture rendered
+from workspace source cannot prove that a packed package, remote chunk or production CSS path works.
+
+7\. Review at the final use size [#7-review-at-the-final-use-size]
+
+Use the [Visual Constitution](/docs/guide/visual-constitution) as the shared review contract. Check
+reading order, long content, edge and group labels, narrow width, keyboard access, dark and forced
+color behavior, reduced motion and the intended destination size.
+
+A Showcase thumbnail proves selection-scale recognition. It does not prove that body text is
+readable. A Playwright engine proves its captured browser facts. It does not prove hardware Safari,
+screen-reader comprehension, a projector or print.
+
+8\. Export or share with truth [#8-export-or-share-with-truth]
+
+Prefer live DOM when the destination supports it. Use PNG for portable snapshots, browser print/PDF
+for documents and SVG with `<foreignObject>` only for compatible web-aware destinations.
+
+Export the current **Live** artifact, not an older successful preview under a newer source identity.
+Keep its source/artifact hashes and human-review status with the receipt. A receipt proves identity
+and named checks; it does not certify correctness or taste. See
+[Export DOM Visuals](/docs/guide/exporting) for the complete capture contract.
+
+Handoff definition of done [#handoff-definition-of-done]
+
+| Stage      | Evidence to hand off                                                               |
+| ---------- | ---------------------------------------------------------------------------------- |
+| Intent     | Audience, question and destination                                                 |
+| Ownership  | Diagram or Connect decision plus executable/untrusted boundary                     |
+| Candidate  | Bounded source with stable IDs and centralized relations                           |
+| Validation | Structural/build result plus intact DiaX diagnostics                               |
+| Preview    | Exact current revision rendered by the intended host                               |
+| Review     | Named viewport, interaction, accessibility and destination checks                  |
+| Delivery   | Live link or artifact bytes tied to source identity; remaining human review stated |
+
+Reuse the existing context [#reuse-the-existing-context]
+
+* [AI Authoring Context](/docs/guide/skills) — the checked-in Skill router and evidence boundary
+* [AI Integration](/docs/guide/ai-integration) — untrusted JSON, validation and repair
+* [AI Cookbook](/docs/guide/ai-cookbook) — question-first Diagram and Connect recipes
+* [Playground](/playground) — current-revision preview, diagnostics and export
+* [Export DOM Visuals](/docs/guide/exporting) — artifact and receipt truth
+* [Package Entry Points](/docs/reference/package-entry-points) — exact loading boundaries

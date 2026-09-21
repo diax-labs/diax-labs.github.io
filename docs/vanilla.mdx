@@ -1,0 +1,82 @@
+# Vanilla JS Guide (/docs/vanilla)
+
+
+
+<InstallTabs packages="['@diax/vanilla']" description="Vanilla JS bindings (zero framework dependencies)" />
+
+Progressive API [#progressive-api]
+
+DiaX provides three levels of control via the imperative `createDiagram` API. Choose based on your needs:
+
+| Layer | API                                       | Best for                               |
+| ----- | ----------------------------------------- | -------------------------------------- |
+| 1     | `createDiagram(el, { nodes, relations })` | Quick usage, zero config, prototyping  |
+| 2     | `createDiagram(el, { renderNode })`       | Custom styling with your design system |
+| 3     | `getLayout()` / `getEdges()`              | Full headless control, library authors |
+
+***
+
+createDiagram [#creatediagram]
+
+The `createDiagram` function creates a diagram inside a container element:
+
+```html title="index.html"
+<div id="diagram" style="background: #050506; padding: 40px;"></div>
+
+<script type="module">
+  import { createDiagram } from '@diax/vanilla';
+
+  const diagram = createDiagram(document.getElementById('diagram'), {
+    nodes: [
+      { id: 'a', content: 'Start' },
+      { id: 'b', content: 'Process' },
+      { id: 'c', content: 'End' },
+    ],
+    relations: ['a->b', 'b->c'],
+  });
+</script>
+```
+
+That's it — nodes are rendered with beautiful defaults, edges are drawn as SVG overlays.
+
+TypeScript callers should narrow the container before creating the diagram:
+
+```ts contract vanilla
+import { createDiagram } from '@diax/vanilla';
+
+const container = document.querySelector<HTMLElement>('#diagram');
+if (!container) throw new Error('Missing #diagram container.');
+
+const diagram = createDiagram(container, {
+  nodes: [
+    { id: 'a', content: 'Start' },
+    { id: 'b', content: 'End' },
+  ],
+  relations: ['a->b'],
+});
+
+diagram.getLayout();
+```
+
+Configuration [#configuration]
+
+```js
+const diagram = createDiagram(container, {
+  nodes: [...],
+  relations: [...],
+  direction: 'vertical',          // 'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse'
+  theme: 'github',                // 'linear' | 'light' | 'notion' | 'github'
+  highlightOnHover: true,         // Highlight connected paths on hover
+  pathType: 'bezier',             // 'bezier' | 'straight' | 'orthogonal'
+});
+```
+
+***
+
+Next Steps [#next-steps]
+
+* [Custom Rendering](/docs/vanilla/custom-rendering) — Custom DOM rendering with `renderNode` callback and node states
+* [Lifecycle](/docs/vanilla/lifecycle) — Update, destroy, and inspect diagram instances
+* [Edge Types](/docs/vanilla/edges) — Edge animations, path types, and hover highlighting
+* [Advanced](/docs/vanilla/advanced) — DOM ID namespaces and mindmap layout
+* [API Reference](/docs/vanilla/props) — Configuration options and instance methods

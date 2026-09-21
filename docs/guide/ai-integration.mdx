@@ -1,0 +1,302 @@
+# AI Integration (/docs/guide/ai-integration)
+
+
+
+Choose the Trust Boundary First [#choose-the-trust-boundary-first]
+
+DiaX gives an AI two useful output modes with different security properties:
+
+* **Untrusted or automated output:** generate JSON with string content and object-form edges, validate
+  it, then pass the validated fields to DiaX.
+* **Trusted authored output:** generate or edit MDX/JSX in a reviewed code workflow, where normal React
+  components and Tailwind classes can provide richer presentation.
+
+<Callout type="warn">
+  MDX and JSX are executable code, not a safe serialization format. Never compile, import or evaluate
+  model-generated MDX/JSX from an untrusted request inside your application process. Use JSON for that
+  boundary, or run code generation in a reviewed and appropriately sandboxed workflow.
+</Callout>
+
+***
+
+LLM JSON → FlowDiagram [#llm-json--flowdiagram]
+
+Ask the model for a constrained JSON object. Prefer object-form edges: `from`, `to` and `label` remain
+separate fields, so a validator and a repair loop can identify the exact failure without reparsing a
+compact string.
+
+```json title="LLM Output"
+{
+  "nodes": [
+    { "id": "browser", "content": "Browser" },
+    { "id": "api", "content": "API Server" },
+    { "id": "db", "content": "Database" }
+  ],
+  "relations": [
+    { "from": "browser", "to": "api", "label": "HTTPS" },
+    { "from": "api", "to": "db", "label": "SQL" }
+  ]
+}
+```
+
+Treat parsed JSON as `unknown`. Validate its structure with an application-owned JSON Schema, Zod,
+Valibot or equivalent, then use DiaX validation for graph-level problems such as duplicate IDs and
+missing endpoints:
+
+DiaX publishes a baseline schema at `diax/schemas/diax.json`. An AI-facing schema should usually be
+narrower—for example, require object-form edges and a small allowlist of node types.
+
+```tsx contract
+import {
+  DiaxValidationError,
+  type DiaxEdge,
+  type DiaxNode,
+  validateDiagram,
+} from 'diax';
+import { FlowDiagram } from '@diax/react';
+
+interface GeneratedDiagram {
+  nodes: DiaxNode<string>[];
+  relations: DiaxEdge<string>[];
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function parseGeneratedDiagram(modelText: string): GeneratedDiagram {
+  const candidate: unknown = JSON.parse(modelText);
+  if (!isRecord(candidate) || !Array.isArray(candidate.nodes) || !Array.isArray(candidate.relations)) {
+    throw new Error('Expected an object with nodes and relations arrays.');
+  }
+  if (candidate.nodes.length > 50 || candidate.relations.length > 100) {
+    throw new Error('Generated diagram exceeds the 50-node or 100-relation limit.');
+  }
+
+  const nodes = candidate.nodes.map((node, index): DiaxNode<string> => {
+    if (!isRecord(node) || typeof node.id !== 'string' || typeof node.content !== 'string') {
+      throw new Error(`nodes[${index}] requires string id and content fields.`);
+    }
+    return { id: node.id, content: node.content };
+  });
+
+  const relations = candidate.relations.map((relation, index): DiaxEdge<string> => {
+    if (!isRecord(relation) || typeof relation.from !== 'string' || typeof relation.to !== 'string') {
+      throw new Error(`relations[${index}] requires string from and to fields.`);
+    }
+    if (relation.label !== undefined && typeof relation.label !== 'string') {
+      throw new Error(`relations[${index}].label must be a string when present.`);
+    }
+    return {
+      from: relation.from,
+      to: relation.to,
+      ...(relation.label === undefined ? {} : { label: relation.label }),
+    };
+  });
+
+  return { nodes, relations };
+}
+
+export function GeneratedFlow({ modelText }: { modelText: string }) {
+  const diagram = parseGeneratedDiagram(modelText);
+  const diagnostics = validateDiagram(diagram.nodes, diagram.relations);
+
+  if (diagnostics.some(diagnostic => diagnostic.severity === 'error')) {
+    throw new DiaxValidationError(diagnostics);
+  }
+
+  return <FlowDiagram nodes={diagram.nodes} relations={diagram.relations} />;
+}
+```
+
+The example deliberately implements a narrow product schema so it runs without a hidden validator.
+In a larger application, replace `parseGeneratedDiagram()` with Ajv, Zod, Valibot or an equivalent
+runtime validator. Keep the same product-specific limits and allowlists. React escapes string
+content, but validation is still required for correctness, resource limits and application policy.
+
+***
+
+Trusted MDX + Tailwind + DiaX [#trusted-mdx--tailwind--diax]
+
+For repository content that is code-reviewed and built like the rest of the application, AI can draft
+complete MDX pages with embedded DiaX diagrams styled with Tailwind:
+
+```mdx title="ai-generated-page.mdx"
+import { FlowDiagram } from '@diax/react';
+
+# System Architecture
+
+<FlowDiagram
+  nodes={[
+    {
+      id: 'api',
+      content: (
+        <div className="px-4 py-2 bg-blue-500/10 rounded-xl border border-blue-500/20 text-blue-300">
+          API Gateway
+        </div>
+      ),
+    },
+    { id: 'auth', content: 'Auth Service' },
+    { id: 'db', content: 'PostgreSQL' },
+  ]}
+  relations={[
+    { from: 'api', to: 'auth', label: 'gRPC' },
+    { from: 'auth', to: 'db', label: 'Query' },
+  ]}
+  theme="light"
+  density="spacious"
+/>
+```
+
+This pattern works because:
+
+* **DiaX topology is data-driven** — IDs, nodes and object edges are easy to validate and repair.
+* **Tailwind classes are composable** — trusted source can use an existing design system.
+* **MDX combines prose and JSX** — useful in a reviewed authoring pipeline, not as an untrusted runtime payload.
+
+***
+
+AI Agent Best Practices [#ai-agent-best-practices]
+
+1\. Default to object edges [#1-default-to-object-edges]
+
+Object edges cost a few more tokens but produce better diagnostics and avoid escaping or delimiter
+ambiguity. Reserve the string shorthand for trusted, hand-authored diagrams where terseness matters.
+
+```ts
+// Preferred AI output: explicit fields are easy to validate and repair.
+relations: [
+  { from: 'a', to: 'b' },
+  { from: 'b', to: 'c' },
+  { from: 'c', to: 'd', label: 'output' },
+]; // [!code highlight]
+
+// Concise shorthand remains available for trusted source.
+relations: ['a->b', 'b->c', 'c->|output|d'];
+```
+
+2\. Keep rendering choices application-owned [#2-keep-rendering-choices-application-owned]
+
+Register a small allowlist of `nodeTypes` and themes in application code. Let the model select a known
+type or preset; do not let untrusted JSON inject arbitrary JSX, imports or component names.
+
+```tsx
+<FlowDiagram theme="notion" nodes={nodes} relations={relations} />
+```
+
+3\. Do not let the model invent vendor identity [#3-do-not-let-the-model-invent-vendor-identity]
+
+Treat a provider or product mark as optional presentation, not graph semantics. The model may select
+an application-approved provider ID only when the source text names it unambiguously. Application
+code maps that ID to a trusted `NodeCard.icon`, `ActorNode.avatar` or `nodeTypes` renderer.
+
+Use these generation rules:
+
+```text
+Allowed provider IDs: sourceHost, cloudPrimary.
+Emit a provider ID only when the request names an exact allowlisted provider.
+If identity is missing or uncertain, omit the provider ID.
+Never emit an icon import, SVG payload, data URL or remote logo URL.
+Keep the visible node name and semantic type meaningful without the mark.
+```
+
+Icons and avatars should normally be decorative (`aria-hidden="true"`); the visible node name owns
+the accessible identity. The application owns the asset source, license/trademark review, targeted
+import and bundle cost. DiaX does not fetch logos or ship a vendor catalogue. See the
+[vendor identity recipe](/docs/ui-react/presentation-recipes#vendor-identity-decorates-a-semantic-role)
+for a compiled `nodeTypes` example with an explicit fallback.
+
+4\. Choose one layout owner [#4-choose-one-layout-owner]
+
+When the model is explaining topology, generate a Diagram Definition and let DiaX place it. Do not
+smuggle manual positions into an automatic Diagram:
+
+```tsx
+// Good — let DiaX compute positions
+<FlowDiagram nodes={nodes} relations={relations} density="spacious" /> // [!code highlight]
+
+// Avoid — manual positioning is fragile
+<FlowDiagram nodes={nodes.map(n => ({ ...n, position: { col: 1, row: 1 } }))} /> // [!code --]
+```
+
+When the expression is a report, comparison, code walkthrough, mock UI or other authored
+composition, let JSX/CSS own layout and use the isolated Connect leaf for geometry:
+
+```tsx
+import { ConnectionSurface, connectionTarget } from '@diax/react/connect';
+
+<ConnectionSurface relations={[{ from: 'claim', to: 'evidence', label: 'because' }]}>
+  <section {...connectionTarget('claim')} className="rounded-2xl border p-6">
+    <h3>Claim</h3>
+    <MetricCard />
+  </section>
+  <aside {...connectionTarget('evidence')} className="rounded-xl bg-slate-50 p-4">
+    <EvidenceTable />
+  </aside>
+</ConnectionSurface>
+```
+
+Do not combine these into a generated `mode` prop. The model should decide from the job: topology
+data → Diagram; authored DOM composition → Connect. Keep relations centralized in both cases.
+
+5\. Feed diagnostics back to the model [#5-feed-diagnostics-back-to-the-model]
+
+Keep `code`, `path`, `message` and `hint` intact when asking an agent to repair invalid output. Do not
+reduce diagnostics to one generic "diagram failed" string: field-level feedback is what makes an AI
+loop predictable.
+
+```ts contract
+import type { DiaxDiagnostic } from 'diax';
+
+export function createRepairPrompt(
+  invalidJson: string,
+  diagnostics: readonly DiaxDiagnostic[],
+): string {
+  return `Repair this DiaX Diagram JSON.
+
+Rules:
+- Return JSON only.
+- Preserve valid node IDs and content.
+- Change only fields required by the diagnostics.
+- Every relation endpoint must reference an existing node ID.
+
+Diagnostics:
+${JSON.stringify(diagnostics, null, 2)}
+
+Invalid JSON:
+${invalidJson}`;
+}
+```
+
+Run the repaired response through the same structural and graph validation again. Set a small retry
+limit and show the final diagnostics to the author instead of silently rendering a partial graph.
+
+The Playground's JSON and Mermaid editors use the same focused policy for interactive authoring:
+validate before render, preserve the first diagnostic subject and show one supported next edit. The
+projection remains private to the product surface—it is not a second public diagnostic interface,
+and it never exposes routing coordinates as an AI repair control.
+
+Internally, the Playground and Agent first-success verifier share one versioned repair catalog for
+Core diagnostic codes. It binds **preserve policy → repair scope → supported action → retry stage**
+and includes the catalog hash in verifier identity. This is evidence that DiaX's own product paths do
+not drift; it is not a catalog export, a schema extension or a requirement for application agents.
+
+***
+
+LLM-Friendly Documentation [#llm-friendly-documentation]
+
+DiaX documentation is designed for AI consumption:
+
+* **`/llms.txt`** — Machine-readable index of all documentation pages
+* **`/llms-full.txt`** — Full processed text of all pages
+* **`/docs/*.mdx`** — Per-page Markdown content via the `.mdx` extension
+* **Page Actions** — Copy Markdown and Open in AI buttons on every doc page
+
+***
+
+Next Steps [#next-steps]
+
+* [Agent-first Workflow](/docs/guide/agent-workflow) — Carry the task through built preview, visual review and artifact delivery
+* [AI Cookbook](/docs/guide/ai-cookbook) — Choose Diagram or Connect for architecture, promotion, KPI, roadmap, and comparison stories
+* [MDX Guide](/docs/guide/mdx-guide) — Complete guide to using DiaX in MDX files
+* [DSL Syntax](/docs/guide/dsl) — Complete relation DSL reference

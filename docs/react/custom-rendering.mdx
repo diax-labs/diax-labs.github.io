@@ -1,0 +1,52 @@
+# Custom Rendering (/docs/react/custom-rendering)
+
+
+
+Custom Rendering [#custom-rendering]
+
+Use `renderNode` to customize how nodes look while keeping all layout logic:
+
+```tsx
+import { FlowDiagram } from '@diax/react';
+
+<FlowDiagram
+  nodes={nodes}
+  relations={relations}
+  renderNode={(node, state) => (
+    <div
+      className={cn(
+        'px-4 py-2 rounded-xl border',
+        state === 'highlighted' && 'ring-2 ring-blue-500',
+        state === 'dimmed' && 'opacity-25',
+      )}
+    >
+      {node.content}
+    </div>
+  )}
+/>;
+```
+
+TypeScript and structured domain data [#typescript-and-structured-domain-data]
+
+`FlowDiagram` accepts renderable React content directly; it is not a generic JSX component. When
+nodes carry structured domain objects, use the typed `useDiagram<NodeContent, EdgeLabel,
+GroupLabel>()` seam and compose `DiagramCanvas`, `DiagramNode`, and `DiagramEdges`. This keeps the
+high-level component simple while preserving strict payload types for custom renderers. See
+[Headless Hooks](/docs/react/hooks#independent-payload-types).
+
+Node States [#node-states]
+
+The `state` parameter in `renderNode` tells you the current interaction state:
+
+| State           | When              | Suggested style  |
+| --------------- | ----------------- | ---------------- |
+| `undefined`     | Default           | Normal           |
+| `"highlighted"` | On hover path     | Ring/glow effect |
+| `"dimmed"`      | Not on hover path | Reduced opacity  |
+
+Stagger Animation [#stagger-animation]
+
+```tsx
+<FlowDiagram stagger />        // Default 120ms delay between layers
+<FlowDiagram stagger={200} />  // Custom 200ms delay
+```

@@ -1,0 +1,96 @@
+# SolidJS Guide (/docs/solid)
+
+
+
+<InstallTabs packages="[&#x22;@diax/solid&#x22;]" description="SolidJS bindings (peer dependency: solid-js >= 1.8)" />
+
+<Callout type="warn">
+  **SolidStart / SSR**: `@diax/solid` publishes server and browser conditions. SSR emits stable node
+  markup and an empty edge shell; measured paths appear after hydration. See
+  [SolidStart & SSR](/docs/solid/solidstart).
+</Callout>
+
+Progressive API [#progressive-api]
+
+DiaX provides three levels of control. Choose based on your needs:
+
+| Layer | API                              | Best for                               |
+| ----- | -------------------------------- | -------------------------------------- |
+| 1     | `<FlowDiagram>` / `<Mindmap>`    | Quick usage, AI output, prototyping    |
+| 2     | `<FlowDiagram renderNode={...}>` | Custom styling with your design system |
+| 3     | `useDiagram()` hook              | Full headless control, library authors |
+
+***
+
+Quick Start [#quick-start]
+
+The simplest way to use DiaX — just pass nodes and relations:
+
+```tsx contract solid
+import { FlowDiagram } from '@diax/solid';
+
+function MyDiagram() {
+  return (
+    <FlowDiagram
+      nodes={[
+        { id: 'client', content: 'Browser' },
+        { id: 'api', content: 'API Server' },
+        { id: 'db', content: 'Database' },
+      ]}
+      relations={[
+        'client->|HTTPS|api',
+        'api->|SQL|db',
+      ]}
+      density="comfortable"
+    />
+  );
+}
+```
+
+Density [#density]
+
+Control spacing with the `density` prop:
+
+| Value           | Description                             |
+| --------------- | --------------------------------------- |
+| `"compact"`     | Tight spacing, good for inline diagrams |
+| `"comfortable"` | Default, balanced spacing               |
+| `"spacious"`    | Wide spacing, good for presentations    |
+
+Direction [#direction]
+
+```tsx
+<FlowDiagram direction="horizontal" />         // Left to right (default)
+<FlowDiagram direction="vertical" />            // Top to bottom
+<FlowDiagram direction="horizontal-reverse" />  // Right to left
+<FlowDiagram direction="vertical-reverse" />    // Bottom to top
+```
+
+| Value                  | Description                    |
+| ---------------------- | ------------------------------ |
+| `"horizontal"`         | Left to right (default)        |
+| `"vertical"`           | Top to bottom                  |
+| `"horizontal-reverse"` | Right to left (RTL flows)      |
+| `"vertical-reverse"`   | Bottom to top (upstream flows) |
+
+Layout Algorithms [#layout-algorithms]
+
+Use the dedicated component for each layout type:
+
+```tsx
+import { FlowDiagram, Mindmap } from '@diax/solid';
+
+<FlowDiagram nodes={...} relations={...} />  // DAG layout
+<Mindmap nodes={...} relations={...} />       // Center-outward radial
+```
+
+***
+
+Next Steps [#next-steps]
+
+* [Custom Rendering](/docs/solid/custom-rendering) — Customize node appearance with `renderNode`, `nodeTypes`, and stagger animation
+* [useDiagram Hook](/docs/solid/hooks) — Full headless control with Solid's fine-grained reactivity
+* [Edge Types](/docs/solid/edges) — DSL syntax, animations, path types, and custom labels
+* [Advanced](/docs/solid/advanced) — Mindmap layout and DOM ID namespaces
+* [SolidStart & SSR](/docs/solid/solidstart) — Stable server markup and measured edges after hydration
+* [Props Reference](/docs/solid/props) — Complete options and return values reference

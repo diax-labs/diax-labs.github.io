@@ -1,0 +1,302 @@
+# Presentation Recipes (/docs/ui-react/presentation-recipes)
+
+
+
+
+
+Keep presentation in JSX [#keep-presentation-in-jsx]
+
+Promotion reviews, architecture briefs, blog figures and AI-generated explanations rarely consist of
+one graph. They combine claims, metrics, code, evidence, decisions and a few relationships. Keep that
+composition as semantic HTML and CSS; use Connect only for the relations that materially improve the
+story.
+
+<Callout type="info">
+  These complete compositions remain copy-owned recipes. Their recurring inner roles can now use
+  [`@diax/ui-react/presentation` Presentation Nodes](/docs/ui-react/presentation-nodes), while report-specific
+  wording, grids and system boundaries stay in your application.
+</Callout>
+
+<DiagramPreview title="Evidence ledger" description="A responsive claim → evidence → decision composition over real DOM" code="presentationRecipeCode">
+  <PresentationRecipePreview />
+</DiagramPreview>
+
+The signature is not a generic dashboard card. It is an evidence ledger: every visual block has one
+role, visible provenance language and a reviewable relationship to the next decision. The authored
+DOM still controls the reading order when edges are absent, loading or suppressed by print tooling.
+
+System boundary brief [#system-boundary-brief]
+
+Architecture explanations have a different job: show where ownership changes without flattening
+every layer, actor and panel into one graph model.
+
+<DiagramPreview title="System boundary brief" description="External input → owned control plane → durable evidence" code="systemBoundaryRecipeCode">
+  <SystemBoundaryRecipePreview />
+</DiagramPreview>
+
+The green enclosure is an ordinary semantic `<section>`, not a DiaX Group. Its heading, rail,
+internal grid and responsive behavior belong to authored HTML/CSS. Only the four cards that act as
+relation endpoints use `connectionTarget()`. This keeps “system boundary” in the application's
+domain vocabulary without adding a second containment or layout model to Connect.
+
+For an AI author, state that distinction explicitly:
+
+```text
+Create a React architecture brief with one external actor, one owned system boundary,
+two internal responsibilities and one evidence sink.
+
+Layout owner: authored JSX/CSS. The system boundary is a semantic section, not a graph node.
+Connect only these exact targets: deploy job → artifact intake → promotion decision → ledger.
+Keep relation labels short, preserve that DOM reading order at 320 px, and make ownership
+understandable when all arrows are hidden.
+```
+
+Timeline: chronology is an ordered list [#timeline-chronology-is-an-ordered-list]
+
+<DiagramPreview title="Rollout timeline" description="An ordered narrative composed from StageNode, without a timeline mode" code="timelineRecipeCode">
+  <TimelineRecipePreview />
+</DiagramPreview>
+
+Use an `<ol>` when the reader must understand order even if CSS, color or connectors disappear.
+`StageNode` owns each phase's visible status and owner; the list owns chronology. Dates, milestones,
+duration scales and dependency graphs vary too much across roadmaps, migrations and incident reviews
+to justify a public `Timeline` component today.
+
+Comparison: preserve the two-dimensional question [#comparison-preserve-the-two-dimensional-question]
+
+<DiagramPreview title="Rendering strategy comparison" description="A native comparison table followed by a reviewable DecisionNode" code="comparisonRecipeCode">
+  <ComparisonRecipePreview />
+</DiagramPreview>
+
+Comparisons are not graphs by default. Use `<table>`, column and row scopes, a caption, and a focused
+internal scroll region on narrow screens. Highlighting a recommended column is useful decoration;
+the visible “Recommended” text and following `DecisionNode` carry the conclusion. Before/after stories
+with only two narrative panels may use two articles instead, but should not pretend to be a matrix.
+
+Swimlane: authored ownership, measured handoffs [#swimlane-authored-ownership-measured-handoffs]
+
+<DiagramPreview title="Incident response swimlane" description="Named team sections with Connect measuring only cross-lane handoffs" code="swimlaneRecipeCode">
+  <SwimlaneRecipePreview />
+</DiagramPreview>
+
+A lane is a responsibility boundary, not another DiaX topology object. Keep it as a named `<section>`
+and place real DOM tasks inside it. Connect the few handoffs that help the reader follow the response.
+At narrow widths the sections stack in source order, preserving Security → Platform → Release without
+requiring mobile coordinates or alternate relations.
+
+These recipes also expose three different design decisions that a generic component would hide:
+
+| Recipe     | Native structure             | What DiaX owns                                    |
+| ---------- | ---------------------------- | ------------------------------------------------- |
+| Timeline   | `<ol>`                       | Nothing unless cross-stage dependencies add value |
+| Comparison | `<table>` + decision article | Nothing; this is document semantics               |
+| Swimlane   | Named `<section>` lanes      | Target measurement and handoff connectors         |
+
+Why these stay recipes [#why-these-stay-recipes]
+
+| Concern                               | Owner                 | Reason                                                         |
+| ------------------------------------- | --------------------- | -------------------------------------------------------------- |
+| Claim, metric and decision wording    | Application           | Product language differs across reports                        |
+| Grid, typography and responsive order | Application CSS       | Presentation hierarchy is the authored content                 |
+| Trust or system boundary enclosure    | Application DOM/CSS   | Ownership vocabulary and nesting differ across products        |
+| Target measurement and edge lifecycle | `@diax/react/connect` | Repeated browser complexity belongs behind a deep interface    |
+| Relation validation and diagnostics   | DiaX                  | Topology should remain reviewable by people, TypeScript and AI |
+| Export, page size and brand fonts     | Report workflow       | These policies are not graph semantics                         |
+
+Deleting the application-owned composition removes its report-specific hierarchy. Deleting Connect
+would push DOM measurement, observers, anchors, SVG layers and cleanup into every report. The
+recurring metric, evidence, risk, actor, stage, system and store roles have graduated into
+Presentation Nodes; the evidence-ledger and system-boundary compositions deliberately have not.
+
+Semantic structure first [#semantic-structure-first]
+
+Use native elements before styling hooks:
+
+* `<figure>` and `<figcaption>` describe one exportable visual;
+* `<article>` owns a claim that can stand alone;
+* `<dl>`, `<dt>` and `<dd>` preserve metric name/value semantics;
+* `<aside>` contains the resulting recommendation or constraint;
+* `<section aria-labelledby>` gives an authored system boundary a durable accessible name;
+* `connectionTarget()` marks the exact existing element DiaX should measure.
+
+Do not turn every caption, badge or metric into a graph node. A target is a measured endpoint, not a
+new content taxonomy.
+
+Vendor identity decorates a semantic role [#vendor-identity-decorates-a-semantic-role]
+
+A provider logo answers &#x2A;*whose product is this?** It does not answer &#x2A;*what does this node do?**
+Choose `ActorNode`, `SystemNode`, `ArtifactNode` or another semantic role first. Use `NodeCard` only
+when the application has a real role that does not match one of those components; then add an
+application-owned mark through `icon`. A person's or team's approved portrait can use
+`ActorNode.avatar` under the same policy.
+
+The visible title remains the accessible identity. Treat a familiar mark as decoration, hide it from
+the accessibility tree, and never make a reader infer “GitHub”, “AWS” or another vendor from color or
+shape alone. The application—not DiaX—owns the icon import, allowlist, source, license/trademark
+review and bundle cost.
+
+```tsx contract
+import { FlowDiagram } from '@diax/react';
+import { NodeCard, SystemNode } from '@diax/ui-react/presentation';
+
+function RepositoryMark() {
+  return (
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="20" height="20">
+      <circle cx="12" cy="12" r="9" fill="currentColor" />
+    </svg>
+  );
+}
+
+const providerAllowlist = {
+  sourceHost: {
+    label: 'Approved source host',
+    icon: <RepositoryMark />,
+  },
+} as const;
+
+export function ProviderTopology() {
+  return (
+    <FlowDiagram
+      nodes={[
+        { id: 'repo', type: 'provider', content: 'sourceHost' },
+        { id: 'build', type: 'system', content: 'Build service' },
+      ]}
+      relations={[{ from: 'repo', to: 'build', label: 'verified source' }]}
+      nodeTypes={{
+        provider: (node, state) => {
+          const key = typeof node.content === 'string' ? node.content : '';
+          const provider = key === 'sourceHost' ? providerAllowlist.sourceHost : undefined;
+          return (
+            <NodeCard
+              eyebrow="Source provider"
+              title={provider?.label ?? 'External source'}
+              description={provider ? 'Approved application asset' : 'Vendor identity not verified'}
+              icon={provider?.icon}
+              highlighted={state === 'highlighted'}
+              dimmed={state === 'dimmed'}
+            />
+          );
+        },
+        system: (node, state) => (
+          <SystemNode
+            name={node.content}
+            kind="Owned responsibility"
+            highlighted={state === 'highlighted'}
+            dimmed={state === 'dimmed'}
+          />
+        ),
+      }}
+    />
+  );
+}
+```
+
+The generated definition selects only the allowlisted `sourceHost` ID. It cannot provide an import,
+SVG payload or logo URL. When the ID is absent or unknown, the renderer keeps the semantic fallback
+and omits the mark; it does not search the network or guess a visually similar vendor.
+
+Do not add `brand` to the shared graph schema. Vendor identity is optional presentation metadata in
+trusted application code. Topology, role, visible name and provenance must remain meaningful when
+every logo is removed.
+
+Responsive and print contract [#responsive-and-print-contract]
+
+Use auto anchors when the same authored surface changes from columns to rows. Fixed left/right
+anchors encode desktop geometry and usually become wrong at narrow widths. Budget the connector
+track from the largest expected label. These recipes keep 48px between stacked cards and 80–96px
+between columns, leaving at least 8px around their current labels.
+
+The Tailwind 4 examples use `@container` and `@min-[44rem]` utilities. The equivalent plain CSS
+keeps each recipe's authored grid explicit:
+
+```css
+:is(.visual-frame, .architecture-frame) {
+  container-type: inline-size;
+  break-inside: avoid;
+}
+
+:is(.visual-frame__story, .architecture-story) {
+  display: grid;
+  gap: 3rem;
+}
+
+@container (width >= 44rem) {
+  .visual-frame__story {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 6rem;
+  }
+
+  .architecture-story {
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 2fr) minmax(0, 0.82fr);
+    column-gap: 5rem;
+  }
+}
+
+@media print {
+  :is(.visual-frame, .architecture-frame) {
+    color: #111;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  :is(.visual-frame, .architecture-frame) :is(.diax-edge-hitbox, [data-diax-edge-action]) {
+    display: none;
+  }
+}
+```
+
+`@diax/ui-react/styles.css` already resets `DiagramFrame`, presentation nodes and badges to a
+high-contrast paper palette. The recipe still owns page size, authored tables and whether interactive
+Connect hit areas or application actions belong in the exported artifact. Browser automation checks
+computed print styles and overflow. A selected product-brief corpus additionally generates four
+bounded A4 pages, but it still cannot prove installed brand fonts or a physical print.
+
+Test at the actual destination ratio. A 16:9 presentation, an article column and an A4/PDF page have
+different line lengths and failure modes; `aspect-ratio` is a recipe constraint, not a Core option.
+
+AI authoring contract [#ai-authoring-contract]
+
+Give an agent roles and invariants rather than asking for “a beautiful chart”:
+
+```text
+Create a semantic React figure for a release decision.
+
+Layout owner: authored JSX/CSS; use @diax/react/connect only for relations.
+Reading order: claim, observed evidence, decision.
+Evidence: render metrics with dl/dt/dd and include units in visible text.
+Relations: centralized object-form definitions with stable local IDs.
+Constraints: no absolute node coordinates, no generated SVG, no arbitrary HTML,
+responsive at 320 px, printable without color, and meaningful when edges are hidden.
+```
+
+For untrusted runtime generation, do not compile model-produced JSX. Generate a schema-validated
+Diagram Definition and map allowlisted node types to trusted renderers instead. See
+[AI & Agents](/docs/guide/ai-integration).
+
+When a recipe graduates into UI React [#when-a-recipe-graduates-into-ui-react]
+
+A presentation role may become a public primitive only after it:
+
+1. appears in at least two distinct real diagram families;
+2. hides repeated accessibility, theme or interaction behavior—not only class names;
+3. remains useful inside Diagram, Connect and ordinary DOM;
+4. has forced-colors, keyboard, responsive and visual contracts;
+5. does not introduce a second topology or layout model.
+
+Until then, copy-owned JSX gives teams and AI agents more expressive freedom with less compatibility
+surface.
+
+The first graduation happened after the promotion-review corpus showed repeated implementations
+across architecture, security, i18n and rollout diagrams. See
+[Presentation Nodes](/docs/ui-react/presentation-nodes) for the resulting small interface and the
+roles that remain application-owned.
+
+Continue with [Data Model Recipes](/docs/ui-react/data-model-recipes) for relational entities,
+record states, schema evolution and query-budget evidence derived from a real SQLite design.
+
+Continue with [Product Brief Recipes](/docs/ui-react/product-brief-recipes) for outcome ledgers,
+capability scopes, reversible code evidence and friction-removal policy that do not require a graph
+runtime at all.
+
+Continue with [Export DOM Visuals](/docs/guide/exporting) when the composed DOM needs to become PNG,
+`foreignObject` SVG or a paginated print artifact.

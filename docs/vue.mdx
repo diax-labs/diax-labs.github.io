@@ -1,0 +1,107 @@
+# Vue Guide (/docs/vue)
+
+
+
+<InstallTabs packages="[&#x22;@diax/vue&#x22;]" description="Vue bindings (peer dependency: vue >= 3.3)" />
+
+<Callout type="warn">
+  **Nuxt / SSR**: `@diax/vue` renders a stable SSR shell and measures pixel edge paths after mount.
+  `<ClientOnly>` is optional for application-owned browser-only node content, not a DiaX requirement.
+  See [Nuxt & Vue SSR](/docs/vue/nuxt).
+</Callout>
+
+Progressive API [#progressive-api]
+
+DiaX provides three levels of control. Choose based on your needs:
+
+| Layer | API                                          | Best for                               |
+| ----- | -------------------------------------------- | -------------------------------------- |
+| 1     | `<FlowDiagram>` / `<Mindmap>`                | Quick usage, AI output, prototyping    |
+| 2     | `<FlowDiagram>` + scoped slots / `nodeTypes` | Custom styling with your design system |
+| 3     | `useDiagram()` composable                    | Full headless control, library authors |
+
+***
+
+Quick Start [#quick-start]
+
+The simplest way to use DiaX — just pass nodes and relations:
+
+```vue contract
+<script setup lang="ts">
+import { FlowDiagram } from '@diax/vue';
+</script>
+
+<template>
+  <FlowDiagram
+    :nodes="[
+      { id: 'client', content: 'Browser' },
+      { id: 'api', content: 'API Server' },
+      { id: 'db', content: 'Database' },
+    ]"
+    :relations="[
+      'client->|HTTPS|api',
+      'api->|SQL|db',
+    ]"
+    density="comfortable"
+  />
+</template>
+```
+
+Density [#density]
+
+Control spacing with the `density` prop:
+
+| Value           | Description                             |
+| --------------- | --------------------------------------- |
+| `"compact"`     | Tight spacing, good for inline diagrams |
+| `"comfortable"` | Default, balanced spacing               |
+| `"spacious"`    | Wide spacing, good for presentations    |
+
+Direction [#direction]
+
+```vue
+<FlowDiagram direction="horizontal" />         <!-- Left to right (default) -->
+<FlowDiagram direction="vertical" />            <!-- Top to bottom -->
+<FlowDiagram direction="horizontal-reverse" />  <!-- Right to left -->
+<FlowDiagram direction="vertical-reverse" />    <!-- Bottom to top -->
+```
+
+| Value                  | Description                    |
+| ---------------------- | ------------------------------ |
+| `"horizontal"`         | Left to right (default)        |
+| `"vertical"`           | Top to bottom                  |
+| `"horizontal-reverse"` | Right to left (RTL flows)      |
+| `"vertical-reverse"`   | Bottom to top (upstream flows) |
+
+Layout Algorithms [#layout-algorithms]
+
+Use the dedicated component for each layout type:
+
+```vue
+<script setup lang="ts">
+import { FlowDiagram, Mindmap } from '@diax/vue';
+</script>
+
+<template>
+  <FlowDiagram :nodes="nodes" :relations="relations" />  <!-- DAG layout -->
+  <Mindmap :nodes="nodes" :relations="relations" />       <!-- Center-outward radial -->
+</template>
+```
+
+
+
+Next Steps [#next-steps]
+
+<Cards>
+  <Card title="Custom Rendering" href="/docs/vue/custom-rendering" description="Customize node rendering with scoped slots and nodeTypes" />
+
+  <Card title="useDiagram Composable" href="/docs/vue/composables" description="Full headless control with Vue's useDiagram composable" />
+
+  <Card title="Edge Types" href="/docs/vue/edges" description="DSL syntax, animations, path types, and custom edge labels" />
+
+  <Card title="Advanced" href="/docs/vue/advanced" description="Stagger, highlight, mindmap, namespaces, and template patterns" />
+
+  <Card title="Nuxt 3" href="/docs/vue/nuxt" description="Using DiaX with Nuxt 3 and Vue SSR" />
+
+  <Card title="Props Reference" href="/docs/vue/props" description="Complete props, slots, and composable reference" />
+</Cards>

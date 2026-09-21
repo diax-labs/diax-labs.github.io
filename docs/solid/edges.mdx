@@ -1,0 +1,131 @@
+# Edge Types (/docs/solid/edges)
+
+
+
+Edge Types [#edge-types]
+
+String DSL [#string-dsl]
+
+```tsx
+relations={[
+  'a->b',           // Solid arrow
+  'a-->b',          // Dashed arrow
+  'a<->b',          // Bidirectional
+  'a->|label|b',    // With label
+]}
+```
+
+Object Form [#object-form]
+
+For more control, use the object form:
+
+```tsx
+relations={[
+  { from: 'a', to: 'b', style: 'dashed', color: '#E91E63' },
+  { from: 'b', to: 'c', animate: 'flow', label: 'next' },
+  { from: 'c', to: 'd', bidirectional: true },
+]}
+```
+
+Animation Presets [#animation-presets]
+
+| Preset              | Effect                         |
+| ------------------- | ------------------------------ |
+| `"flow"`            | Flowing dashes along the edge  |
+| `"pulse"`           | Breathing opacity effect       |
+| `"shimmer"`         | Light traveling along the edge |
+| `"reverse-flow"`    | Reverse flowing dashes         |
+| `"reverse-shimmer"` | Reverse shimmer                |
+
+Example with reactive animation selection:
+
+```tsx
+import { createSignal } from 'solid-js';
+import { FlowDiagram } from '@diax/solid';
+
+function AnimatedEdges() {
+  const [animation, setAnimation] = createSignal<string>('flow');
+
+  return (
+    <div>
+      <select onChange={(e) => setAnimation(e.currentTarget.value)}>
+        <option value="flow">Flow</option>
+        <option value="pulse">Pulse</option>
+        <option value="shimmer">Shimmer</option>
+        <option value="reverse-flow">Reverse Flow</option>
+        <option value="reverse-shimmer">Reverse Shimmer</option>
+      </select>
+      <FlowDiagram
+        nodes={[
+          { id: 'a', content: 'Source' },
+          { id: 'b', content: 'Target' },
+        ]}
+        relations={[
+          { from: 'a', to: 'b', animate: animation() },
+        ]}
+      />
+    </div>
+  );
+}
+```
+
+Custom Edge Labels [#custom-edge-labels]
+
+Use `renderEdgeLabel` to customize how edge labels are rendered:
+
+```tsx
+<FlowDiagram
+  nodes={nodes}
+  relations={[
+    'client->|REST|api',
+    'api->|SQL|db',
+  ]}
+  renderEdgeLabel={(label) => (
+    <span class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-mono">
+      {label}
+    </span>
+  )}
+/>
+```
+
+***
+
+Edge Path Types [#edge-path-types]
+
+Control how edges are drawn with the `pathType` prop:
+
+Bezier (default) [#bezier-default]
+
+Smooth cubic bezier curves — the default and most common style:
+
+```tsx
+<FlowDiagram
+  nodes={nodes}
+  relations={relations}
+  pathType="bezier"
+/>
+```
+
+Straight [#straight]
+
+Direct straight lines between nodes:
+
+```tsx
+<FlowDiagram
+  nodes={nodes}
+  relations={relations}
+  pathType="straight"
+/>
+```
+
+Orthogonal [#orthogonal]
+
+Right-angle polylines that follow horizontal/vertical paths only:
+
+```tsx
+<FlowDiagram
+  nodes={nodes}
+  relations={relations}
+  pathType="orthogonal"
+/>
+```

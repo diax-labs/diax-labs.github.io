@@ -1,0 +1,379 @@
+# Migration Guide (/docs/guide/migration)
+
+
+
+Pre-1.0 Theme Import Migration [#pre-10-theme-import-migration]
+
+Theme authoring moved out of the headless `diax` root and into `diax/themes`. Framework users who
+only pass `theme="github"` do not need to change component code.
+
+```diff
+- import { lightTheme, themeToCSS } from 'diax';
++ import { themes, themeToCSS } from 'diax/themes';
+
+- const css = themeToCSS(lightTheme);
++ const css = themeToCSS(themes.light);
+```
+
+The global `registerTheme()`, `getTheme()` and `getThemeNames()` functions were removed. Pass custom
+themes as values so SSR, multiple bundles and Module Federation remotes cannot observe divergent
+registries:
+
+```tsx
+import type { DiaxTheme } from 'diax/themes';
+
+const brand: DiaxTheme = {
+  name: 'brand',
+  light: { '--diax-node-bg': '#fff', '--diax-node-text': '#111827' },
+  dark: { '--diax-node-bg': '#111827', '--diax-node-text': '#f9fafb' },
+};
+
+<FlowDiagram theme={brand} nodes={nodes} relations={relations} />;
+```
+
+Pre-1.0 Framework Interface Migration [#pre-10-framework-interface-migration]
+
+The React root no longer exports its internal generic `Diagram`, the shallow `useDiagramBuilder`
+state wrapper, or the `useTheme` convenience hook:
+
+```diff
+- import { Diagram, useDiagramBuilder, useTheme } from '@diax/react';
++ import { FlowDiagram, type ThemeInput } from '@diax/react';
+```
+
+Use `FlowDiagram` or `Mindmap` for the high-level rendering lifecycle. Keep dynamic nodes and
+relations in ordinary `useState`/`useReducer` or an application store, and keep theme selection in
+ordinary React state. The low-level `useDiagram` + `DiagramCanvas` + `DiagramNode` + `DiagramEdges`
+composition remains public for custom renderers.
+
+React JSX topology moved to its own authoring entry. The syntax remains supported and now exposes
+the complete shared Relation contract; only the import changes:
+
+```diff
+- import { DiaxEdge, DiaxNode, FlowDiagram } from '@diax/react';
++ import { DiaxEdge, DiaxNode, FlowDiagram } from '@diax/react/jsx';
+```
+
+The root `@diax/react` `FlowDiagram` now accepts data only. If nodes and relations already exist as
+arrays, keep the root import and pass them directly instead of mapping them into JSX markers.
+
+Rich edge events now live only on relation objects. If you used the low-level React
+`DiagramEdges.edgeEvents` map, move each handler onto the corresponding relation. This also gives
+parallel edges an unambiguous event owner and enables the same behavior in all official adapters:
+
+```diff
+- const edgeEvents = new Map([
+-   ['client→api', { onClick: handleOpen }],
+- ]);
+- <DiagramEdges edges={edges} layoutMap={layoutMap} edgeEvents={edgeEvents} />
++ const edges = [{ from: 'client', to: 'api', onClick: handleOpen }];
++ <DiagramEdges edges={edges} layoutMap={layoutMap} />
+```
+
+Vue and Solid no longer export `useTheme`. Theme selection is ordinary framework state; replace the
+wrapper with Vue `ref<ThemeInput>()` or Solid `createSignal<ThemeInput>()`, then pass the value to
+`FlowDiagram`. This keeps Theme policy out of framework roots and avoids a second state abstraction.
+
+Vue's low-level `useEdgeRenderer()` now returns Core render data without a translation layer. Update
+custom SVG renderers to the resolved names below:
+
+| Before                          | Now                                     |
+| ------------------------------- | --------------------------------------- |
+| `path.color`                    | `path.displayColor`                     |
+| `path.markerEnd`                | `path.markerEndUrl`                     |
+| `path.markerStart`              | `path.markerStartUrl`                   |
+| `marker.viewBox`                | `marker.def.viewBox`                    |
+| `marker.refX` / `marker.refY`   | `marker.def.refX` / `marker.def.refY`   |
+| `marker.path` / `marker.filled` | `marker.def.path` / `marker.def.filled` |
+
+The composable no longer accepts or returns a global `strokeWidth`; set the visible path width from
+`path.strokeWidth` with your renderer's own fallback. It now returns only `{ paths, markers }`.
+
+Solid custom renderers now receive Accessors. This follows Solid's fine-grained reactivity model and
+keeps authored node DOM, focus and local state stable when highlight state changes:
+
+```diff
+  renderNode={(node, state) => (
+-   <Card dimmed={state === 'dimmed'}>{node.content}</Card>
++   <Card dimmed={state() === 'dimmed'}>{node().content}</Card>
+  )}
+```
+
+Apply the same `node()` / `state()` change to functions in a Solid `nodeTypes` registry.
+
+The Core `getNodeDisplayOpacity()` helper now returns `0.25` for a dimmed node (previously `0.2`).
+All official adapters consume that single policy, matching the existing `opacity-25` renderer
+examples and preventing framework-specific visual drift.
+
+Pre-1.0 Mermaid Importer Migration [#pre-10-mermaid-importer-migration]
+
+The concrete `mermaidAstAdapter` and its parser-adapter type are now internal. Normal callers should
+use the deep importer; a tool that already knows the diagram family can use the corresponding
+transformer directly:
+
+```diff
+- import { mermaidAstAdapter } from '@diax/mermaid';
+- const type = mermaidAstAdapter.detect(source);
+- const ast = type === 'flowchart'
+-   ? mermaidAstAdapter.parseFlowchart(source)
+-   : null;
++ import { parseMermaid } from '@diax/mermaid';
++ const { diagramType: type, ast, diagnostics } = parseMermaid(source);
+```
+
+```diff
+- import { mermaidAstAdapter } from '@diax/mermaid';
+- const ast = mermaidAstAdapter.parseClassDiagram(source);
++ import { transformClassDiagram } from '@diax/mermaid';
++ const ast = transformClassDiagram(source);
+```
+
+Parser backend replacement is not a public plugin lifecycle. `parseMermaid()` owns detection,
+dispatch, empty-input handling and diagnostics so tools do not reproduce that coordination.
+
+Migrating from Mermaid [#migrating-from-mermaid]
+
+DiaX can import a supported Mermaid subset into a normalized `DiaxAST`. The importer currently covers
+flowchart, class, state, ER, requirement and mindmap families; it is not a full Mermaid renderer.
+
+Before (Mermaid) [#before-mermaid]
+
+```html
+<pre class="mermaid">
+graph LR
+  A[Browser] -->|HTTPS| B[API Server]
+  B -->|SQL| C[Database]
+  B -->|gRPC| D[Auth Service]
+</pre>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+```
+
+After (DiaX) [#after-diax]
+
+If you previously imported the high-level component from `@diax/ui-react`, move that import to
+`@diax/ui-react/mermaid`. The root now intentionally contains only parser-free DOM presets.
+
+Install `@diax/ui-react`, `@diax/react` and `@diax/mermaid`, import
+`@diax/ui-react/styles.css` once from the application's global stylesheet, and render the existing
+source through the supported-subset component:
+
+```tsx
+import { SmartMermaidDiagram } from '@diax/ui-react/mermaid';
+
+const chart = `
+  graph LR
+    A[Browser] -->|HTTPS| B[API Server]
+    B -->|SQL| C[Database]
+    B -->|gRPC| D[Auth Service]
+`;
+
+function MyDiagram() {
+  return <SmartMermaidDiagram chart={chart} />;
+}
+```
+
+Use `parseMermaid()` when a migration tool, CI check or custom renderer needs the normalized AST and
+diagnostics rather than a React component:
+
+```ts
+import { parseMermaid } from '@diax/mermaid';
+
+const result = parseMermaid(chart);
+
+if (!result.ast) {
+  throw new Error(JSON.stringify(result.diagnostics));
+}
+
+console.log(result.diagramType, result.ast.nodes, result.ast.edges);
+```
+
+The AST contains `nodes`, normalized `edges` and optional layout metadata. It does not return the
+legacy `{ nodes, relations }` shape; that shape belongs only to the explicitly named
+`parseMermaidFlowchart()` compatibility function.
+
+Or skip Mermaid import and write the topology directly in DiaX:
+
+```tsx
+import { FlowDiagram } from '@diax/react';
+
+function MyDiagram() {
+  return (
+    <FlowDiagram
+      nodes={[
+        { id: 'browser', content: 'Browser' },
+        { id: 'api', content: 'API Server' },
+        { id: 'db', content: 'Database' },
+        { id: 'auth', content: 'Auth Service' },
+      ]}
+      relations={['browser->|HTTPS|api', 'api->|SQL|db', 'api->|gRPC|auth']}
+    />
+  );
+}
+```
+
+Key Differences [#key-differences]
+
+| Mermaid                   | DiaX                                              |
+| ------------------------- | ------------------------------------------------- |
+| String DSL only           | JSON, JSX, or string DSL                          |
+| SVG output (opaque)       | Real DOM nodes (styleable)                        |
+| `graph LR` / `graph TD`   | `direction="horizontal"` / `direction="vertical"` |
+| `-->` (dashed in Mermaid) | `-->` (dashed in DiaX too)                        |
+| `-->\|label\|`            | `->\|label\|` or `{ label: '...' }`               |
+| Theme via CSS variables   | Theme presets + full CSS control                  |
+
+***
+
+Migrating from react-archer [#migrating-from-react-archer]
+
+First decide who should own placement. If your flex, grid, Tailwind and semantic HTML are part of the
+visual explanation, migrate to Connect and keep that DOM. If the CSS only arranged generic boxes and
+you want the library to place them, migrate to automatic Diagram instead.
+
+react-archer puts outgoing relations on source wrappers. Connect keeps endpoints on the real DOM but
+moves topology into one reviewable relation list.
+
+Before (react-archer) [#before-react-archer]
+
+```tsx
+import { ArcherContainer, ArcherElement } from 'react-archer';
+
+function MyDiagram() {
+  return (
+    <ArcherContainer strokeColor="#999">
+      <div style={{ display: 'flex', gap: 80 }}>
+        <ArcherElement
+          id="client"
+          relations={[
+            { targetId: 'api', targetAnchor: 'left', sourceAnchor: 'right' },
+          ]}
+        >
+          <div className="box">Client</div>
+        </ArcherElement>
+        <ArcherElement
+          id="api"
+          relations={[
+            { targetId: 'db', targetAnchor: 'left', sourceAnchor: 'right' },
+          ]}
+        >
+          <div className="box">API</div>
+        </ArcherElement>
+        <ArcherElement id="db">
+          <div className="box">Database</div>
+        </ArcherElement>
+      </div>
+    </ArcherContainer>
+  );
+}
+```
+
+After: keep the authored layout with Connect [#after-keep-the-authored-layout-with-connect]
+
+```tsx title="archer-migration.tsx" contract
+'use client';
+
+import type { DiaxRelation } from 'diax';
+import { ConnectionSurface, connectionTarget } from '@diax/react/connect';
+
+const relations = [
+  { from: 'client', to: 'api', targetMarker: 'arrow' },
+  { from: 'api', to: 'db', targetMarker: 'arrow' },
+] satisfies readonly DiaxRelation[];
+
+function MyDiagram() {
+  return (
+    <ConnectionSurface relations={relations} className="grid grid-cols-3 gap-20">
+      <section {...connectionTarget('client')} className="box">Client</section>
+      <section {...connectionTarget('api')} className="box">API</section>
+      <section {...connectionTarget('db')} className="box">Database</section>
+    </ConnectionSurface>
+  );
+}
+```
+
+Start without anchor overrides. Connect chooses facing edges from the measured boxes and keeps them
+updated as the authored layout reflows. Add an explicit anchor only when one attachment side carries
+real meaning, not as routine migration boilerplate.
+
+Alternative: hand placement to Diagram [#alternative-hand-placement-to-diagram]
+
+When the old flex/grid was incidental, use `FlowDiagram` with the same centralized relations:
+
+```tsx
+import { FlowDiagram } from '@diax/react';
+
+<FlowDiagram
+  nodes={[
+    { id: 'client', content: 'Client' },
+    { id: 'api', content: 'API' },
+    { id: 'db', content: 'Database' },
+  ]}
+  relations={['client->api', 'api->db']}
+/>;
+```
+
+Key Differences [#key-differences-1]
+
+| react-archer                      | DiaX Connect                                            | DiaX Diagram                                  |
+| --------------------------------- | ------------------------------------------------------- | --------------------------------------------- |
+| Application owns flex/grid        | Application still owns flex/grid                        | DiaX owns placement                           |
+| Relations live on source wrappers | Relations are centralized                               | Relations are centralized                     |
+| Every endpoint needs a wrapper    | Attribute lands on the real DOM element                 | Nodes are definition data                     |
+| Anchors are commonly repeated     | Facing anchors are automatic; overrides remain optional | Layout and anchors are automatic              |
+| React only                        | React-only authored-DOM leaf                            | Framework-agnostic Core + five Alpha adapters |
+
+***
+
+Migrating from D2 [#migrating-from-d2]
+
+D2 is a CLI tool, so migration is about translating concepts rather than replacing imports.
+
+Concept Mapping [#concept-mapping]
+
+| D2                     | DiaX                                          |
+| ---------------------- | --------------------------------------------- |
+| `.d2` file             | JSX component or JSON                         |
+| `a -> b: label`        | `'a->\|label\|b'`                             |
+| `a -- b`               | `{ from: 'a', to: 'b', bidirectional: true }` |
+| `a.style.fill: "#red"` | `renderNode` or `nodeTypes`                   |
+| `d2 compile input.d2`  | Import and render in your app                 |
+| `direction: right`     | `direction="horizontal"`                      |
+| `direction: down`      | `direction="vertical"`                        |
+
+Before (D2) [#before-d2]
+
+```text
+direction: right
+
+client: Browser
+api: API Server
+db: PostgreSQL
+auth: Auth Service
+
+client -> api: HTTPS
+api -> db: SQL
+api -> auth: gRPC
+```
+
+After (DiaX) [#after-diax-1]
+
+```tsx
+import { FlowDiagram } from '@diax/react';
+
+function MyDiagram() {
+  return (
+    <FlowDiagram
+      direction="horizontal"
+      nodes={[
+        { id: 'client', content: 'Browser' },
+        { id: 'api', content: 'API Server' },
+        { id: 'db', content: 'PostgreSQL' },
+        { id: 'auth', content: 'Auth Service' },
+      ]}
+      relations={['client->|HTTPS|api', 'api->|SQL|db', 'api->|gRPC|auth']}
+    />
+  );
+}
+```
+
+The main advantage of migrating: your diagrams become **live components** in your web app instead of static image assets.

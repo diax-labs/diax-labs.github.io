@@ -1,0 +1,77 @@
+# Custom Rendering (/docs/svelte/custom-rendering)
+
+
+
+Component Slots [#component-slots]
+
+Customize node rendering while keeping all layout logic. In Svelte, use the `node` slot of the `<FlowDiagram>` component to render custom content:
+
+```svelte
+<script>
+import { FlowDiagram } from '@diax/svelte';
+
+const nodes = [
+  { id: 'gw', type: 'gateway', content: 'API Gateway' },
+  { id: 'auth', type: 'service', content: 'Auth Service' },
+  { id: 'db', type: 'database', content: 'PostgreSQL' },
+];
+const relations = ['gw->auth', 'auth->db'];
+</script>
+
+<FlowDiagram {nodes} {relations} highlightOnHover>
+  <svelte:fragment slot="node" let:node>
+    <!-- Read node.flowState for interaction stylings -->
+    <div
+      class="px-4 py-2 rounded-xl border"
+      class:ring-2={node.flowState === 'highlighted'}
+      class:opacity-25={node.flowState === 'dimmed'}
+    >
+      {#if node.data.type === 'gateway'}
+        ⬡ {node.data.content}
+      {:else}
+        {node.data.content}
+      {/if}
+    </div>
+  </svelte:fragment>
+</FlowDiagram>
+```
+
+Node States [#node-states]
+
+The `node.flowState` property provides the current interaction state when `highlightOnHover=true` is active:
+
+| State           | When              | Suggested style  |
+| --------------- | ----------------- | ---------------- |
+| `undefined`     | Default           | Normal           |
+| `"highlighted"` | On hover path     | Ring/glow effect |
+| `"dimmed"`      | Not on hover path | Reduced opacity  |
+
+Resolving Node Types [#resolving-node-types]
+
+Instead of a big `if-else` block, you can map your node content to dedicated Svelte components conditionally:
+
+```svelte
+<!-- In your FlowDiagram usage -->
+<script>
+  import GatewayNode from './GatewayNode.svelte';
+  import ServiceNode from './ServiceNode.svelte';
+  
+  const typeMap = {
+    gateway: GatewayNode,
+    service: ServiceNode
+  };
+</script>
+
+<FlowDiagram {nodes} {relations}>
+  <svelte:fragment slot="node" let:node>
+    <svelte:component 
+      this={typeMap[node.data.type] ?? ServiceNode} 
+      {node} 
+    />
+  </svelte:fragment>
+
+</FlowDiagram>
+```
+
+For structured generic content, compose the low-level store and `DiagramEdges` as shown in
+[Headless Stores](/docs/svelte/stores). The high-level component currently renders string content.

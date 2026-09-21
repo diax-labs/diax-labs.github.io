@@ -1,0 +1,125 @@
+# Measurement (/docs/reference/measurement)
+
+
+
+**Audience:** framework adapter and custom renderer authors.\
+&#x2A;*Runtime:** browser-only in normal use; helpers return safe no-op results during SSR.\
+&#x2A;*Import:** `diax`.
+
+Measurement is a lifecycle seam, not a layout algorithm. Diagram computes placement first, then an
+adapter measures the rendered nodes so edges can attach to their real boxes. Connect skips
+automatic placement but uses the same surface-owned geometry principle.
+
+Surface ownership [#surface-ownership]
+
+Mark the measurement surface with `data-diax-canvas` and each endpoint with a stable
+`data-diax-node` value. `findOwnedNodeElements(container)` excludes endpoints belonging to a
+nested DiaX canvas.
+
+This prevents a parent overlay from accidentally drawing edges for a child diagram. Cross-surface
+geometry requires an explicit shared owner; a qualified ID alone does not create one.
+
+`measureNodeRects(container)` [#measurenoderectscontainer]
+
+Returns a `Map<string, NodeRect>` in the container's scrollable local coordinate space. It
+compensates for borders, scroll offsets, and ancestor scale transforms.
+
+```ts
+import { measureNodeRects } from 'diax';
+
+const rects = measureNodeRects(container);
+const source = rects.get('source');
+```
+
+On the server it returns an empty map. Do not use an SSR result as evidence that browser geometry
+is valid.
+
+`createMeasurementObserver(container, config)` [#createmeasurementobservercontainer-config]
+
+```ts
+import { createMeasurementObserver } from 'diax';
+
+const observer = createMeasurementObserver(container, {
+  mode: 'auto',
+  onMeasure(rects) {
+    renderEdges(rects);
+  },
+});
+
+observer.observe();
+observer.measure();
+observer.disconnect();
+```
+
+Always call `disconnect()` when the owning surface unmounts.
+
+| Mode         | Watches                                                    | Use when                    |
+| ------------ | ---------------------------------------------------------- | --------------------------- |
+| `resize`     | Container and node `ResizeObserver`                        | Static content              |
+| `auto`       | Resize, DOM mutation, animation/transition completion      | Default dynamic UI          |
+| `continuous` | Auto plus animation-frame measurement during active motion | Edges must track moving DOM |
+
+`continuous` is intentionally opt-in because it trades CPU for motion fidelity. Prefer reduced
+motion and a settled final measurement for ordinary documentation.
+
+Diagram routing obstacles [#diagram-routing-obstacles]
+
+Automatic Diagram adapters also measure semantic-group labels because those labels sit on the group
+border and can block entry or exit ports. Use the dedicated leaf instead of making Connect or a
+server-only planner load this browser lifecycle:
+
+```ts contract
+import { createDiagramMeasurementObserver } from 'diax/diagram-measurement';
+import { planLayeredLayout } from 'diax/layout-plan';
+import type { LayoutNode, ParsedRelation } from 'diax';
+
+const container = document.createElement('div');
+const edges: ParsedRelation[] = [];
+const layoutMap = new Map<string, LayoutNode>();
+
+const observer = createDiagramMeasurementObserver(container, {
+  onMeasure(nodeRects, { groupLabelRects }) {
+    planLayeredLayout({ edges, rects: nodeRects, layoutMap, groupLabelRects });
+  },
+});
+```
+
+Labels must carry `data-diax-group-label-id` using the same resolved identity as their
+`data-diax-group` surface. The shared observer watches nodes and labels in one lifecycle, preserves
+local aliases for namespaced IDs, and excludes nested DiaX canvases. Application authors should not
+estimate `labelWidth` or provide port offsets.
+
+Bounds utilities [#bounds-utilities]
+
+| Function                             | Purpose                           |
+| ------------------------------------ | --------------------------------- |
+| `rectToBox(rect)` / `boxToRect(box)` | Convert rectangle representations |
+| `getBoundsOfBoxes(a, b)`             | Union of two boxes                |
+| `getOverlappingArea(a, b)`           | Intersection area, or zero        |
+| `getNodesBounds(nodes)`              | Collective node bounds            |
+| `clamp(value, min, max)`             | Numeric range clamp               |
+
+These functions are pure and server-safe.
+
+Namespaces [#namespaces]
+
+| Function                       | Purpose                                          |
+| ------------------------------ | ------------------------------------------------ |
+| `resolveId(rawId, namespace?)` | Qualify a local ID as `namespace::id`            |
+| `parseNamespacedId(id)`        | Split a qualified ID                             |
+| `isCrossDiagramRef(id)`        | Detect an already-qualified reference            |
+| `partitionEdges(edges)`        | Separate local layout edges from qualified edges |
+
+`isCrossDiagramRef` is a historical name. Official renderers do not draw between independent
+canvas elements. A cross-surface relation needs one shared measurement and overlay owner.
+
+Measurement acceptance [#measurement-acceptance]
+
+A custom adapter should verify resize, scroll, nested surfaces, transforms, dynamic content,
+unmount cleanup, 200% zoom, and browser differences. Geometry unit tests alone are not sufficient.
+
+Related [#related]
+
+* [Edge Rendering](/docs/reference/edge-rendering)
+* [React Connect](/docs/react/connect)
+* [Browser accessibility contract](/docs/guide/accessibility)

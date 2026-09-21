@@ -1,0 +1,118 @@
+# Graph & Layout Primitives (/docs/reference/graph-layout)
+
+
+
+**Audience:** adapter authors and advanced custom renderers.\
+&#x2A;*Runtime:** server-safe pure TypeScript.\
+&#x2A;*Import:** `diax`.
+
+Most applications should use [`computeLayout`](/docs/reference/core-interface), which combines
+these atoms with validation, relation parsing, namespace handling, and binding generation.
+
+Built-in layout [#built-in-layout]
+
+`simpleGridLayout(nodes, edges, groups?)` [#simplegridlayoutnodes-edges-groups]
+
+Computes a grid layout for a directed graph. Authored `position.col` and `position.row` values pin an
+axis before automatic placement fills the remaining positions. Long edges are normalized into an
+internal dummy item at every crossed rank before crossing-minimization sweeps. Those items reserve
+route rows but never appear in `LayoutResult.nodes`. Explicit grid hints are bounded to integer
+indices from 0 through 255; callers never create dummy items themselves. Optional semantic groups
+reserve nested, exclusive row bands so a rectangular boundary cannot capture unrelated nodes.
+
+```ts contract
+import { parseRelations, simpleGridLayout } from 'diax';
+
+const nodes = [
+  { id: 'a', content: 'A' },
+  { id: 'b', content: 'B' },
+  { id: 'c', content: 'C', position: { col: 2 } },
+];
+
+const result = simpleGridLayout(nodes, parseRelations(['a->b', 'b->c']));
+result.nodes;
+result.cols;
+result.rows;
+```
+
+`mindmapLayout(nodes, edges)` [#mindmaplayoutnodes-edges]
+
+Computes the built-in center-out hierarchy layout. Use `computeLayout({ layout: 'mindmap' })` in
+application code so validation and binding behavior remain consistent.
+
+`resolveLayout(mode)` and `LAYOUTS` [#resolvelayoutmode-and-layouts]
+
+`resolveLayout('flow')` returns `simpleGridLayout`; `resolveLayout('mindmap')` returns
+`mindmapLayout`. Unknown names throw. `LAYOUTS` exposes the same built-in registry for adapter
+introspection.
+
+<Callout type="warn">
+  DiaX does not expose a global layout registry. The built-in engine and ELK both emit the same
+  value-based `LayoutPlan`; import `@diax/layout-elk` explicitly instead of registering a mutable
+  provider.
+</Callout>
+
+Graph traversal [#graph-traversal]
+
+These helpers accept normalized `ParsedRelation[]`:
+
+| Function                             | Result                      |
+| ------------------------------------ | --------------------------- |
+| `buildChildMap(nodeIds, edges)`      | Forward adjacency map       |
+| `buildParentMap(nodeIds, edges)`     | Reverse adjacency map       |
+| `buildUndirectedMap(nodeIds, edges)` | Bidirectional adjacency map |
+| `bfs(startId, adjacency)`            | Reachable node ID set       |
+| `nodeIds(nodes)`                     | Node ID set                 |
+
+```ts contract
+import { bfs, buildChildMap, nodeIds, parseRelations } from 'diax';
+
+const nodes = [
+  { id: 'root', content: 'Root' },
+  { id: 'child', content: 'Child' },
+];
+const children = buildChildMap(nodeIds(nodes), parseRelations(['root->child']));
+const reachable = bfs('root', children);
+```
+
+These are useful for selection, dependency highlighting, and adapter-specific navigation. They do
+not perform validation; normalize and validate untrusted input first.
+
+Direction helpers [#direction-helpers]
+
+```ts contract
+import { isReversed, isVertical, toAxis } from 'diax';
+
+toAxis('horizontal-reverse'); // 'horizontal'
+isVertical('vertical-reverse'); // true
+isReversed('horizontal-reverse'); // true
+```
+
+`Direction` is `'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse'`.
+`Axis` is `'horizontal' | 'vertical'`.
+
+Layout types [#layout-types]
+
+```ts
+interface LayoutResult {
+  nodes: LayoutNode[];
+  cols: number;
+  rows: number;
+}
+
+type LayoutFn = (
+  nodes: DiaxNode[],
+  edges: ParsedRelation[],
+  groups?: readonly DiaxGroup[],
+) => LayoutResult;
+```
+
+`LayoutResult` is the lightweight CSS Grid placement result. `LayoutPlan` is the measured pixel
+contract between a full layout engine and a renderer. See
+[Edge Rendering Primitives](/docs/reference/edge-rendering) for its planning and rendering APIs.
+
+Related [#related]
+
+* [Core Interface](/docs/reference/core-interface)
+* [ELK integration](/docs/guide/layout-elk)
+* [Layout modes](/docs/guide/layout-modes)

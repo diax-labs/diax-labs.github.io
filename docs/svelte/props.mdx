@@ -1,0 +1,67 @@
+# API Reference (/docs/svelte/props)
+
+
+
+Component Props [#component-props]
+
+`FlowDiagram` and `Mindmap` accept the following presentation props. Custom generic payloads remain
+available through the lower-level store interface below.
+
+<TypeTable
+  type="{
+  nodes: { description: 'String-content node definitions', type: 'DiaxNode<string>[]', default: 'required' },
+  relations: { description: 'Relations', type: 'DiaxRelation<string>[]', default: 'required' },
+  groups: { description: 'Nested semantic boundaries', type: 'DiaxGroup<string>[]', default: '[]' },
+  namespace: { description: 'Resolved DOM ID namespace', type: 'string', default: '—' },
+  direction: { description: 'Layout direction', type: &#x22;'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse'&#x22;, default: &#x22;'horizontal'&#x22; },
+  density: { description: 'Spacing', type: &#x22;'compact' | 'comfortable' | 'spacious'&#x22;, default: &#x22;'comfortable'&#x22; },
+  centered: { description: 'Center nodes', type: 'boolean', default: 'false' },
+  highlightOnHover: { description: 'Highlight connected paths', type: 'boolean', default: 'false' },
+  theme: { description: 'Theme preset or object', type: 'ThemeInput' },
+  pathType: { description: 'Edge path type', type: &#x22;'bezier' | 'straight' | 'orthogonal'&#x22;, default: &#x22;'bezier'&#x22; },
+  strokeColor: { description: 'Edge color', type: 'string' },
+  strokeWidth: { description: 'Edge width', type: 'number', default: '1' },
+  arrowSize: { description: 'Arrow marker size', type: 'number', default: '6' },
+}"
+/>
+
+Component Slots [#component-slots]
+
+<TypeTable
+  type="{
+  'node': { description: 'Custom node presentation. Receives { node }', type: 'SlotProps<{ node: DiagramNodeBinding }>' },
+  'edge-label': { description: 'Svelte-native presentation for a semantic edge label. Receives { label }', type: 'SlotProps<{ label: string }>' },
+  'group-label': { description: 'Svelte-native presentation for a semantic group label. Receives { group, label }', type: 'SlotProps<{ group: DiaxGroup<string>; label: string }>' },
+}"
+/>
+
+Store Return Values [#store-return-values]
+
+<TypeTable
+  type="{
+  nodes: { description: 'Bound nodes with style and data', type: 'Readable<DiagramNodeBinding[]>' },
+  groups: { description: 'Outermost-first derived boundary bindings', type: 'Readable<DiagramGroupBinding[]>' },
+  edges: { description: 'Parsed edges', type: 'Readable<ParsedRelation[]>' },
+  layout: { description: 'Layout computation result', type: 'Readable<LayoutResult>' },
+  layoutMap: { description: 'ID → LayoutNode map', type: 'Readable<Map<string, LayoutNode>>' },
+  containerStyle: { description: 'CSS Grid styles', type: 'Readable<Record<string, string>>' },
+  highlightedNodes: { description: 'Highlighted node set', type: 'Readable<Set<string> | null>' },
+  updateOptions: { description: 'Merge new semantic or layout inputs while preserving store identity', type: '(options: Partial<DiagramOptions>) => void' },
+  setHovered: { description: 'Set hovered node for highlighting', type: '(id: string | null) => void' },
+}"
+/>
+
+Options [#options]
+
+<TypeTable
+  type="{
+  nodes: { description: 'Node definitions', type: 'DiaxNode[]', default: 'required' },
+  relations: { description: 'Relations (string DSL or object form)', type: 'DiaxRelation[]', default: 'required' },
+  groups: { description: 'Nested semantic boundaries', type: 'DiaxGroup[]', default: '[]' },
+  namespace: { description: 'Resolved DOM ID namespace', type: 'string' },
+  direction: { description: 'Layout direction', type: &#x22;'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse'&#x22;, default: &#x22;'horizontal'&#x22; },
+  layout: { description: 'Layout algorithm', type: &#x22;'flow' | 'mindmap'&#x22;, default: &#x22;'flow'&#x22; },
+  centered: { description: 'Center nodes', type: 'boolean', default: 'false' },
+  highlightOnHover: { description: 'Highlight path on hover', type: 'boolean', default: 'false' },
+}"
+/>

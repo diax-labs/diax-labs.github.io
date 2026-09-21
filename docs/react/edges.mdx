@@ -1,0 +1,94 @@
+# Edge Types (/docs/react/edges)
+
+
+
+Edge Types [#edge-types]
+
+String DSL [#string-dsl]
+
+```tsx
+relations={[
+  'a->b',           // Solid arrow
+  'a-->b',          // Dashed arrow
+  'a<->b',          // Bidirectional
+  'a->|label|b',    // With label
+]}
+```
+
+Object Form [#object-form]
+
+```tsx
+relations={[
+  { from: 'a', to: 'b', style: 'dashed', color: '#E91E63' },
+  { from: 'b', to: 'c', animate: 'flow', label: 'next' },
+  { from: 'c', to: 'd', bidirectional: true },
+]}
+```
+
+Animation Presets [#animation-presets]
+
+| Preset              | Effect                         |
+| ------------------- | ------------------------------ |
+| `"flow"`            | Flowing dashes along the edge  |
+| `"pulse"`           | Breathing opacity effect       |
+| `"shimmer"`         | Light traveling along the edge |
+| `"reverse-flow"`    | Reverse flowing dashes         |
+| `"reverse-shimmer"` | Reverse shimmer                |
+
+***
+
+Custom Edge Labels [#custom-edge-labels]
+
+Use `renderEdgeLabel` to customize how edge labels are rendered:
+
+```tsx
+<FlowDiagram
+  nodes={nodes}
+  relations={['client->|REST|api', 'api->|SQL|db']}
+  renderEdgeLabel={(
+    label, // [!code highlight]
+  ) => (
+    <span className="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-mono">
+      {label}
+    </span>
+  )}
+/>
+```
+
+`FlowDiagram` measures the rendered label and automatically reserves room for it on the primary
+layout axis. Text, badges, icons, and dynamic React content therefore do not require a guessed
+`gap` or `labelWidth`. The selected density remains the minimum spacing.
+
+This behavior belongs to Diagram because DiaX owns its CSS Grid. In
+[Connect](/docs/react/connect), your CSS owns placement, so edge labels do not silently reflow the
+authored DOM.
+
+***
+
+Edge Path Types [#edge-path-types]
+
+Control how edges are drawn with the `pathType` prop:
+
+Bezier (default) [#bezier-default]
+
+Smooth cubic bezier curves — the default and most common style:
+
+```tsx
+<FlowDiagram nodes={nodes} relations={relations} pathType="bezier" />
+```
+
+Straight [#straight]
+
+Direct straight lines between nodes:
+
+```tsx
+<FlowDiagram nodes={nodes} relations={relations} pathType="straight" />
+```
+
+Orthogonal [#orthogonal]
+
+Right-angle polylines that follow horizontal/vertical paths only:
+
+```tsx
+<FlowDiagram nodes={nodes} relations={relations} pathType="orthogonal" />
+```

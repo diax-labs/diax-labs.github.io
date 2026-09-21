@@ -1,0 +1,44 @@
+# API Reference (/docs/vanilla/props)
+
+
+
+Configuration Options [#configuration-options]
+
+<TypeTable
+  type="{
+  nodes: { description: 'Node definitions', type: 'DiaxNode<string>[]', default: 'required' },
+  relations: { description: 'Relations', type: 'DiaxRelation<string>[]', default: 'required' },
+  groups: { description: 'Nested semantic boundaries derived from direct members', type: 'DiaxGroup<string>[]', default: '[]' },
+  namespace: { description: 'Resolved DOM ID namespace', type: 'string' },
+  direction: { description: 'Layout direction', type: &#x22;'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse'&#x22;, default: &#x22;'horizontal'&#x22; },
+  layout: { description: 'Layout algorithm', type: &#x22;'flow' | 'mindmap'&#x22;, default: &#x22;'flow'&#x22; },
+  centered: { description: 'Center nodes', type: 'boolean', default: 'false' },
+  highlightOnHover: { description: 'Highlight path on hover', type: 'boolean', default: 'false' },
+  theme: { description: 'Theme preset or custom value', type: 'ThemeInput' },
+  pathType: { description: 'Edge path type', type: &#x22;'bezier' | 'straight' | 'orthogonal'&#x22;, default: &#x22;'bezier'&#x22; },
+  strokeColor: { description: 'Edge color; inherits currentColor when unthemed', type: 'string', default: &#x22;'var(--diax-edge-color, currentColor)'&#x22; },
+  strokeWidth: { description: 'Edge stroke width', type: 'number', default: '1' },
+  arrowSize: { description: 'Arrow marker size', type: 'number', default: '6' },
+  renderNode: { description: 'Custom node renderer', type: '(node, el, state) => void' },
+  renderEdgeLabel: { description: 'Render a semantic edge label into a fresh DiaX-owned element', type: '(label, element) => void' },
+  renderGroupLabel: { description: 'Render a semantic group label into a fresh DiaX-owned element', type: '(group, element) => void' },
+  nodeTypes: { description: 'Node type renderer registry', type: 'Record<string, (node, el, state) => void>' },
+  onRender: { description: 'Called after render', type: '() => void' },
+}"
+/>
+
+`CreateDiagramOptions<NodeContent, EdgeLabel, GroupLabel>` keeps node content, edge-label data, and
+group-label data independent. String DSL labels remain strings, so `renderEdgeLabel` receives
+`EdgeLabel | string`. Inference is preferred; the explicit order exists for empty definitions and
+reusable renderer callbacks.
+
+Instance Methods [#instance-methods]
+
+<TypeTable
+  type="{
+  'update(options)': { description: 'Re-render with updated options', type: '(options: Partial<CreateDiagramOptions>) => void' },
+  'destroy()': { description: 'Clean up and empty container', type: '() => void' },
+  'getLayout()': { description: 'Get current LayoutResult', type: '() => LayoutResult' },
+  'getEdges()': { description: 'Get current ParsedRelation[]', type: '() => ParsedRelation[]' },
+}"
+/>

@@ -1,0 +1,43 @@
+# Lifecycle (/docs/vanilla/lifecycle)
+
+
+
+Updating the Diagram [#updating-the-diagram]
+
+Call `update()` with new options to re-render:
+
+```js
+// Add a new node
+diagram.update({
+  nodes: [
+    { id: 'a', content: 'Start' },
+    { id: 'b', content: 'Process' },
+    { id: 'c', content: 'End' },
+    { id: 'd', content: 'Archive' },
+  ],
+  relations: ['a->b', 'b->c', 'c->d'],
+});
+```
+
+Destroying the Diagram [#destroying-the-diagram]
+
+Clean up when done:
+
+```js
+diagram.destroy();
+// Container is emptied, ResizeObserver disconnected
+```
+
+Getting Layout Data [#getting-layout-data]
+
+Access computed layout and edge data programmatically:
+
+```js
+const layout = diagram.getLayout();
+console.log(layout.nodes); // [{ id: 'a', col: 0, row: 0 }, ...]
+console.log(layout.cols);  // 3
+console.log(layout.rows);  // 1
+
+const edges = diagram.getEdges();
+console.log(edges); // [{ from: 'a', to: 'b', dashed: false, ... }]
+```

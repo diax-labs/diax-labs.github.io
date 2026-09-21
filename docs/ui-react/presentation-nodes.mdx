@@ -1,0 +1,421 @@
+# Presentation Nodes (/docs/ui-react/presentation-nodes)
+
+
+
+
+
+Choose by meaning, not shape [#choose-by-meaning-not-shape]
+
+Presentation nodes give AI agents and people a small, recognizable vocabulary for the visual roles
+that recur in architecture briefs, incident reviews, promotion decks, roadmaps and technical blogs.
+They are real DOM, so their content can contain icons, localized text, links and application-owned
+controls. DiaX still owns only topology, measurement and connectors.
+
+<DiagramPreview title="Presentation primitive catalog" description="Nine semantic roles plus one escape hatch, loaded from the isolated presentation entry" code="presentationPrimitivesCode">
+  <PresentationPrimitivesPreview />
+</DiagramPreview>
+
+The narrow color rail is a scanning aid, not the meaning itself. Every built-in status is also
+visible as text, forced-colors replaces decoration with system colors, and the DOM reading order is
+complete when arrows are hidden.
+
+Install [#install]
+
+<InstallTabs packages="['@diax/ui-react']" description="Standalone presentation primitives (peer dependency: React >= 18)" />
+
+Add `@diax/react` and `diax` only when these DOM components sit inside Diagram or Connect. The
+presentation entry itself does not load either runtime.
+
+Import the self-contained stylesheet once. Tailwind is not required by the package:
+
+```css title="app.css"
+@import '@diax/ui-react/styles.css';
+```
+
+Preset selectors live in the CSS `components` cascade layer and use `:where()`. Unlayered
+application CSS and utility layers can therefore override widths, spacing and surfaces without
+`!important`. The package does not inspect a `.dark` class or require a theme provider; map its
+tokens from the theme boundary your application already owns.
+
+Component selector [#component-selector]
+
+| What the reader needs to recognize            | Component       | Typical examples                                 |
+| --------------------------------------------- | --------------- | ------------------------------------------------ |
+| A complete exportable visual                  | `DiagramFrame`  | Blog figure, report card, slide-ready diagram    |
+| A person, team or external participant        | `ActorNode`     | Customer, approver, owning team                  |
+| An owned technical responsibility             | `SystemNode`    | Service, app, module, platform, tool             |
+| A quantitative result                         | `MetricNode`    | Coverage, duration, cost, conversion             |
+| A phase with progress                         | `StageNode`     | Migration, rollout, roadmap, SOP                 |
+| A reproducible observation                    | `EvidenceNode`  | Test result, trace, citation, benchmark          |
+| A concrete output with engineering provenance | `ArtifactNode`  | Build bundle, package, image, generated snapshot |
+| A reviewable decision record                  | `DecisionNode`  | Technical selection, approval, recommendation    |
+| A constraint that needs action                | `RiskNode`      | Security risk, dependency, blocker               |
+| Durable state or an exchange boundary         | `DataStoreNode` | Database, queue, registry, artifact store        |
+| A product-specific visual role                | `NodeCard`      | Policy, domain event, custom application term    |
+
+Do not choose a component because it has the color or silhouette you want. Choose the role first,
+then set `tone` or application CSS. A database that is merely one step in a simple Mermaid-style
+flow can still use `FlowNode variant="database"`; use `DataStoreNode` when schema, durability or
+ownership is part of the explanation.
+
+DiagramFrame and DiagramLegend [#diagramframe-and-diagramlegend]
+
+`DiagramFrame` renders a named `<figure>` with a header, body and optional `<figcaption>`. It is the
+outer presentation surface; it does not create a graph, coordinate system or nested layout model.
+
+```tsx contract
+import { DiagramFrame, DiagramLegend, NodeBadge } from '@diax/ui-react/presentation';
+
+export function ReleaseFigure() {
+  return (
+    <DiagramFrame
+      eyebrow="Release candidate"
+      title="Evidence before confidence"
+      description="What must be true before publishing."
+      actions={<NodeBadge tone="accent">Alpha</NodeBadge>}
+      caption="Generated from the locked release candidate."
+    >
+      <DiagramLegend
+        items={[
+          { label: 'Verified', description: 'Reproducible contract', tone: 'success' },
+          { label: 'Risk', description: 'Owner action required', tone: 'danger' },
+        ]}
+      />
+    </DiagramFrame>
+  );
+}
+```
+
+| Prop              | Type        | Purpose                                                       |
+| ----------------- | ----------- | ------------------------------------------------------------- |
+| `title`           | `ReactNode` | Required accessible figure name                               |
+| `eyebrow`         | `ReactNode` | Short category such as “Architecture” or “Release candidate”  |
+| `description`     | `ReactNode` | What the visual is meant to explain                           |
+| `icon`, `actions` | `ReactNode` | Optional application-owned affordances                        |
+| `caption`         | `ReactNode` | Provenance, caveat or export context rendered as `figcaption` |
+| `tone`            | `NodeTone`  | Semantic signal rail; defaults to `accent`                    |
+
+NodeCard and NodeBadge [#nodecard-and-nodebadge]
+
+`NodeCard` is the escape hatch for a real application role that does not deserve another package
+export. It owns accessible naming, a stable measurement box, highlight/dim state and theme tokens.
+It does not accept relations, position or layout options.
+
+```tsx contract
+import { NodeBadge, NodeCard } from '@diax/ui-react/presentation';
+
+export function PolicyNode() {
+  return (
+    <NodeCard
+      eyebrow="Policy"
+      title="Two reviewers required"
+      description="A product-specific role stays on the shared surface."
+      badge={<NodeBadge tone="warning">Enforced</NodeBadge>}
+    />
+  );
+}
+```
+
+Shared presentation props are deliberately small:
+
+| Prop          | Values                                                      | Meaning                                         |
+| ------------- | ----------------------------------------------------------- | ----------------------------------------------- |
+| `tone`        | `neutral`, `accent`, `info`, `success`, `warning`, `danger` | Semantic emphasis, never the only status signal |
+| `size`        | `compact`, `default`, `wide`                                | Measurement-friendly width budget               |
+| `highlighted` | `boolean`                                                   | Current relation or search focus                |
+| `dimmed`      | `boolean`                                                   | De-emphasized context                           |
+| `className`   | `string`                                                    | Application layout and deliberate overrides     |
+
+All node components also accept native `<article>` attributes. `DiagramFrame`, `DiagramLegend` and
+`NodeBadge` accept native `<figure>`, `<ul>` and `<span>` attributes respectively, so test IDs,
+language metadata and product-specific `aria-*` attributes do not require wrapper elements.
+
+Role component API [#role-component-api]
+
+| Component       | Required props      | Role-specific props                                                            | Defaults              |
+| --------------- | ------------------- | ------------------------------------------------------------------------------ | --------------------- |
+| `ActorNode`     | `name`              | `roleLabel`, `avatar`, `status`, `statusLabel`                                 | neutral, no status    |
+| `SystemNode`    | `name`              | `kind`, `status`, `statusLabel`, `tags`                                        | info                  |
+| `MetricNode`    | `label`, `value`    | `delta`, `trend`, `context`                                                    | flat trend            |
+| `StageNode`     | `title`             | `step`, `status`, `statusLabel`, `owner`                                       | upcoming              |
+| `EvidenceNode`  | `title`             | `source`, `strength`, `strengthLabel`                                          | medium evidence       |
+| `ArtifactNode`  | `name`              | `kind`, `version`, `source`, `status`, localized labels                        | info, no status       |
+| `DecisionNode`  | `title`             | `outcome`, `criteria`, `rationale`, `status`, `statusLabel`, `owner`, `labels` | accent, no status     |
+| `RiskNode`      | `title`, `severity` | `severityLabel`, `mitigation`                                                  | severity-derived tone |
+| `DataStoreNode` | `name`              | `engine`, `entries`                                                            | accent                |
+
+Every wrapper also accepts the shared `description`, `icon`, `size`, `tone`, `highlighted` and
+`dimmed` props unless that field is replaced by a more precise role prop. Status labels remain
+visible text; do not replace them with color-only dots or title tooltips.
+
+Architecture roles [#architecture-roles]
+
+Use role-specific names when an AI agent or a new teammate should understand the intent without
+reading the styling implementation.
+
+```tsx contract
+import { ActorNode, ArtifactNode, DataStoreNode, SystemNode } from '@diax/ui-react/presentation';
+
+export function ArchitectureRoles() {
+  return (
+    <div>
+      <ActorNode
+        name="Platform team"
+        roleLabel="Release owner"
+        status="active"
+        statusLabel="Reviewing"
+      />
+      <SystemNode
+        name="Artifact registry"
+        kind="Owned service"
+        status="healthy"
+        tags={['provenance', 'immutable']}
+      />
+      <ArtifactNode
+        name="frontend-dist.zip"
+        kind="Deployment bundle"
+        version="main@8fbaef0"
+        source="install-build #1842"
+        status="verified"
+        statusLabel="Registry ready"
+      />
+      <DataStoreNode
+        name="Evidence ledger"
+        engine="SQLite"
+        entries={['runs', 'artifacts', 'attestations']}
+      />
+    </div>
+  );
+}
+```
+
+`ActorNode` uses `roleLabel`, not `role`. The latter is a native ARIA attribute; overloading it with
+“Approver” or “Customer” would create invalid accessibility semantics.
+
+Engineering artifacts and provenance [#engineering-artifacts-and-provenance]
+
+`ArtifactNode` describes a concrete, passive output that another system produces, stores or
+consumes. It is deliberately different from the surrounding architecture roles:
+
+* `SystemNode` is the build service or injection worker that performs work.
+* `DataStoreNode` is the registry or durable collection that holds many records or artifacts.
+* `EvidenceNode` is an observation used to support a claim.
+* `ArtifactNode` is the particular bundle, package, image or generated snapshot moving between them.
+
+```tsx contract
+import { ArtifactNode } from '@diax/ui-react/presentation';
+
+export function DeploymentArtifact() {
+  return (
+    <ArtifactNode
+      name="frontend-dist.zip"
+      kind="Deployment bundle"
+      version="sha256:7a2f…91c4"
+      versionLabel="Digest"
+      source="install-build #1842 · main@8fbaef0"
+      status="published"
+      statusLabel="Registry ready"
+      description="Immutable files consumed by the injection pipeline."
+    />
+  );
+}
+```
+
+The compact manifest uses real `<dl>`, `<dt>` and `<dd>` markup. Version and source stay optional:
+do not invent placeholder provenance to fill the component. `status` is limited to `verified` and
+`published`; use `statusLabel` for product language and localization. Candidate, deprecated and
+retired lifecycle language belongs in application composition until repeated scenarios justify a
+shared semantic contract.
+Artifact identity does not imply a relation, download action or storage API. Keep producer →
+artifact → consumer topology in centralized Diagram relations or authored Connect DOM, and place
+interactive actions in application-owned composition rather than hiding them in the card.
+
+Results, evidence and risk [#results-evidence-and-risk]
+
+Metrics use real `<dl>/<dt>/<dd>` markup. Evidence keeps provenance visible. Risk always pairs
+severity with text and can keep mitigation beside the problem instead of hiding it in a tooltip.
+
+```tsx contract
+import { EvidenceNode, MetricNode, RiskNode } from '@diax/ui-react/presentation';
+
+export function DecisionEvidence() {
+  return (
+    <div>
+      <MetricNode
+        label="Contract coverage"
+        value="92%"
+        delta="+8%"
+        trend="up"
+        context="since Alpha 3"
+      />
+      <EvidenceNode
+        title="Browser matrix passed"
+        description="Chromium, Firefox and WebKit"
+        strength="high"
+        strengthLabel="Verified"
+        source="CI run #1842"
+        sourceLabel="Verified by"
+      />
+      <RiskNode
+        title="Unsigned package"
+        severity="critical"
+        severityLabel="Blocks release"
+        mitigation="Require npm provenance before promotion."
+      />
+    </div>
+  );
+}
+```
+
+`trend="up"` is visually positive by default, but product meaning may differ: an increasing error
+rate is bad. Set `tone="danger"` explicitly when the domain interpretation differs from the numeric
+direction.
+
+Decision records, not branching gateways [#decision-records-not-branching-gateways]
+
+`DecisionNode` captures a reviewable choice: its outcome, criteria, rationale, status and owner stay
+understandable when arrows are hidden. It deliberately has no `options`, `branches` or `relations`
+props. Put branch semantics in centralized relations and visible edge labels.
+
+```tsx contract
+import { DecisionNode } from '@diax/ui-react/presentation';
+
+export function RenderingDecision() {
+  return (
+    <DecisionNode
+      title="Choose the rendering owner"
+      outcome="DOM + CSS for content; DiaX for measured relations"
+      status="approved"
+      statusLabel="Accepted"
+      criteria={['Reproducible output', 'Native rich content', 'AI-familiar authoring']}
+      rationale="Keep content in the platform with the strongest composition primitives."
+      owner="Owner · Architecture"
+    />
+  );
+}
+```
+
+This differs from `FlowNode variant="decision"`, which is a compact flowchart shape for a branching
+question such as “Cache hit?”. The shape belongs in a process graph; the record belongs in a report,
+architecture brief or decision trail. AI prompts should name the intended role instead of asking for
+a generic “decision box”. The `labels` prop can localize the visible Outcome, Criteria and Rationale
+headings without replacing the component structure.
+
+Workflow stages [#workflow-stages]
+
+`StageNode` covers ordered SOPs, migrations, roadmaps and phased rollouts. `step` is display content,
+not a layout coordinate; the relations or authored DOM still define order.
+
+```tsx contract
+import { StageNode } from '@diax/ui-react/presentation';
+
+export function RolloutStage() {
+  return (
+    <StageNode
+      step="03 / 04"
+      title="Canary rollout"
+      status="active"
+      statusLabel="In progress"
+      owner="Owner · Platform"
+      description="Promote only after installed-consumer verification."
+    />
+  );
+}
+```
+
+Put components inside Diagram data [#put-components-inside-diagram-data]
+
+Rich DOM is ordinary node content. Keep topology centralized instead of wrapping every node in
+another JSX definition element:
+
+```tsx contract
+import { FlowDiagram } from '@diax/react';
+import { ActorNode, EvidenceNode, SystemNode } from '@diax/ui-react/presentation';
+
+export function ReleaseChain() {
+  const nodes = [
+    { id: 'owner', content: <ActorNode name="Owner" roleLabel="Approver" /> },
+    { id: 'registry', content: <SystemNode name="Registry" kind="Service" /> },
+    { id: 'evidence', content: <EvidenceNode title="Provenance verified" source="npm" /> },
+  ];
+
+  return (
+    <FlowDiagram
+      nodes={nodes}
+      relations={['owner->registry', 'registry->evidence']}
+    />
+  );
+}
+```
+
+The same components can be placed in authored Grid/Flex DOM and measured with
+`@diax/react/connect`. They do not inspect whether Diagram, Connect or ordinary HTML owns layout.
+
+Theme tokens [#theme-tokens]
+
+Importing the stylesheet gives useful defaults without taking away application ownership. Override
+tokens on a page, figure or individual node; no React provider is required.
+
+| Token                                                      | Controls                                       |
+| ---------------------------------------------------------- | ---------------------------------------------- |
+| `--diax-node-bg`, `--diax-node-text`, `--diax-node-border` | Shared surface colors                          |
+| `--diax-node-shadow`                                       | Node elevation; set to `none` in flat products |
+| `--diax-accent`                                            | Default accent rail and highlighted state      |
+| `--diax-ui-info`, `--diax-ui-success`                      | Informational and verified states              |
+| `--diax-ui-warning`, `--diax-ui-danger`                    | Attention and blocking states                  |
+| `--diax-ui-radius`, `--diax-frame-radius`                  | Node and export frame corners                  |
+| `--diax-ui-font`, `--diax-ui-data-font`                    | UI copy and numeric/code typography            |
+| `--diax-frame-bg`, `--diax-frame-shadow`                   | Complete figure surface                        |
+
+```css
+.release-evidence {
+  --diax-accent: oklch(0.62 0.17 265);
+  --diax-ui-radius: 0.5rem;
+  --diax-node-shadow: none;
+}
+
+.dark .release-evidence {
+  --diax-node-bg: #1f2024;
+  --diax-node-text: #f5f5f6;
+  --diax-node-border: rgb(245 245 246 / 18%);
+  --diax-frame-bg: #151619;
+  --diax-accent: #a5adff;
+}
+```
+
+The package stylesheet includes narrow-container, reduced-motion, forced-colors and print rules.
+Print rules deliberately reset frame, node and badge surfaces to white paper with dark text even
+when the host is dark. Application CSS still owns page size, recipe layout and interactive edge
+controls because a 16:9 slide, article column and A4 export have different wrapping constraints.
+
+AI authoring vocabulary [#ai-authoring-vocabulary]
+
+Give an agent semantic roles rather than a request for “beautiful cards”:
+
+```text
+Use ActorNode for people or teams, SystemNode for owned technical responsibilities,
+ArtifactNode for concrete outputs with version and producer provenance, DataStoreNode for durable
+collections, StageNode for ordered work, MetricNode for quantities, EvidenceNode for reproducible
+observations, DecisionNode for reviewable choices, and RiskNode for constraints requiring action.
+
+Use NodeCard only when none of those roles match. Keep relations in one nodes + relations
+definition. Do not invent a new component name, layout mode, coordinates or SVG shape.
+Every status must include visible text. Every evidence node must name its source.
+```
+
+For untrusted model output, keep generating schema-validated data and map allowlisted types to these
+trusted components. Do not compile model-produced JSX at runtime.
+
+Why these components graduated [#why-these-components-graduated]
+
+The promotion-review corpus contains dozens of independent visuals. The same step badge alone was
+reimplemented in nine chart modules; report frames, stages, system roles, stores, risks, outcomes
+and evidence language recur across architecture, security, i18n and rollout stories. These
+components now pass the deletion test: removing them would push naming, accessible status,
+forced-colors behavior, theme tokens and measurement-safe structure back into many callers. The
+artifact role separately recurs in an artifact archive/reuse workflow and a dist injection pipeline;
+removing it would again conflate a passive build output with the system or store around it.
+
+The complete report compositions still stay application-owned. A “mobile migration comparison” or
+“supply-chain response” component would encode one document's wording and layout, not a reusable
+visual role.

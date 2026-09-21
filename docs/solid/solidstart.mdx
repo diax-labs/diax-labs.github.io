@@ -1,0 +1,140 @@
+# SolidStart & SSR (/docs/solid/solidstart)
+
+
+
+SSR is supported [#ssr-is-supported]
+
+`@diax/solid` publishes separate server and browser conditions. A SolidStart route may import and
+render `FlowDiagram` normally: the server emits deterministic node markup and an empty edge shell;
+the browser condition hydrates that DOM, measures the rendered nodes, and fills in pixel edge paths.
+
+You do not need `clientOnly()` merely because DiaX uses DOM measurement. Final edge geometry is a
+browser concern, but stable diagram markup can still participate in SSR.
+
+```tsx title="components/FlowChart.tsx" contract solid
+import { FlowDiagram } from '@diax/solid';
+
+export default function FlowChart() {
+  return (
+    <FlowDiagram
+      nodes={[
+        { id: 'frontend', content: 'Frontend' },
+        { id: 'api', content: 'API' },
+        { id: 'database', content: 'Database' },
+      ]}
+      relations={['frontend->api', 'api->database']}
+    />
+  );
+}
+```
+
+Import the component from the route as ordinary SolidStart composition:
+
+```tsx title="routes/dashboard.tsx"
+import FlowChart from '~/components/FlowChart';
+
+export default function DashboardPage() {
+  return (
+    <main>
+      <h1>Architecture</h1>
+      <FlowChart />
+    </main>
+  );
+}
+```
+
+The route block is a SolidStart project fragment because `~` resolution belongs to the host. The
+component module above is the checked Solid JSX contract.
+
+What the server renders [#what-the-server-renders]
+
+The server condition is safe to call through Solid's normal renderer:
+
+```tsx title="server-render.tsx" contract solid
+import { FlowDiagram } from '@diax/solid';
+import { renderToString } from 'solid-js/web';
+
+export const html = renderToString(() => (
+  <FlowDiagram
+    nodes={[
+      { id: 'author', content: 'Author' },
+      { id: 'reader', content: 'Reader' },
+    ]}
+    relations={['author->reader']}
+  />
+));
+```
+
+The repository's built-artifact hydration smoke executes the actual server condition, inserts that
+HTML into a DOM, hydrates through the browser condition, and verifies that node identity survives
+while edges appear after measurement. Run it with:
+
+```bash
+pnpm smoke:hydration
+```
+
+Use `clientOnly()` only for application reasons [#use-clientonly-only-for-application-reasons]
+
+Choose SolidStart's `clientOnly()` when the surrounding node content itself depends on browser-only
+SDKs, or when an optional diagram should not contribute server HTML. It is a product loading choice,
+not a DiaX compatibility requirement:
+
+```tsx title="routes/browser-only-dashboard.tsx"
+import { clientOnly } from '@solidjs/start';
+
+// SolidStart host fragment: the route alias and clientOnly runtime belong to the application.
+const BrowserOnlyFlowChart = clientOnly(() => import('~/components/FlowChart'));
+
+export default function BrowserOnlyDashboard() {
+  return <BrowserOnlyFlowChart fallback={<p>Loading architecture…</p>} />;
+}
+```
+
+This host fragment is intentionally not labelled as a DiaX code contract. A future SolidStart
+fixture should own framework-version, route, streaming, hydration, and alias-resolution proof.
+
+Dynamic data [#dynamic-data]
+
+Signals and resources may update the same hydrated component. Keep a stable loading region and
+validate external data before it reaches the diagram:
+
+```tsx title="components/DynamicDiagram.tsx" contract solid
+import { FlowDiagram } from '@diax/solid';
+import { createResource, Show } from 'solid-js';
+
+interface ArchitectureData {
+  nodes: Array<{ id: string; content: string }>;
+  relations: string[];
+}
+
+async function loadArchitecture(): Promise<ArchitectureData> {
+  const response = await fetch('/api/architecture');
+  if (!response.ok) throw new Error('Architecture request failed');
+  return response.json() as Promise<ArchitectureData>;
+}
+
+export default function DynamicDiagram() {
+  const [data] = createResource(loadArchitecture);
+
+  return (
+    <Show when={data()} fallback={<p role="status">Loading architecture…</p>}>
+      {(definition) => (
+        <FlowDiagram
+          nodes={definition().nodes}
+          relations={definition().relations}
+          theme="github"
+        />
+      )}
+    </Show>
+  );
+}
+```
+
+Hydration rules [#hydration-rules]
+
+* Keep initial nodes and relations deterministic between server render and hydration.
+* Do not change topology during the first client render based on viewport, random IDs, or local
+  time.
+* Expect the final SVG paths only after client measurement.
+* Let DiaX remeasure content changes; do not cache DOM rectangles in application state.
+* Treat application-owned browser SDKs separately from DiaX's SSR-aware package conditions.

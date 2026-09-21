@@ -1,0 +1,151 @@
+# FAQ (/docs/guide/faq)
+
+
+
+
+
+<Accordions>
+  <Accordion title="How is DiaX different from React Flow?">
+    React Flow is a full-featured interactive graph UI library built for drag-and-drop node editors, visual programming tools, and interactive workflows.
+
+    DiaX is a **headless diagram-as-code engine** with no core runtime dependencies, designed for static, declarative diagrams. DiaX uses CSS Grid for layout instead of absolute positioning, making it SSR-friendly and naturally responsive.
+
+    |                   | DiaX                       | React Flow                         |
+    | ----------------- | -------------------------- | ---------------------------------- |
+    | Bundle checks     | Tracked in this repository | See React Flow's published package |
+    | Core dependencies | 0                          | See React Flow's published package |
+    | Interaction       | Static (by design)         | Drag/pan/zoom                      |
+    | Layout            | CSS Grid (auto)            | Manual positioning                 |
+    | Use case          | Documentation, AI output   | Visual editors                     |
+
+    If you need users to drag nodes around, use React Flow. If you need diagrams rendered from data or code, use DiaX.
+  </Accordion>
+
+  <Accordion title="How is DiaX different from Mermaid?">
+    Mermaid turns a portable text DSL into an SVG using its own renderer and theme system. It is usually
+    the better fit when text portability and broad diagram-family coverage matter most.
+
+    DiaX keeps nodes as **real DOM elements** while drawing connections in an SVG overlay. It is aimed at
+    cases where nodes must contain application components or follow an existing CSS design system.
+
+    |               | DiaX                                               | Mermaid                                    |
+    | ------------- | -------------------------------------------------- | ------------------------------------------ |
+    | Output        | DOM nodes (JSX)                                    | SVG                                        |
+    | Styling       | Application CSS/Tailwind for DOM nodes             | Mermaid themes, config and SVG/CSS styling |
+    | Custom nodes  | Application components through framework renderers | Mermaid syntax and renderer extensions     |
+    | Bundle checks | Tracked in this repository                         | See Mermaid's published package            |
+    | Input format  | JSON / JSX / DSL                                   | Mermaid DSL                                |
+
+    `parseMermaid()` from `@diax/mermaid` imports a documented subset of six Mermaid diagram families
+    into a normalized DiaX AST. It is a migration and composition path, not full Mermaid compatibility;
+    unsupported families or syntax return diagnostics.
+  </Accordion>
+
+  <Accordion title="How is DiaX different from D2?">
+    D2 is a standalone diagram scripting language and CLI tool. It compiles `.d2` files into SVG/PNG images. It runs as a binary (Go), not in the browser.
+
+    DiaX is a **JavaScript library** you import into your app. It runs in the browser (or on the server via SSR) and produces live DOM elements, not static images.
+
+    |             | DiaX                               | D2              |
+    | ----------- | ---------------------------------- | --------------- |
+    | Runtime     | Browser / Node.js                  | CLI binary      |
+    | Output      | Live DOM                           | SVG/PNG files   |
+    | Integration | npm package                        | Standalone tool |
+    | Frameworks  | React, Vue, Svelte, Solid, Vanilla | N/A             |
+
+    If you need diagrams embedded in a web app, use DiaX. If you need standalone diagram files for documentation pipelines, D2 is a great choice.
+  </Accordion>
+
+  <Accordion title="Does DiaX work with SSR?">
+    Partially, with a clear client boundary. DiaX can render the node content, topology-derived CSS Grid
+    placement and a stable empty edge shell on the server.
+
+    Pixel-accurate SVG paths require DOM measurements and complete after hydration. Font, image or
+    content-size changes may still move nodes, so applications should use stable sizing and test their
+    own loading states instead of assuming zero layout shift.
+  </Accordion>
+
+  <Accordion title="Can I use DiaX commercially?">
+    Yes. DiaX is **MIT licensed** — free for personal, commercial, and enterprise use. No attribution required (though appreciated).
+  </Accordion>
+
+  <Accordion title="What's the bundle size?">
+    The core engine (`diax`) has no runtime dependencies. Package size changes are measured by the repository's size-limit configuration instead of duplicated as a number in the docs, so the result stays tied to the actual build artifact. Run `pnpm size:check` from the repository root for the current measurement.
+  </Accordion>
+
+  <Accordion title="Which frameworks are supported?">
+    DiaX has a framework-agnostic Core and five framework adapter packages:
+
+    * React (`@diax/react`)
+    * Vue (`@diax/vue`)
+    * Svelte (`@diax/svelte`)
+    * Solid (`@diax/solid`)
+    * Vanilla JS (`@diax/vanilla`)
+
+    The adapters are currently Alpha and do not yet claim identical rich labels, events, DOM measurement,
+    SSR or accessibility behavior. The shared contract matrix, not package count, determines parity.
+    Other frameworks can consume Core's pure layout output, but that is not a sixth framework binding.
+  </Accordion>
+
+  <Accordion title="Can I use custom node components?">
+    Yes, in two ways:
+
+    1. **`renderNode` prop** — a function that receives node data and returns JSX:
+
+    ```tsx
+    <FlowDiagram
+      renderNode={(node, state) => (
+        <MyCustomCard title={node.content} highlighted={state === 'highlighted'} />
+      )}
+    />
+    ```
+
+    2. **`nodeTypes` registry** — define renderers by type, then assign types to nodes:
+
+    ```tsx
+    <FlowDiagram
+      nodes={[
+        { id: 'gw', type: 'gateway', content: 'API Gateway' },
+        { id: 'svc', type: 'service', content: 'Auth' },
+      ]}
+      nodeTypes={{
+        gateway: (node) => <GatewayCard>{node.content}</GatewayCard>,
+        service: (node) => <ServiceCard>{node.content}</ServiceCard>,
+      }}
+    />
+    ```
+
+    Resolution order: `renderNode` > `nodeTypes[node.type]` > default renderer.
+  </Accordion>
+
+  <Accordion title="Does DiaX support animations?">
+    Yes. DiaX provides **5 edge animation presets**:
+
+    | Preset              | Effect                         |
+    | ------------------- | ------------------------------ |
+    | `"flow"`            | Flowing dashes along the edge  |
+    | `"pulse"`           | Breathing opacity effect       |
+    | `"shimmer"`         | Light traveling along the edge |
+    | `"reverse-flow"`    | Reverse flowing dashes         |
+    | `"reverse-shimmer"` | Reverse shimmer                |
+
+    ```tsx
+    <FlowDiagram
+      relations={[
+        { from: 'a', to: 'b', animate: 'flow' },
+        { from: 'b', to: 'c', animate: 'shimmer' },
+      ]}
+    />
+    ```
+
+    Entrance animations are also supported via the `stagger` prop.
+  </Accordion>
+
+  <Accordion title="Can I export diagrams as images?">
+    Not through a stable framework export yet. DiaX diagrams combine normal DOM content with an SVG
+    edge overlay, so an edge-only SVG export is not the complete result. Wrap the diagram in an element
+    you own and use a DOM-capture library at the application boundary, with explicit font, asset,
+    background and browser tests. Notebook has an internal export adapter, but it is not exported by
+    `@diax/react`, `@diax/vue` or the other framework packages.
+  </Accordion>
+</Accordions>
